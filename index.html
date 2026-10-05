@@ -1,75 +1,31 @@
 <script>
   const form = document.getElementById("surveyForm");
 
-  const homeTelInput = document.getElementById("homeTel");
-  const mobileTelInput = document.getElementById("mobileTel");
-
-  // 電話番号欄：半角数字と半角ハイフン以外をその場で除去
-  function restrictPhoneInput(input) {
-    input.addEventListener("input", function () {
-      this.value = this.value.replace(/[^0-9-]/g, "");
-    });
-  }
-
-  restrictPhoneInput(homeTelInput);
-  restrictPhoneInput(mobileTelInput);
-
-
-  // 電話番号形式チェック
-  // 使用可能文字：半角数字、半角ハイフン
-  // ハイフン：必ず2個
+  // ハイフンがちょうど2個あるかチェック
   function checkPhoneNumber(value) {
-
-    // 半角数字とハイフン以外があればNG
-    if (!/^[0-9-]+$/.test(value)) {
-      return false;
-    }
-
-    // ハイフンの個数を確認
     const hyphenCount = (value.match(/-/g) || []).length;
-
-    if (hyphenCount !== 2) {
-      return false;
-    }
-
-    return true;
+    return hyphenCount === 2;
   }
-
 
   form.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
     const name = document.getElementById("name").value.trim();
-    const homeTel = homeTelInput.value.trim();
-    const mobileTel = mobileTelInput.value.trim();
+    const homeTel = document.getElementById("homeTel").value.trim();
+    const mobileTel = document.getElementById("mobileTel").value.trim();
 
-
-    // 自宅番号チェック
     if (!checkPhoneNumber(homeTel)) {
-      alert(
-        "自宅番号を正しく入力してください。\n" +
-        "半角数字とハイフンのみ使用できます。\n" +
-        "例：0748-12-3456"
-      );
-
-      homeTelInput.focus();
+      alert("自宅番号はハイフンを2つ入れて入力してください。\n例：0748-12-3456");
+      document.getElementById("homeTel").focus();
       return;
     }
 
-
-    // 携帯番号チェック
     if (!checkPhoneNumber(mobileTel)) {
-      alert(
-        "携帯番号を正しく入力してください。\n" +
-        "半角数字とハイフンのみ使用できます。\n" +
-        "例：090-1234-5678"
-      );
-
-      mobileTelInput.focus();
+      alert("携帯番号はハイフンを2つ入れて入力してください。\n例：090-1234-5678");
+      document.getElementById("mobileTel").focus();
       return;
     }
-
 
     const data = {
       name: name,
