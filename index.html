@@ -43,19 +43,20 @@
       text-align: center;
     }
 
-    /* 緑枠カード */
+    /* 各カード */
     .container {
       width: 100%;
       background-color: #ffffff;
       border-top: 5px solid #00c853;
       border-radius: 12px;
       padding: 30px;
+      margin-bottom: 24px;
 
       box-shadow:
         0 3px 8px rgba(0, 0, 0, 0.12);
     }
 
-    /* カード内タイトル */
+    /* カードタイトル */
     .form-title {
       margin: 0 0 25px;
       color: #00b84f;
@@ -66,6 +67,11 @@
     /* 入力項目 */
     .form-group {
       margin-bottom: 24px;
+    }
+
+    /* カード最後の項目は下余白なし */
+    .form-group:last-child {
+      margin-bottom: 0;
     }
 
     label {
@@ -116,7 +122,7 @@
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
-    /* 郵便番号検索中 */
+    /* 郵便番号検索メッセージ */
     .zip-message {
       min-height: 20px;
       margin-top: 7px;
@@ -136,7 +142,7 @@
     button {
       width: 100%;
       height: 50px;
-      margin-top: 10px;
+      margin-top: 4px;
       border: none;
       border-radius: 6px;
       background-color: #00b84f;
@@ -158,6 +164,7 @@
 
     /* スマートフォン */
     @media (max-width: 600px) {
+
       body {
         padding: 12px;
       }
@@ -172,6 +179,7 @@
 
       .container {
         padding: 24px 18px;
+        margin-bottom: 18px;
       }
     }
   </style>
@@ -184,14 +192,18 @@
 
     <h1>尾賀亀カルテ</h1>
 
-    <div class="container">
+    <form id="surveyForm">
 
-      <div class="form-title">
-        お客さま情報入力
-      </div>
+      <!-- ====================================== -->
+      <!-- お客さま基本情報カード -->
+      <!-- ====================================== -->
 
+      <div class="container">
 
-      <form id="surveyForm">
+        <div class="form-title">
+          お客さま基本情報
+        </div>
+
 
         <!-- 氏名 -->
 
@@ -254,6 +266,19 @@
 
         </div>
 
+      </div>
+
+
+      <!-- ====================================== -->
+      <!-- 住所情報カード -->
+      <!-- ====================================== -->
+
+      <div class="container">
+
+        <div class="form-title">
+          住所情報
+        </div>
+
 
         <!-- 郵便番号 -->
 
@@ -263,14 +288,14 @@
             郵便番号
             <span class="required">必須</span>
           </label>
-          
+
           <input
             type="text"
             id="zipcode"
             name="zipcode"
             inputmode="numeric"
             maxlength="8"
-            placeholder="例：523-0892"
+            placeholder="例：523-0891"
             autocomplete="postal-code"
             required
           >
@@ -343,16 +368,16 @@
 
         </div>
 
+      </div>
 
-        <!-- 入力完了 -->
 
-        <button type="submit">
-          入力完了
-        </button>
+      <!-- 入力完了 -->
 
-      </form>
+      <button type="submit">
+        入力完了
+      </button>
 
-    </div>
+    </form>
 
   </div>
 
@@ -403,7 +428,6 @@
 
 
     restrictPhoneInput(homeTelInput);
-
     restrictPhoneInput(mobileTelInput);
 
 
@@ -413,27 +437,16 @@
 
     function checkPhoneNumber(value) {
 
-      // 空欄ならOK
-
       if (value === "") {
         return true;
       }
-
-
-      // 半角数字とハイフン以外はNG
 
       if (!/^[0-9-]+$/.test(value)) {
         return false;
       }
 
-
-      // ハイフンの個数
-
       const hyphenCount =
         (value.match(/-/g) || []).length;
-
-
-      // ハイフンが2個ならOK
 
       return hyphenCount === 2;
 
@@ -458,8 +471,7 @@
 
 
     // ========================================
-    // 郵便番号入力制限
-    // 半角数字と半角ハイフンのみ
+    // 郵便番号入力
     // ========================================
 
     zipcodeInput.addEventListener("input", function () {
@@ -470,8 +482,6 @@
       const zipcode = this.value;
 
 
-      // 空欄に戻した場合
-
       if (zipcode === "") {
 
         showZipMessage("", "");
@@ -480,9 +490,6 @@
 
       }
 
-
-      // 8文字になったら住所検索
-      // 例：523-0891
 
       if (zipcode.length === 8) {
 
@@ -607,22 +614,13 @@
 
     function checkZipcode(value) {
 
-      // 空欄ならOK
-
-      if (value === "") {
-        return true;
-      }
-
-
-      // 入力する場合は「数字3桁-数字4桁」
-
       return /^\d{3}-\d{4}$/.test(value);
 
     }
 
 
     // ========================================
-    // 入力完了処理
+    // 入力完了
     // ========================================
 
     form.addEventListener(
