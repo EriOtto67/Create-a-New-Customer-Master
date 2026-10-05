@@ -501,11 +501,16 @@
       document.getElementById("address4");
 
     const address5Input =
-      document.getElementById("address5");
+  document.getElementById("address5");
 
+    const registrationNumberInput =
+      document.getElementById("registrationNumber");
+    
+    const carNameInput =
+      document.getElementById("carName");
+    
     const zipMessage =
       document.getElementById("zipMessage");
-
 
     // ========================================
     // 電話番号入力制限
@@ -781,6 +786,16 @@
             .value
             .trim();
 
+        const registrationNumber =
+          registrationNumberInput
+            .value
+            .trim();
+        
+        const carName =
+          carNameInput
+            .value
+            .trim();
+
 
         // ========================================
         // 自宅番号チェック
@@ -842,26 +857,29 @@
 
         const data = {
 
-          name: name,
-
-          homeTel: homeTel,
-
-          mobileTel: mobileTel,
-
-          zipcode: zipcode,
-
-          address1: address1,
-
-          address2: address2,
-
-          address3: address3,
-
-          address4: address4,
-
-          address5: address5
-
-        };
-
+            name: name,
+          
+            homeTel: homeTel,
+          
+            mobileTel: mobileTel,
+          
+            zipcode: zipcode,
+          
+            address1: address1,
+          
+            address2: address2,
+          
+            address3: address3,
+          
+            address4: address4,
+          
+            address5: address5,
+          
+            registrationNumber: registrationNumber,
+          
+            carName: carName
+          
+          };
 
         console.log(data);
 
