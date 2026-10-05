@@ -202,6 +202,38 @@
   background-color: #2f2f2f;
 }
 
+/* スタッフモード画面 */
+.staff-screen {
+  width: 100%;
+}
+
+/* TELアポメモ */
+textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 14px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #333333;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+textarea:focus {
+  border-color: #00c853;
+
+  box-shadow:
+    0 0 0 2px rgba(0, 200, 83, 0.12);
+}
+    
     /* スマートフォン */
     @media (max-width: 600px) {
 
@@ -592,18 +624,72 @@
         </div>
       
       </div>
+
+
+      <!-- ====================================== -->
+      <!-- スタッフモード画面 -->
+      <!-- ====================================== -->
+      
+      <div
+        id="staffScreen"
+        class="staff-screen"
+        style="display: none;"
+      >
+      
+        <div class="container">
+      
+          <div class="form-title">
+            スタッフモード
+          </div>
+      
+          <div class="form-group">
+      
+            <label for="telAppointmentMemo">
+              TELアポメモ
+              <span class="optional">スタッフ入力</span>
+            </label>
+      
+            <textarea
+              id="telAppointmentMemo"
+              name="telAppointmentMemo"
+              rows="10"
+              placeholder="お客さまへのヒアリング内容を入力して下さい。"
+            ></textarea>
+      
+          </div>
+      
+        </div>
+      
+        <button
+          type="button"
+          id="staffCompleteButton"
+        >
+          スタッフ入力完了
+        </button>
       
       </div>
-
-  <script>
-    "use strict";
-
-      const form =
+      
+      
+      </div>
+      
+      <script>
+        "use strict";
+      
+        const form =
         document.getElementById("surveyForm");
 
     const completeScreen =
         document.getElementById("completeScreen");
-
+  
+    const staffScreen =
+        document.getElementById("staffScreen");
+  
+    const telAppointmentMemoInput =
+        document.getElementById("telAppointmentMemo");
+  
+    const staffCompleteButton =
+        document.getElementById("staffCompleteButton");
+        
     const staffCodeInput =
         document.getElementById("staffCode");
       
@@ -703,12 +789,24 @@
       
         // スタッフコード一致
         staffCodeMessage.textContent = "";
-      
-        alert(
-          "スタッフコードを確認しました。"
-        );
-      
-      });
+        
+        // 完了画面を非表示
+        completeScreen.style.display = "none";
+        
+        // スタッフモード画面を表示
+        staffScreen.style.display = "block";
+        
+        // スタッフコードを消去
+        staffCodeInput.value = "";
+        
+        // TELアポメモへカーソルを移動
+        telAppointmentMemoInput.focus();
+        
+        // ページ上部へ移動
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
       
       // ========================================
       // 必須項目のメッセージ
