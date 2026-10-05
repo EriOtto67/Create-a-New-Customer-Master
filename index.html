@@ -220,7 +220,7 @@
             name="staffSS"
             required
           >
-            <option value="">選択してください</option>
+            <option value="">選択して下さい</option>
             <option value="ニュー長浜">ニュー長浜</option>
             <option value="EJ彦根">EJ彦根</option>
             <option value="DD八日市">DD八日市</option>
@@ -554,7 +554,7 @@
       
       // 担当SS
       staffSSInput.addEventListener("invalid", function () {
-        this.setCustomValidity("担当SSを選択してください。");
+        this.setCustomValidity("担当SSを選択して下さい。");
       });
       
       staffSSInput.addEventListener("change", function () {
@@ -718,7 +718,7 @@
         if (!/^\d{3}-\d{4}$/.test(zipcode)) {
 
           showZipMessage(
-            "郵便番号は「123-4567」の形式で入力してください。",
+            "郵便番号は「123-4567」の形式で入力して下さい。",
             "error"
           );
 
@@ -734,7 +734,7 @@
 
 
       showZipMessage(
-        "ハイフン付きで入力してください。例：523-0891",
+        "ハイフン付きで入力して下さい。例：523-0891",
         ""
       );
 
@@ -821,7 +821,7 @@
         console.error(error);
 
         showZipMessage(
-          "住所を取得できませんでした。通信状況を確認してください。",
+          "住所を取得できませんでした。通信状況を確認して下さい。",
           "error"
         );
 
@@ -927,7 +927,7 @@
         if (!checkPhoneNumber(homeTel)) {
 
           alert(
-            "自宅番号を以下の通り入力してください。\n\n" +
+            "自宅番号を以下の通り入力して下さい。\n\n" +
             "例：0748-12-3456"
           );
 
@@ -945,7 +945,7 @@
         if (!checkPhoneNumber(mobileTel)) {
 
           alert(
-            "携帯番号を以下の通り入力してください。\n\n" +
+            "携帯番号を以下の通り入力して下さい。\n\n" +
             "例：090-1234-5678"
           );
 
@@ -963,7 +963,7 @@
         if (!checkZipcode(zipcode)) {
 
           alert(
-            "郵便番号を以下の通り入力してください。\n\n" +
+            "郵便番号を以下の通り入力して下さい。\n\n" +
             "例：523-0891"
           );
 
