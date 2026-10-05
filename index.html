@@ -36,17 +36,10 @@
 
     /* タイトル */
     h1 {
-      margin: 0;
+      margin: 0 0 30px;
       color: #00b84f;
       font-size: 30px;
       font-weight: 700;
-      text-align: center;
-    }
-
-    .subtitle {
-      margin: 8px 0 30px;
-      color: #555;
-      font-size: 14px;
       text-align: center;
     }
 
@@ -54,10 +47,7 @@
     .container {
       width: 100%;
       background-color: #ffffff;
-
-      /* 写真のような上側の緑ライン */
       border-top: 5px solid #00c853;
-
       border-radius: 12px;
       padding: 30px;
 
@@ -107,15 +97,11 @@
       width: 100%;
       height: 48px;
       padding: 10px 12px;
-
       border: 1px solid #cccccc;
       border-radius: 6px;
-
       background-color: #ffffff;
-
       color: #333;
       font-size: 16px;
-
       outline: none;
 
       transition:
@@ -130,22 +116,33 @@
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
+    /* 郵便番号検索中 */
+    .zip-message {
+      min-height: 20px;
+      margin-top: 7px;
+      color: #666666;
+      font-size: 13px;
+    }
+
+    .zip-message.success {
+      color: #00883b;
+    }
+
+    .zip-message.error {
+      color: #d93025;
+    }
+
     /* 入力完了ボタン */
     button {
       width: 100%;
       height: 50px;
-
       margin-top: 10px;
-
       border: none;
       border-radius: 6px;
-
       background-color: #00b84f;
-
       color: #ffffff;
       font-size: 17px;
       font-weight: 700;
-
       cursor: pointer;
 
       transition: background-color 0.2s;
@@ -161,7 +158,6 @@
 
     /* スマートフォン */
     @media (max-width: 600px) {
-
       body {
         padding: 12px;
       }
@@ -197,7 +193,6 @@
 
       <form id="surveyForm">
 
-
         <!-- 氏名 -->
 
         <div class="form-group">
@@ -212,6 +207,7 @@
             id="name"
             name="name"
             placeholder="例：山田 太郎"
+            autocomplete="name"
             required
           >
 
@@ -233,6 +229,7 @@
             name="homeTel"
             inputmode="tel"
             placeholder="例：0748-12-3456"
+            autocomplete="tel"
           >
 
         </div>
@@ -258,12 +255,99 @@
         </div>
 
 
+        <!-- 郵便番号 -->
+
+        <div class="form-group">
+
+          <label for="zipcode">
+            郵便番号
+            <span class="optional">任意</span>
+          </label>
+
+          <input
+            type="text"
+            id="zipcode"
+            name="zipcode"
+            inputmode="numeric"
+            maxlength="8"
+            placeholder="例：523-0891"
+            autocomplete="postal-code"
+          >
+
+          <div
+            id="zipMessage"
+            class="zip-message"
+            aria-live="polite"
+          ></div>
+
+        </div>
+
+
+        <!-- 住所1 -->
+
+        <div class="form-group">
+
+          <label for="address1">
+            住所1
+            <span class="optional">都道府県</span>
+          </label>
+
+          <input
+            type="text"
+            id="address1"
+            name="address1"
+            placeholder="例：滋賀県"
+            autocomplete="address-level1"
+          >
+
+        </div>
+
+
+        <!-- 住所2 -->
+
+        <div class="form-group">
+
+          <label for="address2">
+            住所2
+            <span class="optional">市区町村</span>
+          </label>
+
+          <input
+            type="text"
+            id="address2"
+            name="address2"
+            placeholder="例：近江八幡市"
+            autocomplete="address-level2"
+          >
+
+        </div>
+
+
+        <!-- 住所3 -->
+
+        <div class="form-group">
+
+          <label for="address3">
+            住所3
+            <span class="optional">町域・番地・建物名</span>
+          </label>
+
+          <input
+            type="text"
+            id="address3"
+            name="address3"
+            placeholder="例：桜宮町123番地"
+            autocomplete="address-line1"
+          >
+
+        </div>
+
+
         <!-- 入力完了 -->
 
         <button type="submit">
           入力完了
         </button>
-
 
       </form>
 
@@ -273,14 +357,31 @@
 
 
   <script>
+    "use strict";
 
-    const form = document.getElementById("surveyForm");
+    const form =
+      document.getElementById("surveyForm");
 
     const homeTelInput =
       document.getElementById("homeTel");
 
     const mobileTelInput =
       document.getElementById("mobileTel");
+
+    const zipcodeInput =
+      document.getElementById("zipcode");
+
+    const address1Input =
+      document.getElementById("address1");
+
+    const address2Input =
+      document.getElementById("address2");
+
+    const address3Input =
+      document.getElementById("address3");
+
+    const zipMessage =
+      document.getElementById("zipMessage");
 
 
     // ========================================
@@ -303,7 +404,6 @@
     restrictPhoneInput(homeTelInput);
 
     restrictPhoneInput(mobileTelInput);
-
 
 
     // ========================================
@@ -339,6 +439,186 @@
     }
 
 
+    // ========================================
+    // 郵便番号メッセージ表示
+    // ========================================
+
+    function showZipMessage(message, type) {
+
+      zipMessage.textContent = message;
+
+      zipMessage.className = "zip-message";
+
+      if (type) {
+        zipMessage.classList.add(type);
+      }
+
+    }
+
+
+    // ========================================
+    // 郵便番号入力制限
+    // 半角数字と半角ハイフンのみ
+    // ========================================
+
+    zipcodeInput.addEventListener("input", function () {
+
+      this.value =
+        this.value.replace(/[^0-9-]/g, "");
+
+      const zipcode = this.value;
+
+
+      // 空欄に戻した場合
+
+      if (zipcode === "") {
+
+        showZipMessage("", "");
+
+        return;
+
+      }
+
+
+      // 8文字になったら住所検索
+      // 例：523-0891
+
+      if (zipcode.length === 8) {
+
+        if (!/^\d{3}-\d{4}$/.test(zipcode)) {
+
+          showZipMessage(
+            "郵便番号は「123-4567」の形式で入力してください。",
+            "error"
+          );
+
+          return;
+
+        }
+
+        searchAddress(zipcode);
+
+        return;
+
+      }
+
+
+      showZipMessage(
+        "ハイフン付きで入力してください。例：523-0891",
+        ""
+      );
+
+    });
+
+
+    // ========================================
+    // 郵便番号から住所検索
+    // ========================================
+
+    async function searchAddress(zipcode) {
+
+      showZipMessage(
+        "住所を検索しています。",
+        ""
+      );
+
+
+      try {
+
+        const url =
+          "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" +
+          encodeURIComponent(zipcode);
+
+
+        const response =
+          await fetch(url);
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "通信エラー：" + response.status
+          );
+
+        }
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          result.status !== 200 ||
+          !result.results ||
+          result.results.length === 0
+        ) {
+
+          address1Input.value = "";
+          address2Input.value = "";
+          address3Input.value = "";
+
+          showZipMessage(
+            "該当する住所が見つかりませんでした。",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const address =
+          result.results[0];
+
+
+        address1Input.value =
+          address.address1 || "";
+
+        address2Input.value =
+          address.address2 || "";
+
+        address3Input.value =
+          address.address3 || "";
+
+
+        showZipMessage(
+          "住所を自動入力しました。",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        showZipMessage(
+          "住所を取得できませんでした。通信状況を確認してください。",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    // ========================================
+    // 郵便番号チェック
+    // ========================================
+
+    function checkZipcode(value) {
+
+      // 空欄ならOK
+
+      if (value === "") {
+        return true;
+      }
+
+
+      // 入力する場合は「数字3桁-数字4桁」
+
+      return /^\d{3}-\d{4}$/.test(value);
+
+    }
+
 
     // ========================================
     // 入力完了処理
@@ -366,6 +646,30 @@
 
         const mobileTel =
           mobileTelInput
+            .value
+            .trim();
+
+
+        const zipcode =
+          zipcodeInput
+            .value
+            .trim();
+
+
+        const address1 =
+          address1Input
+            .value
+            .trim();
+
+
+        const address2 =
+          address2Input
+            .value
+            .trim();
+
+
+        const address3 =
+          address3Input
             .value
             .trim();
 
@@ -402,6 +706,22 @@
         }
 
 
+        // 郵便番号チェック
+
+        if (!checkZipcode(zipcode)) {
+
+          alert(
+            "郵便番号を以下の通り入力してください。\n\n" +
+            "例：523-0891"
+          );
+
+          zipcodeInput.focus();
+
+          return;
+
+        }
+
+
         // ========================================
         // 入力完了用データ
         // ========================================
@@ -412,7 +732,15 @@
 
           homeTel: homeTel,
 
-          mobileTel: mobileTel
+          mobileTel: mobileTel,
+
+          zipcode: zipcode,
+
+          address1: address1,
+
+          address2: address2,
+
+          address3: address3
 
         };
 
