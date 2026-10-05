@@ -818,6 +818,45 @@ textarea:focus {
         // スタッフコード一致
         staffCodeMessage.textContent = "";
         
+        // ========================================
+        // お客さま入力内容を確認画面へ表示
+        // ========================================
+        
+        document.getElementById("confirmStaffSS").textContent =
+          staffSSInput.value.trim();
+        
+        document.getElementById("confirmFurigana").textContent =
+          furiganaInput.value.trim();
+        
+        document.getElementById("confirmName").textContent =
+          nameInput.value.trim();
+        
+        document.getElementById("confirmHomeTel").textContent =
+          homeTelInput.value.trim() || "未入力";
+        
+        document.getElementById("confirmMobileTel").textContent =
+          mobileTelInput.value.trim() || "未入力";
+        
+        document.getElementById("confirmZipcode").textContent =
+          zipcodeInput.value.trim();
+        
+        document.getElementById("confirmAddress").textContent =
+          [
+            address1Input.value.trim(),
+            address2Input.value.trim(),
+            address3Input.value.trim(),
+            address4Input.value.trim()
+          ]
+            .filter(Boolean)
+            .join("");
+        
+        document.getElementById("confirmRegistrationNumber").textContent =
+          registrationNumberInput.value.trim();
+        
+        document.getElementById("confirmCarName").textContent =
+          carNameInput.value.trim();
+        
+        
         // 完了画面を非表示
         completeScreen.style.display = "none";
         
