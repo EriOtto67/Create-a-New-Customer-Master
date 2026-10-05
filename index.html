@@ -69,7 +69,6 @@
       margin-bottom: 24px;
     }
 
-    /* カード最後の項目は下余白なし */
     .form-group:last-child {
       margin-bottom: 0;
     }
@@ -193,6 +192,7 @@
     <h1>尾賀亀カルテ</h1>
 
     <form id="surveyForm">
+
 
       <!-- ====================================== -->
       <!-- お客さま基本情報カード -->
@@ -368,17 +368,16 @@
 
         </div>
 
-      </div>
 
         <!-- 住所4 -->
-        
+
         <div class="form-group">
-        
+
           <label for="address4">
             住所4
             <span class="optional">丁目・番地</span>
           </label>
-        
+
           <input
             type="text"
             id="address4"
@@ -386,27 +385,31 @@
             placeholder="例：1-2-3"
             autocomplete="address-line2"
           >
-        
+
         </div>
 
+
         <!-- 住所5 -->
-        
+
         <div class="form-group">
-        
-          <label for="address4">
+
+          <label for="address5">
             住所5
             <span class="optional">マンション・アパート</span>
           </label>
-        
+
           <input
             type="text"
-            id="address4"
-            name="address4"
+            id="address5"
+            name="address5"
             placeholder="例：尾賀亀ハイツ105号室"
-            autocomplete="address-line2"
+            autocomplete="address-line3"
           >
-        
-        </div>     
+
+        </div>
+
+      </div>
+
 
       <!-- 入力完了 -->
 
@@ -442,6 +445,12 @@
 
     const address3Input =
       document.getElementById("address3");
+
+    const address4Input =
+      document.getElementById("address4");
+
+    const address5Input =
+      document.getElementById("address5");
 
     const zipMessage =
       document.getElementById("zipMessage");
@@ -710,7 +719,21 @@
             .trim();
 
 
+        const address4 =
+          address4Input
+            .value
+            .trim();
+
+
+        const address5 =
+          address5Input
+            .value
+            .trim();
+
+
+        // ========================================
         // 自宅番号チェック
+        // ========================================
 
         if (!checkPhoneNumber(homeTel)) {
 
@@ -726,7 +749,9 @@
         }
 
 
+        // ========================================
         // 携帯番号チェック
+        // ========================================
 
         if (!checkPhoneNumber(mobileTel)) {
 
@@ -742,7 +767,9 @@
         }
 
 
+        // ========================================
         // 郵便番号チェック
+        // ========================================
 
         if (!checkZipcode(zipcode)) {
 
@@ -776,7 +803,11 @@
 
           address2: address2,
 
-          address3: address3
+          address3: address3,
+
+          address4: address4,
+
+          address5: address5
 
         };
 
