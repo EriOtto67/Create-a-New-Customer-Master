@@ -98,9 +98,10 @@
     }
 
     /* 入力欄 */
-    input {
-      width: 100%;
-      height: 48px;
+      input,
+      select {
+        width: 100%;
+        height: 48px;
       padding: 10px 12px;
       border: 1px solid #cccccc;
       border-radius: 6px;
@@ -114,9 +115,10 @@
         box-shadow 0.2s;
     }
 
-    input:focus {
+    input:focus,
+    select:focus {
       border-color: #00c853;
-
+    
       box-shadow:
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
@@ -204,6 +206,26 @@
           お客さま基本情報
         </div>
 
+        <!-- 担当SS -->
+
+        <div class="form-group">
+        
+          <label for="staffSS">
+            担当SS
+            <span class="required">必須</span>
+          </label>
+        
+          <select
+            id="staffSS"
+            name="staffSS"
+            required
+          >
+            <option value="">選択してください</option>
+            <option value="ニュー長浜">ニュー長浜</option>
+            <option value="EJ彦根">EJ彦根</option>
+          </select>
+        
+        </div>
 
         <!-- 氏名 -->
 
