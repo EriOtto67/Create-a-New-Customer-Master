@@ -506,58 +506,103 @@
   <script>
     "use strict";
 
-    const form =
-      document.getElementById("surveyForm");
-    
-    const staffSSInput =
-      document.getElementById("staffSS");
-    
-    staffSSInput.addEventListener("invalid", function () {
-    
-      if (this.value === "") {
+    "use strict";
+
+      const form =
+        document.getElementById("surveyForm");
+      
+      const staffSSInput =
+        document.getElementById("staffSS");
+      
+      const nameInput =
+        document.getElementById("name");
+      
+      const homeTelInput =
+        document.getElementById("homeTel");
+      
+      const mobileTelInput =
+        document.getElementById("mobileTel");
+      
+      const zipcodeInput =
+        document.getElementById("zipcode");
+      
+      const address1Input =
+        document.getElementById("address1");
+      
+      const address2Input =
+        document.getElementById("address2");
+      
+      const address3Input =
+        document.getElementById("address3");
+      
+      const address4Input =
+        document.getElementById("address4");
+      
+      const address5Input =
+        document.getElementById("address5");
+      
+      const registrationNumberInput =
+        document.getElementById("registrationNumber");
+      
+      const carNameInput =
+        document.getElementById("carName");
+      
+      const zipMessage =
+        document.getElementById("zipMessage");
+      
+      
+      // ========================================
+      // 必須項目のメッセージ
+      // ========================================
+      
+      // 担当SS
+      staffSSInput.addEventListener("invalid", function () {
         this.setCustomValidity("担当SSを選択してください。");
-      }
-    
-    });
-    
-    staffSSInput.addEventListener("change", function () {
-    
-      this.setCustomValidity("");
-    
-    });
-
-    const homeTelInput =
-      document.getElementById("homeTel");
-
-    const mobileTelInput =
-      document.getElementById("mobileTel");
-
-    const zipcodeInput =
-      document.getElementById("zipcode");
-
-    const address1Input =
-      document.getElementById("address1");
-
-    const address2Input =
-      document.getElementById("address2");
-
-    const address3Input =
-      document.getElementById("address3");
-
-    const address4Input =
-      document.getElementById("address4");
-
-    const address5Input =
-  document.getElementById("address5");
-
-    const registrationNumberInput =
-      document.getElementById("registrationNumber");
-    
-    const carNameInput =
-      document.getElementById("carName");
-    
-    const zipMessage =
-      document.getElementById("zipMessage");
+      });
+      
+      staffSSInput.addEventListener("change", function () {
+        this.setCustomValidity("");
+      });
+      
+      
+      // 氏名
+      nameInput.addEventListener("invalid", function () {
+        this.setCustomValidity("氏名を入力して下さい。");
+      });
+      
+      nameInput.addEventListener("input", function () {
+        this.setCustomValidity("");
+      });
+      
+      
+      // 郵便番号
+      zipcodeInput.addEventListener("invalid", function () {
+        this.setCustomValidity("郵便番号を入力して下さい。");
+      });
+      
+      zipcodeInput.addEventListener("input", function () {
+        this.setCustomValidity("");
+      });
+      
+      
+      // 登録番号情報
+      registrationNumberInput.addEventListener("invalid", function () {
+        this.setCustomValidity("登録番号情報を入力して下さい。");
+      });
+      
+      registrationNumberInput.addEventListener("input", function () {
+        this.setCustomValidity("");
+      });
+      
+      
+      // 車名
+      carNameInput.addEventListener("invalid", function () {
+        this.setCustomValidity("車名を入力して下さい。");
+      });
+      
+      carNameInput.addEventListener("input", function () {
+        this.setCustomValidity("");
+      });
 
     // ========================================
     // 電話番号入力制限
