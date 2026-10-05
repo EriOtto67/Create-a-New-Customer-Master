@@ -508,6 +508,26 @@
 
     const form =
       document.getElementById("surveyForm");
+    
+    const staffSSInput =
+      document.getElementById("staffSS");
+    
+    staffSSInput.addEventListener("invalid", function () {
+    
+      if (this.value === "") {
+        this.setCustomValidity("担当SSを選択してください。");
+      }
+    
+    });
+    
+    staffSSInput.addEventListener("change", function () {
+    
+      this.setCustomValidity("");
+    
+    });
+
+const homeTelInput =
+  document.getElementById("homeTel");
 
     const homeTelInput =
       document.getElementById("homeTel");
