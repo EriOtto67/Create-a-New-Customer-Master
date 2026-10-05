@@ -444,6 +444,7 @@ textarea:focus {
             name="address1"
             placeholder="例：滋賀県"
             autocomplete="address-level1"
+            readonly
           >
 
         </div>
@@ -464,6 +465,7 @@ textarea:focus {
             name="address2"
             placeholder="例：近江八幡市"
             autocomplete="address-level2"
+            readonly
           >
 
         </div>
@@ -484,6 +486,7 @@ textarea:focus {
             name="address3"
             placeholder="例：出町"
             autocomplete="address-line1"
+            readonly
           >
 
         </div>
@@ -495,15 +498,17 @@ textarea:focus {
 
           <label for="address4">
             住所4
+            <span class="required">必須</span>
             <span class="optional">丁目・番地・マンション・アパート</span>
           </label>
-
+          
           <input
             type="text"
             id="address4"
             name="address4"
             placeholder="例：1丁目2-3 尾賀亀ハイツ105号室"
             autocomplete="address-line2"
+            required
           >
 
         </div>
@@ -1063,6 +1068,15 @@ textarea:focus {
       // 登録番号
       registrationNumberInput.addEventListener("invalid", function () {
         this.setCustomValidity("登録番号を入力して下さい。");
+      });
+
+      // 住所4
+      address4Input.addEventListener("invalid", function () {
+        this.setCustomValidity("丁目や番地を入力して下さい。");
+      });
+      
+      address4Input.addEventListener("input", function () {
+        this.setCustomValidity("");
       });
       
       registrationNumberInput.addEventListener("input", function () {
