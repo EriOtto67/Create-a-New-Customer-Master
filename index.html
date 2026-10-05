@@ -667,7 +667,17 @@ textarea:focus {
             <p><strong>登録番号：</strong><span id="confirmRegistrationNumber"></span></p>
           
             <p><strong>車名：</strong><span id="confirmCarName"></span></p>
-          
+
+            <button
+            type="button"
+            id="backToFormButton"
+            class="staff-mode-button"
+          >
+            入力内容を修正する
+          </button>
+
+
+            
           </div>
           
           <div class="form-group">
@@ -717,6 +727,9 @@ textarea:focus {
   
     const staffCompleteButton =
         document.getElementById("staffCompleteButton");
+    
+    const backToFormButton =
+        document.getElementById("backToFormButton");
         
     const staffCodeInput =
         document.getElementById("staffCode");
@@ -877,6 +890,25 @@ textarea:focus {
       
       });  //
 
+      // ========================================
+      // 入力内容を修正
+      // ========================================
+      
+      backToFormButton.addEventListener("click", function () {
+      
+        // スタッフモードを非表示
+        staffScreen.style.display = "none";
+      
+        // お客さま入力フォームを再表示
+        form.style.display = "block";
+      
+        // ページ上部へ戻る
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      
+      });
 
       // ========================================
       // 必須項目のメッセージ
