@@ -1286,6 +1286,102 @@ textarea:focus {
       }
     );
 
+        // ========================================
+        // スタッフ入力完了
+        // ========================================
+        
+        staffCompleteButton.addEventListener("click", function () {
+        
+          const telAppointmentMemo =
+            telAppointmentMemoInput.value.trim();
+        
+          const finalData = {
+        
+            staffSS: staffSSInput.value.trim(),
+        
+            furigana: furiganaInput.value.trim(),
+        
+            name: nameInput.value.trim(),
+        
+            homeTel: homeTelInput.value.trim(),
+        
+            mobileTel: mobileTelInput.value.trim(),
+        
+            zipcode: zipcodeInput.value.trim(),
+        
+            address1: address1Input.value.trim(),
+        
+            address2: address2Input.value.trim(),
+        
+            address3: address3Input.value.trim(),
+        
+            address4: address4Input.value.trim(),
+        
+            registrationNumber:
+              registrationNumberInput.value.trim(),
+        
+            carName:
+              carNameInput.value.trim(),
+        
+            telAppointmentMemo:
+              telAppointmentMemo
+        
+          };
+        
+          console.log(finalData);
+
+const powerAutomateUrl =
+  "ここにPower AutomateのHTTP POST URLを入れる";
+
+staffCompleteButton.disabled = true;
+staffCompleteButton.textContent = "登録中です...";
+
+fetch(powerAutomateUrl, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(finalData)
+})
+  .then(function (response) {
+
+    if (!response.ok) {
+      throw new Error(
+        "送信エラー：" + response.status
+      );
+    }
+
+    return response.text();
+
+  })
+  .then(function () {
+
+    alert(
+      "kintoneへの登録が完了しました。"
+    );
+
+    staffCompleteButton.textContent =
+      "登録完了";
+
+  })
+  .catch(function (error) {
+
+    console.error(error);
+
+    alert(
+      "登録に失敗しました。\n" +
+      "入力内容は消えていません。\n" +
+      "もう一度お試し下さい。"
+    );
+
+    staffCompleteButton.disabled = false;
+    staffCompleteButton.textContent =
+      "スタッフ入力完了";
+
+  });
+        
+        });
+        
   </script>
 
 </body>
