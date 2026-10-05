@@ -562,6 +562,17 @@
       });
       
       // フリガナ
+      furiganaInput.addEventListener("invalid", function () {
+      
+        if (this.value.trim() === "") {
+      
+          this.setCustomValidity(
+            "フリガナを入力して下さい。"
+          );
+      
+        }
+      
+      });
       
       furiganaInput.addEventListener("input", function () {
       
