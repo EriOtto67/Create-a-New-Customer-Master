@@ -123,6 +123,20 @@
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
+    /* 郵便番号から自動入力される住所1・2・3 */
+    input[readonly] {
+      background-color: #eeeeee;
+      color: #666666;
+      border-color: #d5d5d5;
+      cursor: default;
+      caret-color: transparent;
+    }
+    
+    input[readonly]:focus {
+      border-color: #d5d5d5;
+      box-shadow: none;
+    }
+
     /* 郵便番号検索メッセージ */
     .zip-message {
       min-height: 20px;
@@ -445,6 +459,7 @@ textarea:focus {
             placeholder="例：滋賀県"
             autocomplete="address-level1"
             readonly
+            tabindex="-1"
           >
 
         </div>
@@ -466,6 +481,7 @@ textarea:focus {
             placeholder="例：近江八幡市"
             autocomplete="address-level2"
             readonly
+            tabindex="-1"
           >
 
         </div>
@@ -487,6 +503,7 @@ textarea:focus {
             placeholder="例：出町"
             autocomplete="address-line1"
             readonly
+            tabindex="-1"
           >
 
         </div>
