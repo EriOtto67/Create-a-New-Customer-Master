@@ -569,7 +569,83 @@ textarea:focus {
       </button>
       
       </form>
-      
+
+    <!-- ====================================== -->
+    <!-- お客さま確認画面 -->
+    <!-- ====================================== -->
+    
+    <div
+      id="customerConfirmScreen"
+      class="container"
+      style="display: none;"
+    >
+    
+      <div class="form-title">
+        入力内容をご確認下さい
+      </div>
+    
+      <p>
+        <strong>担当SS：</strong>
+        <span id="customerConfirmStaffSS"></span>
+      </p>
+    
+      <p>
+        <strong>フリガナ：</strong>
+        <span id="customerConfirmFurigana"></span>
+      </p>
+    
+      <p>
+        <strong>氏名：</strong>
+        <span id="customerConfirmName"></span>
+      </p>
+    
+      <p>
+        <strong>自宅番号：</strong>
+        <span id="customerConfirmHomeTel"></span>
+      </p>
+    
+      <p>
+        <strong>携帯番号：</strong>
+        <span id="customerConfirmMobileTel"></span>
+      </p>
+    
+      <p>
+        <strong>郵便番号：</strong>
+        <span id="customerConfirmZipcode"></span>
+      </p>
+    
+      <p>
+        <strong>住所：</strong>
+        <span id="customerConfirmAddress"></span>
+      </p>
+    
+      <p>
+        <strong>登録番号：</strong>
+        <span id="customerConfirmRegistrationNumber"></span>
+      </p>
+    
+      <p>
+        <strong>車名：</strong>
+        <span id="customerConfirmCarName"></span>
+      </p>
+    
+    
+      <button
+        type="button"
+        id="customerConfirmButton"
+      >
+        この内容で確定する
+      </button>
+    
+      <button
+        type="button"
+        id="customerBackButton"
+        class="staff-mode-button"
+      >
+        入力内容を修正する
+      </button>
+    
+    </div>
       
       <!-- ====================================== -->
       <!-- 入力完了画面 -->
@@ -716,6 +792,15 @@ textarea:focus {
         const form =
         document.getElementById("surveyForm");
 
+    const customerConfirmScreen =
+        document.getElementById("customerConfirmScreen");
+    
+    const customerConfirmButton =
+        document.getElementById("customerConfirmButton");
+    
+    const customerBackButton =
+        document.getElementById("customerBackButton");
+        
     const completeScreen =
         document.getElementById("completeScreen");
   
@@ -1370,13 +1455,54 @@ textarea:focus {
 
         console.log(data);
 
+        // ========================================
+        // お客さま確認画面に入力内容を表示
+        // ========================================
+        
+        document.getElementById("customerConfirmStaffSS").textContent =
+          staffSS;
+        
+        document.getElementById("customerConfirmFurigana").textContent =
+          furigana;
+        
+        document.getElementById("customerConfirmName").textContent =
+          name;
+        
+        document.getElementById("customerConfirmHomeTel").textContent =
+          homeTel || "未入力";
+        
+        document.getElementById("customerConfirmMobileTel").textContent =
+          mobileTel || "未入力";
+        
+        document.getElementById("customerConfirmZipcode").textContent =
+          zipcode;
+        
+        document.getElementById("customerConfirmAddress").textContent =
+          [
+            address1,
+            address2,
+            address3,
+            address4
+          ]
+            .filter(Boolean)
+            .join("");
+        
+        document.getElementById(
+          "customerConfirmRegistrationNumber"
+        ).textContent =
+          registrationNumber;
+        
+        document.getElementById("customerConfirmCarName").textContent =
+          carName;
+        
+        
         // 入力フォームを非表示
         form.style.display = "none";
         
-        // 完了画面を表示
-        completeScreen.style.display = "block";
+        // お客さま確認画面を表示
+        customerConfirmScreen.style.display = "block";
         
-        // ページ上部へ移動
+        // ページ上部へ
         window.scrollTo({
           top: 0,
           behavior: "smooth"
@@ -1385,6 +1511,40 @@ textarea:focus {
       }
     );
 
+        // ========================================
+        // お客さま確認画面 → 入力画面へ戻る
+        // ========================================
+        
+        customerBackButton.addEventListener("click", function () {
+        
+          customerConfirmScreen.style.display = "none";
+        
+          form.style.display = "block";
+        
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        
+        });
+
+        // ========================================
+        // お客さま入力内容確定
+        // ========================================
+        
+        customerConfirmButton.addEventListener("click", function () {
+        
+          customerConfirmScreen.style.display = "none";
+        
+          completeScreen.style.display = "block";
+        
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        
+        });
+        
         // ========================================
         // スタッフ入力完了
         // ========================================
