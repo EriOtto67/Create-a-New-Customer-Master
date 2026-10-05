@@ -15,7 +15,7 @@
     body {
       margin: 0;
       padding: 20px;
-      background-color: #f5f6f8;
+      background-color: #f5f5f5;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -24,25 +24,56 @@
         "Yu Gothic",
         Meiryo,
         sans-serif;
-      color: #333;
+      color: #444;
     }
 
-    .container {
+    /* ページ全体 */
+    .page {
       width: 100%;
-      max-width: 600px;
+      max-width: 650px;
       margin: 40px auto;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 32px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
     }
 
+    /* タイトル */
     h1 {
-      margin: 0 0 30px;
-      font-size: 24px;
+      margin: 0;
+      color: #00b84f;
+      font-size: 30px;
+      font-weight: 700;
       text-align: center;
     }
 
+    .subtitle {
+      margin: 8px 0 30px;
+      color: #555;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* 緑枠カード */
+    .container {
+      width: 100%;
+      background-color: #ffffff;
+
+      /* 写真のような上側の緑ライン */
+      border-top: 5px solid #00c853;
+
+      border-radius: 12px;
+      padding: 30px;
+
+      box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* カード内タイトル */
+    .form-title {
+      margin: 0 0 25px;
+      color: #00b84f;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    /* 入力項目 */
     .form-group {
       margin-bottom: 24px;
     }
@@ -50,137 +81,198 @@
     label {
       display: block;
       margin-bottom: 8px;
+      color: #444;
       font-size: 15px;
       font-weight: 600;
     }
 
     .required {
+      display: inline-block;
+      margin-left: 6px;
       color: #e74c3c;
-      margin-left: 5px;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
     }
 
     .optional {
-      color: #888888;
-      margin-left: 5px;
-      font-size: 13px;
+      display: inline-block;
+      margin-left: 6px;
+      color: #888;
+      font-size: 12px;
       font-weight: normal;
     }
 
+    /* 入力欄 */
     input {
       width: 100%;
       height: 48px;
       padding: 10px 12px;
+
       border: 1px solid #cccccc;
       border-radius: 6px;
+
       background-color: #ffffff;
+
+      color: #333;
       font-size: 16px;
+
       outline: none;
+
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
     }
 
     input:focus {
-      border-color: #3498db;
-      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+      border-color: #00c853;
+
+      box-shadow:
+        0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
+    /* 送信ボタン */
     button {
       width: 100%;
       height: 50px;
+
       margin-top: 10px;
+
       border: none;
       border-radius: 6px;
-      background-color: #3498db;
+
+      background-color: #00b84f;
+
       color: #ffffff;
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 700;
+
       cursor: pointer;
+
+      transition: background-color 0.2s;
     }
 
     button:hover {
-      background-color: #2786c0;
+      background-color: #009f45;
     }
 
     button:active {
-      background-color: #1f72a5;
+      background-color: #00883b;
     }
 
+    /* スマートフォン */
     @media (max-width: 600px) {
+
       body {
         padding: 12px;
       }
 
+      .page {
+        margin: 20px auto;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
       .container {
-        margin: 15px auto;
         padding: 24px 18px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
-  <div class="container">
+  <div class="page">
 
     <h1>アンケート入力</h1>
 
-    <form id="surveyForm">
+    <div class="subtitle">
+      必要事項をご入力ください
+    </div>
 
-      <!-- 氏名 -->
-      <div class="form-group">
-        <label for="name">
-          氏名
-          <span class="required">必須</span>
-        </label>
 
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="例：山田 太郎"
-          required
-        >
+    <div class="container">
+
+      <div class="form-title">
+        お客さま情報
       </div>
 
 
-      <!-- 自宅番号 -->
-      <div class="form-group">
-        <label for="homeTel">
-          自宅番号
-          <span class="optional">任意</span>
-        </label>
-
-        <input
-          type="tel"
-          id="homeTel"
-          name="homeTel"
-          inputmode="tel"
-          placeholder="例：0748-12-3456"
-        >
-      </div>
+      <form id="surveyForm">
 
 
-      <!-- 携帯番号 -->
-      <div class="form-group">
-        <label for="mobileTel">
-          携帯番号
-          <span class="optional">任意</span>
-        </label>
+        <!-- 氏名 -->
 
-        <input
-          type="tel"
-          id="mobileTel"
-          name="mobileTel"
-          inputmode="tel"
-          placeholder="例：090-1234-5678"
-        >
-      </div>
+        <div class="form-group">
+
+          <label for="name">
+            氏名
+            <span class="required">必須</span>
+          </label>
+
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="例：山田 太郎"
+            required
+          >
+
+        </div>
 
 
-      <button type="submit">
-        送信
-      </button>
+        <!-- 自宅番号 -->
 
-    </form>
+        <div class="form-group">
+
+          <label for="homeTel">
+            自宅番号
+            <span class="optional">任意</span>
+          </label>
+
+          <input
+            type="tel"
+            id="homeTel"
+            name="homeTel"
+            inputmode="tel"
+            placeholder="例：0748-12-3456"
+          >
+
+        </div>
+
+
+        <!-- 携帯番号 -->
+
+        <div class="form-group">
+
+          <label for="mobileTel">
+            携帯番号
+            <span class="optional">任意</span>
+          </label>
+
+          <input
+            type="tel"
+            id="mobileTel"
+            name="mobileTel"
+            inputmode="tel"
+            placeholder="例：090-1234-5678"
+          >
+
+        </div>
+
+
+        <!-- 送信 -->
+
+        <button type="submit">
+          送信
+        </button>
+
+
+      </form>
+
+    </div>
 
   </div>
 
@@ -198,7 +290,7 @@
 
     // ========================================
     // 電話番号入力制限
-    // 半角数字と半角ハイフンのみ入力可能
+    // 半角数字と半角ハイフンのみ
     // ========================================
 
     function restrictPhoneInput(input) {
@@ -218,6 +310,7 @@
     restrictPhoneInput(mobileTelInput);
 
 
+
     // ========================================
     // 電話番号チェック
     // ========================================
@@ -225,12 +318,12 @@
     function checkPhoneNumber(value) {
 
       // 空欄ならOK
+
       if (value === "") {
         return true;
       }
 
 
-      // 入力されている場合
       // 半角数字とハイフン以外はNG
 
       if (!/^[0-9-]+$/.test(value)) {
@@ -238,7 +331,7 @@
       }
 
 
-      // ハイフンの個数を確認
+      // ハイフンの個数
 
       const hyphenCount =
         (value.match(/-/g) || []).length;
@@ -247,11 +340,13 @@
       // ハイフンが2個ならOK
 
       return hyphenCount === 2;
+
     }
 
 
+
     // ========================================
-    // 送信
+    // 送信処理
     // ========================================
 
     form.addEventListener(
@@ -269,16 +364,18 @@
 
 
         const homeTel =
-          homeTelInput.value.trim();
+          homeTelInput
+            .value
+            .trim();
 
 
         const mobileTel =
-          mobileTelInput.value.trim();
+          mobileTelInput
+            .value
+            .trim();
 
 
-        // ----------------------------
         // 自宅番号チェック
-        // ----------------------------
 
         if (!checkPhoneNumber(homeTel)) {
 
@@ -291,12 +388,11 @@
           homeTelInput.focus();
 
           return;
+
         }
 
 
-        // ----------------------------
         // 携帯番号チェック
-        // ----------------------------
 
         if (!checkPhoneNumber(mobileTel)) {
 
@@ -309,6 +405,7 @@
           mobileTelInput.focus();
 
           return;
+
         }
 
 
