@@ -496,17 +496,40 @@
       <button type="submit">
         入力完了
       </button>
-
-    </form>
-
-  </div>
-
+      
+      </form>
+      
+      
+      <!-- ====================================== -->
+      <!-- 入力完了画面 -->
+      <!-- ====================================== -->
+      
+      <div
+        id="completeScreen"
+        class="container complete-screen"
+        style="display: none;"
+      >
+      
+        <div class="complete-title">
+          入力ありがとうございます。
+        </div>
+      
+        <div class="complete-message">
+          タブレットをスタッフまでお渡し下さい。
+        </div>
+      
+      </div>
+      
+      </div>
 
   <script>
     "use strict";
 
       const form =
         document.getElementById("surveyForm");
+
+    const completeScreen =
+        document.getElementById("completeScreen");
       
       const staffSSInput =
         document.getElementById("staffSS");
@@ -1009,9 +1032,19 @@
         console.log(data);
 
 
-        alert(
-          "入力内容に問題ありません。"
-        );
+        console.log(data);
+
+        // 入力フォームを非表示
+        form.style.display = "none";
+        
+        // 完了画面を表示
+        completeScreen.style.display = "block";
+        
+        // ページ上部へ移動
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
 
       }
     );
