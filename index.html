@@ -1,177 +1,42 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  const form = document.getElementById("surveyForm");
 
-  <title>アンケート入力</title>
+  // ハイフンがちょうど2個あるかチェック
+  function checkPhoneNumber(value) {
+    const hyphenCount = (value.match(/-/g) || []).length;
+    return hyphenCount === 2;
+  }
 
-  <style>
-    * {
-      box-sizing: border-box;
+  form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const homeTel = document.getElementById("homeTel").value.trim();
+    const mobileTel = document.getElementById("mobileTel").value.trim();
+
+    // 自宅番号チェック
+    if (!checkPhoneNumber(homeTel)) {
+      alert("自宅番号はハイフンを2つ入れて入力してください。\n例：0748-12-3456");
+      document.getElementById("homeTel").focus();
+      return;
     }
 
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f6f8;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Hiragino Kaku Gothic ProN",
-        "Yu Gothic",
-        Meiryo,
-        sans-serif;
-      color: #333;
+    // 携帯番号チェック
+    if (!checkPhoneNumber(mobileTel)) {
+      alert("携帯番号はハイフンを2つ入れて入力してください。\n例：090-1234-5678");
+      document.getElementById("mobileTel").focus();
+      return;
     }
 
-    .container {
-      width: 100%;
-      max-width: 600px;
-      margin: 40px auto;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 32px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
-    }
+    const data = {
+      name: name,
+      homeTel: homeTel,
+      mobileTel: mobileTel
+    };
 
-    h1 {
-      margin: 0 0 30px;
-      font-size: 24px;
-      text-align: center;
-    }
+    console.log(data);
 
-    .form-group {
-      margin-bottom: 24px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    input {
-      width: 100%;
-      height: 48px;
-      padding: 10px 12px;
-      border: 1px solid #cccccc;
-      border-radius: 6px;
-      background-color: #ffffff;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #3498db;
-      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
-    }
-
-    button {
-      width: 100%;
-      height: 50px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 6px;
-      background-color: #3498db;
-      color: #ffffff;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2786c0;
-    }
-
-    button:active {
-      background-color: #1f72a5;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 12px;
-      }
-
-      .container {
-        margin: 15px auto;
-        padding: 24px 18px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <h1>アンケート入力</h1>
-
-    <form id="surveyForm">
-
-      <div class="form-group">
-        <label for="name">氏名</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="例：山田 太郎"
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="homeTel">自宅番号</label>
-        <input
-          type="tel"
-          id="homeTel"
-          name="homeTel"
-          inputmode="tel"
-          placeholder="例：0748-00-0000"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="mobileTel">携帯番号</label>
-        <input
-          type="tel"
-          id="mobileTel"
-          name="mobileTel"
-          inputmode="tel"
-          placeholder="例：090-0000-0000"
-        >
-      </div>
-
-      <button type="submit">
-        送信
-      </button>
-
-    </form>
-
-  </div>
-
-
-  <script>
-    const form = document.getElementById("surveyForm");
-
-    form.addEventListener("submit", function (event) {
-
-      event.preventDefault();
-
-      const data = {
-        name: document.getElementById("name").value,
-        homeTel: document.getElementById("homeTel").value,
-        mobileTel: document.getElementById("mobileTel").value
-      };
-
-      console.log(data);
-
-      alert("入力データを取得しました。");
-
-    });
-  </script>
-
-</body>
-</html>
+    alert("入力内容に問題ありません。");
+  });
+</script>
