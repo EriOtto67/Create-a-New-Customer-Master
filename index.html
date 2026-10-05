@@ -562,25 +562,31 @@
       });
       
       // フリガナ
-      furiganaInput.addEventListener("invalid", function () {
-      
-        const value = this.value.trim();
-      
-        if (value === "") {
-      
-          this.setCustomValidity(
-            "フリガナを入力して下さい。"
+      furiganaInput.addEventListener("input", function () {
+
+      // 半角カタカナ → 全角カタカナ
+      let value =
+        this.value.normalize("NFKC");
+    
+      // 半角英数字 → 全角英数字
+      value = value.replace(
+        /[A-Za-z0-9]/g,
+        function (char) {
+          return String.fromCharCode(
+            char.charCodeAt(0) + 0xFEE0
           );
-      
-        } else {
-      
-          this.setCustomValidity(
-            "フリガナは全角カタカナまたは全角英数字で入力して下さい。"
-          );
-      
         }
-      
-      });
+      );
+    
+      // 半角スペース → 全角スペース
+      value =
+        value.replace(/ /g, "　");
+    
+      this.value = value;
+    
+      this.setCustomValidity("");
+    
+    });
       
       
       furiganaInput.addEventListener("input", function () {
