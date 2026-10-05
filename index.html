@@ -235,6 +235,25 @@
         
         </div>
 
+        <!-- フリガナ -->
+
+        <div class="form-group">
+        
+          <label for="furigana">
+            フリガナ
+            <span class="required">必須</span>
+          </label>
+        
+          <input
+            type="text"
+            id="furigana"
+            name="furigana"
+            placeholder="例：ヤマダ タロウ"
+            required
+          >
+        
+        </div>
+        
         <!-- 氏名 -->
 
         <div class="form-group">
@@ -493,6 +512,9 @@
       
       const staffSSInput =
         document.getElementById("staffSS");
+
+    const furiganaInput =
+        document.getElementById("furigana");
       
       const nameInput =
         document.getElementById("name");
@@ -541,7 +563,47 @@
         this.setCustomValidity("");
       });
       
+      // フリガナ
+      furiganaInput.addEventListener("invalid", function () {
       
+        const value = this.value.trim();
+      
+        if (value === "") {
+      
+          this.setCustomValidity(
+            "フリガナを入力して下さい。"
+          );
+      
+        } else {
+      
+          this.setCustomValidity(
+            "フリガナは全角カタカナまたは全角英数字で入力して下さい。"
+          );
+      
+        }
+      
+      });
+      
+      
+      furiganaInput.addEventListener("input", function () {
+      
+        const value = this.value.trim();
+      
+        this.setCustomValidity("");
+      
+        if (
+          value !== "" &&
+          !/^[ァ-ヶーＡ-Ｚａ-ｚ０-９　]+$/.test(value)
+        ) {
+      
+          this.setCustomValidity(
+            "フリガナは全角カタカナまたは全角英数字で入力して下さい。"
+          );
+      
+        }
+      
+      });
+    
       // 氏名
       nameInput.addEventListener("invalid", function () {
         this.setCustomValidity("氏名を入力して下さい。");
@@ -554,7 +616,7 @@
       
       // 郵便番号
       zipcodeInput.addEventListener("invalid", function () {
-        this.setCustomValidity("郵便番号を入力して下さい。");
+        this.setCustomValidity("郵便番号をハイフン付きで入力して下さい。<br>例：523-0892");
       });
       
       zipcodeInput.addEventListener("input", function () {
