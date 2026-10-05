@@ -603,8 +603,17 @@
 
     const completeScreen =
         document.getElementById("completeScreen");
+
+    const staffCodeInput =
+        document.getElementById("staffCode");
       
-      const staffSSInput =
+    const staffModeButton =
+        document.getElementById("staffModeButton");
+      
+    const staffCodeMessage =
+        document.getElementById("staffCodeMessage");
+      
+    const staffSSInput =
         document.getElementById("staffSS");
 
     const furiganaInput =
@@ -642,7 +651,64 @@
       
       const zipMessage =
         document.getElementById("zipMessage");
+
+      // ========================================
+      // スタッフコード
+      // ========================================
       
+      staffCodeInput.addEventListener("input", function () {
+      
+        // 数字以外は入力させない
+        this.value =
+          this.value.replace(/[^0-9]/g, "");
+      
+        staffCodeMessage.textContent = "";
+      
+      });
+      
+      
+      staffModeButton.addEventListener("click", function () {
+      
+        const staffCode =
+          staffCodeInput.value.trim();
+      
+      
+        // 未入力
+        if (staffCode === "") {
+      
+          staffCodeMessage.textContent =
+            "スタッフコードを入力して下さい。";
+      
+          staffCodeInput.focus();
+      
+          return;
+      
+        }
+      
+      
+        // スタッフコード不一致
+        if (staffCode !== "0000") {
+      
+          staffCodeMessage.textContent =
+            "スタッフコードが違います。";
+      
+          staffCodeInput.value = "";
+      
+          staffCodeInput.focus();
+      
+          return;
+      
+        }
+      
+      
+        // スタッフコード一致
+        staffCodeMessage.textContent = "";
+      
+        alert(
+          "スタッフコードを確認しました。"
+        );
+      
+      });
       
       // ========================================
       // 必須項目のメッセージ
