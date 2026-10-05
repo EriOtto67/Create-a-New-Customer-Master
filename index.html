@@ -54,6 +54,19 @@
       font-weight: 600;
     }
 
+    .required {
+      color: #e74c3c;
+      margin-left: 5px;
+      font-size: 13px;
+    }
+
+    .optional {
+      color: #888888;
+      margin-left: 5px;
+      font-size: 13px;
+      font-weight: normal;
+    }
+
     input {
       width: 100%;
       height: 48px;
@@ -86,6 +99,21 @@
     button:hover {
       background-color: #2786c0;
     }
+
+    button:active {
+      background-color: #1f72a5;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+
+      .container {
+        margin: 15px auto;
+        padding: 24px 18px;
+      }
+    }
   </style>
 </head>
 
@@ -97,8 +125,13 @@
 
     <form id="surveyForm">
 
+      <!-- 氏名 -->
       <div class="form-group">
-        <label for="name">氏名</label>
+        <label for="name">
+          氏名
+          <span class="required">必須</span>
+        </label>
+
         <input
           type="text"
           id="name"
@@ -108,104 +141,204 @@
         >
       </div>
 
+
+      <!-- 自宅番号 -->
       <div class="form-group">
-        <label for="homeTel">自宅番号</label>
+        <label for="homeTel">
+          自宅番号
+          <span class="optional">任意</span>
+        </label>
+
         <input
           type="tel"
           id="homeTel"
           name="homeTel"
           inputmode="tel"
           placeholder="例：0748-12-3456"
-          required
         >
       </div>
 
+
+      <!-- 携帯番号 -->
       <div class="form-group">
-        <label for="mobileTel">携帯番号</label>
+        <label for="mobileTel">
+          携帯番号
+          <span class="optional">任意</span>
+        </label>
+
         <input
           type="tel"
           id="mobileTel"
           name="mobileTel"
           inputmode="tel"
           placeholder="例：090-1234-5678"
-          required
         >
       </div>
 
-      <button type="submit">送信</button>
+
+      <button type="submit">
+        送信
+      </button>
 
     </form>
 
   </div>
 
-  <script>
-    const form = document.getElementById("surveyForm");
-    const homeTelInput = document.getElementById("homeTel");
-    const mobileTelInput = document.getElementById("mobileTel");
 
-    // 電話番号は半角数字と半角ハイフンのみ許可
+  <script>
+
+    const form = document.getElementById("surveyForm");
+
+    const homeTelInput =
+      document.getElementById("homeTel");
+
+    const mobileTelInput =
+      document.getElementById("mobileTel");
+
+
+    // ========================================
+    // 電話番号入力制限
+    // 半角数字と半角ハイフンのみ入力可能
+    // ========================================
+
     function restrictPhoneInput(input) {
+
       input.addEventListener("input", function () {
-        this.value = this.value.replace(/[^0-9-]/g, "");
+
+        this.value =
+          this.value.replace(/[^0-9-]/g, "");
+
       });
+
     }
 
+
     restrictPhoneInput(homeTelInput);
+
     restrictPhoneInput(mobileTelInput);
 
+
+    // ========================================
     // 電話番号チェック
+    // ========================================
+
     function checkPhoneNumber(value) {
 
-      // 半角数字と半角ハイフンのみ
+      // 空欄ならOK
+      if (value === "") {
+        return true;
+      }
+
+
+      // 入力されている場合
+      // 半角数字とハイフン以外はNG
+
       if (!/^[0-9-]+$/.test(value)) {
         return false;
       }
 
-      // ハイフンがちょうど2個
-      const hyphenCount = (value.match(/-/g) || []).length;
+
+      // ハイフンの個数を確認
+
+      const hyphenCount =
+        (value.match(/-/g) || []).length;
+
+
+      // ハイフンが2個ならOK
 
       return hyphenCount === 2;
     }
 
-    form.addEventListener("submit", function (event) {
 
-      event.preventDefault();
+    // ========================================
+    // 送信
+    // ========================================
 
-      const name = document.getElementById("name").value.trim();
-      const homeTel = homeTelInput.value.trim();
-      const mobileTel = mobileTelInput.value.trim();
+    form.addEventListener(
+      "submit",
+      function (event) {
 
-      if (!checkPhoneNumber(homeTel)) {
+        event.preventDefault();
+
+
+        const name =
+          document
+            .getElementById("name")
+            .value
+            .trim();
+
+
+        const homeTel =
+          homeTelInput.value.trim();
+
+
+        const mobileTel =
+          mobileTelInput.value.trim();
+
+
+        // ----------------------------
+        // 自宅番号チェック
+        // ----------------------------
+
+        if (!checkPhoneNumber(homeTel)) {
+
+          alert(
+            "自宅番号を正しく入力してください。\n\n" +
+            "入力する場合はハイフンを2つ入れてください。\n" +
+            "例：0748-12-3456"
+          );
+
+          homeTelInput.focus();
+
+          return;
+        }
+
+
+        // ----------------------------
+        // 携帯番号チェック
+        // ----------------------------
+
+        if (!checkPhoneNumber(mobileTel)) {
+
+          alert(
+            "携帯番号を正しく入力してください。\n\n" +
+            "入力する場合はハイフンを2つ入れてください。\n" +
+            "例：090-1234-5678"
+          );
+
+          mobileTelInput.focus();
+
+          return;
+        }
+
+
+        // ========================================
+        // 送信用データ
+        // ========================================
+
+        const data = {
+
+          name: name,
+
+          homeTel: homeTel,
+
+          mobileTel: mobileTel
+
+        };
+
+
+        console.log(data);
+
+
         alert(
-          "自宅番号を正しく入力してください。\n" +
-          "例：0748-12-3456"
+          "入力内容に問題ありません。"
         );
 
-        homeTelInput.focus();
-        return;
       }
+    );
 
-      if (!checkPhoneNumber(mobileTel)) {
-        alert(
-          "携帯番号を正しく入力してください。\n" +
-          "例：090-1234-5678"
-        );
-
-        mobileTelInput.focus();
-        return;
-      }
-
-      const data = {
-        name: name,
-        homeTel: homeTel,
-        mobileTel: mobileTel
-      };
-
-      console.log(data);
-
-      alert("入力内容に問題ありません。");
-    });
   </script>
 
 </body>
+
 </html>
