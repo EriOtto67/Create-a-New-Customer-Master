@@ -809,7 +809,24 @@ textarea:focus {
             ></textarea>
       
           </div>
-      
+
+          <!-- 車検満了日 -->
+
+          <div class="form-group">
+          
+            <label for="inspectionExpiryDate">
+              車検満了日
+              <span class="optional">任意</span>
+            </label>
+          
+            <input
+              type="date"
+              id="inspectionExpiryDate"
+              name="inspectionExpiryDate"
+            >
+          
+          </div>
+          
         </div>
       
         <button
@@ -847,6 +864,9 @@ textarea:focus {
   
     const telAppointmentMemoInput =
         document.getElementById("telAppointmentMemo");
+
+    const inspectionExpiryDateInput =
+        document.getElementById("inspectionExpiryDate");
   
     const staffCompleteButton =
         document.getElementById("staffCompleteButton");
@@ -1602,37 +1622,40 @@ textarea:focus {
             telAppointmentMemoInput.value.trim();
         
           const finalData = {
+
+          staffSS: staffSSInput.value.trim(),
         
-            staffSS: staffSSInput.value.trim(),
+          furigana: furiganaInput.value.trim(),
         
-            furigana: furiganaInput.value.trim(),
+          name: nameInput.value.trim(),
         
-            name: nameInput.value.trim(),
+          homeTel: homeTelInput.value.trim(),
         
-            homeTel: homeTelInput.value.trim(),
+          mobileTel: mobileTelInput.value.trim(),
         
-            mobileTel: mobileTelInput.value.trim(),
+          zipcode: zipcodeInput.value.trim(),
         
-            zipcode: zipcodeInput.value.trim(),
+          address1: address1Input.value.trim(),
         
-            address1: address1Input.value.trim(),
+          address2: address2Input.value.trim(),
         
-            address2: address2Input.value.trim(),
+          address3: address3Input.value.trim(),
         
-            address3: address3Input.value.trim(),
+          address4: address4Input.value.trim(),
         
-            address4: address4Input.value.trim(),
+          registrationNumber:
+            registrationNumberInput.value.trim(),
         
-            registrationNumber:
-              registrationNumberInput.value.trim(),
+          carName:
+            carNameInput.value.trim(),
         
-            carName:
-              carNameInput.value.trim(),
+          telAppointmentMemo:
+            telAppointmentMemo,
         
-            telAppointmentMemo:
-              telAppointmentMemo
+          inspectionExpiryDate:
+            inspectionExpiryDateInput.value
         
-          };
+        };
         
           console.log(finalData);
 
