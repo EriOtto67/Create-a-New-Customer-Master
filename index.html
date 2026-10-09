@@ -954,6 +954,15 @@
     const staffSSInput =
         document.getElementById("staffSS");
 
+        const staffSSInput =
+  document.getElementById("staffSS");
+
+// kintone登録用の担当SS
+let staffSSValue = "";
+
+const furiganaInput =
+  document.getElementById("furigana");
+
     const furiganaInput =
         document.getElementById("furigana");
       
@@ -1001,6 +1010,9 @@ authPasswordInput.addEventListener("input", function () {
 
 });
 
+        const authPowerAutomateUrl =
+  "https://default1a2cf14ad33440fe9e6c8e9728b84d.0d.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/13/workflows/898c8c4d0d5e4fe0b6d7f0b0d493f00d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=jP98jx6YZRDDPcueo24UZ-4igkYCihSeFHiKQVi0xzU";
+
         // ========================================
 // 入口パスワード確認
 // ========================================
@@ -1026,8 +1038,83 @@ authButton.addEventListener("click", function () {
   // 次の工程でここへ追加する
   // ========================================
 
-  console.log("認証要求");
+  authButton.disabled = true;
+authButton.textContent = "確認中です...";
+authMessage.textContent = "";
 
+fetch(authPowerAutomateUrl, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    password: password
+  })
+})
+  .then(function (response) {
+
+    if (!response.ok) {
+      throw new Error(
+        "認証エラー：" + response.status
+      );
+    }
+
+    return response.json();
+
+  })
+  .then(function (result) {
+
+    if (result.success !== true) {
+
+      authMessage.textContent =
+        "パスワードが違います。";
+
+      authPasswordInput.value = "";
+      authPasswordInput.focus();
+
+      return;
+
+    }
+
+    // 認証したSSを保持
+    // kintone登録用
+staffSSValue =
+  result.staffSS;
+
+// 画面表示用
+staffSSInput.value =
+  result.staffSSDisplay;
+
+    // 入口認証画面を非表示
+    authScreen.style.display = "none";
+
+    // カルテ本体を表示
+    mainPage.style.display = "block";
+
+    // パスワードを消去
+    authPasswordInput.value = "";
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  })
+  .catch(function (error) {
+
+    console.error(error);
+
+    authMessage.textContent =
+      "認証処理に失敗しました。もう一度お試し下さい。";
+
+  })
+  .finally(function () {
+
+    authButton.disabled = false;
+    authButton.textContent = "確認する";
+
+  });
+  
 });
 
         // ========================================
@@ -1498,9 +1585,7 @@ staffCodeInput.addEventListener("input", function () {
             .trim();
 
         const staffSS =
-          staffSSInput
-            .value
-            .trim();
+  staffSSValue;
         
         const furigana =
           furiganaInput
@@ -1652,7 +1737,7 @@ staffCodeInput.addEventListener("input", function () {
         // ========================================
         
         document.getElementById("customerConfirmStaffSS").textContent =
-          staffSS;
+  staffSSInput.value.trim();
         
         document.getElementById("customerConfirmFurigana").textContent =
           furigana;
@@ -1748,9 +1833,9 @@ staffCodeInput.addEventListener("input", function () {
         
           const finalData = {
 
-          staffSS: staffSSInput.value.trim(),
-        
-          furigana: furiganaInput.value.trim(),
+  staffSS: staffSSValue,
+
+  furigana: furiganaInput.value.trim(),
         
           name: nameInput.value.trim(),
         
