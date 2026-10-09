@@ -615,24 +615,54 @@
           </div>
         
         
-          <!-- 車名 -->
-        
-          <div class="form-group">
-        
-            <label for="carName">
-              車名
-              <span class="required">必須</span>
-            </label>
-        
-            <input
-              type="text"
-              id="carName"
-              name="carName"
-              placeholder="例：タント"
-              required
-            >
-        
-          </div>
+          <!-- メーカー -->
+
+<div class="form-group">
+
+  <label for="carMaker">
+    メーカー
+    <span class="required">必須</span>
+  </label>
+
+  <select
+    id="carMaker"
+    name="carMaker"
+    required
+  >
+    <option value="">選択して下さい</option>
+    <option value="トヨタ">トヨタ</option>
+    <option value="レクサス">レクサス</option>
+    <option value="日産">日産</option>
+    <option value="ホンダ">ホンダ</option>
+    <option value="マツダ">マツダ</option>
+    <option value="スバル">スバル</option>
+    <option value="スズキ">スズキ</option>
+    <option value="ダイハツ">ダイハツ</option>
+    <option value="三菱">三菱</option>
+  </select>
+
+</div>
+
+
+<!-- 車名 -->
+
+<div class="form-group">
+
+  <label for="carName">
+    車名
+    <span class="required">必須</span>
+  </label>
+
+  <select
+    id="carName"
+    name="carName"
+    required
+    disabled
+  >
+    <option value="">先にメーカーを選択して下さい</option>
+  </select>
+
+</div>
         
         </div>
       
@@ -697,6 +727,11 @@
         <strong>登録番号：</strong>
         <span id="customerConfirmRegistrationNumber"></span>
       </p>
+
+      <p>
+  <strong>メーカー：</strong>
+  <span id="customerConfirmCarMaker"></span>
+</p>
     
       <p>
         <strong>車名：</strong>
@@ -815,8 +850,10 @@
             <p><strong>住所：</strong><span id="confirmAddress"></span></p>
           
             <p><strong>登録番号：</strong><span id="confirmRegistrationNumber"></span></p>
-          
-            <p><strong>車名：</strong><span id="confirmCarName"></span></p>
+
+<p><strong>メーカー：</strong><span id="confirmCarMaker"></span></p>
+
+<p><strong>車名：</strong><span id="confirmCarName"></span></p>
 
             <button
             type="button"
@@ -973,13 +1010,197 @@ const nameInput =
         document.getElementById("address4");
             
       const registrationNumberInput =
-        document.getElementById("registrationNumber");
-      
-      const carNameInput =
-        document.getElementById("carName");
+  document.getElementById("registrationNumber");
+
+const carMakerInput =
+  document.getElementById("carMaker");
+
+const carNameInput =
+  document.getElementById("carName");
       
       const zipMessage =
   document.getElementById("zipMessage");
+
+        // ========================================
+// メーカー別車名一覧
+// ========================================
+
+const carModels = {
+
+  トヨタ: [
+    "アクア",
+    "アルファード",
+    "ヴェルファイア",
+    "ヴォクシー",
+    "カローラ",
+    "クラウン",
+    "シエンタ",
+    "ノア",
+    "ハイエース",
+    "ハリアー",
+    "プリウス",
+    "ヤリス",
+    "ヤリスクロス",
+    "ライズ",
+    "ランドクルーザー",
+    "ルーミー"
+  ],
+
+  レクサス: [
+    "CT",
+    "ES",
+    "GS",
+    "IS",
+    "LBX",
+    "LM",
+    "LS",
+    "LX",
+    "NX",
+    "RC",
+    "RX",
+    "UX"
+  ],
+
+  日産: [
+    "エクストレイル",
+    "オーラ",
+    "キックス",
+    "サクラ",
+    "セレナ",
+    "デイズ",
+    "ノート",
+    "リーフ",
+    "ルークス"
+  ],
+
+  ホンダ: [
+    "N-BOX",
+    "N-ONE",
+    "N-WGN",
+    "ヴェゼル",
+    "オデッセイ",
+    "シビック",
+    "ステップワゴン",
+    "フィット",
+    "フリード"
+  ],
+
+  マツダ: [
+    "CX-3",
+    "CX-30",
+    "CX-5",
+    "CX-60",
+    "CX-8",
+    "MAZDA2",
+    "MAZDA3",
+    "MAZDA6",
+    "ロードスター"
+  ],
+
+  スバル: [
+    "BRZ",
+    "XV",
+    "インプレッサ",
+    "クロストレック",
+    "フォレスター",
+    "レヴォーグ",
+    "レガシィ"
+  ],
+
+  スズキ: [
+    "アルト",
+    "エブリイ",
+    "クロスビー",
+    "ジムニー",
+    "スペーシア",
+    "スイフト",
+    "ソリオ",
+    "ハスラー",
+    "ワゴンR"
+  ],
+
+  ダイハツ: [
+    "アトレー",
+    "キャスト",
+    "コペン",
+    "タフト",
+    "タント",
+    "トール",
+    "ハイゼット",
+    "ミラ",
+    "ムーヴ",
+    "ロッキー"
+  ],
+
+  三菱: [
+    "eKクロス",
+    "eKスペース",
+    "eKワゴン",
+    "アウトランダー",
+    "エクリプスクロス",
+    "デリカD:2",
+    "デリカD:5",
+    "デリカミニ"
+  ]
+
+};
+
+        // ========================================
+// メーカー選択時に車名を切り替える
+// ========================================
+
+carMakerInput.addEventListener("change", function () {
+
+  const selectedMaker =
+    this.value;
+
+  // 車名プルダウンを初期化
+  carNameInput.innerHTML = "";
+
+  // メーカー未選択
+  if (selectedMaker === "") {
+
+    const option =
+      document.createElement("option");
+
+    option.value = "";
+    option.textContent =
+      "先にメーカーを選択して下さい";
+
+    carNameInput.appendChild(option);
+    carNameInput.disabled = true;
+
+    return;
+
+  }
+
+  // 最初の選択肢
+  const defaultOption =
+    document.createElement("option");
+
+  defaultOption.value = "";
+  defaultOption.textContent =
+    "車名を選択して下さい";
+
+  carNameInput.appendChild(defaultOption);
+
+  // 選択したメーカーの車名を追加
+  carModels[selectedMaker].forEach(function (carName) {
+
+    const option =
+      document.createElement("option");
+
+    option.value = carName;
+    option.textContent = carName;
+
+    carNameInput.appendChild(option);
+
+  });
+
+  // 車名プルダウンを有効化
+  carNameInput.disabled = false;
+
+});
 
 
 // ========================================
@@ -1201,10 +1422,13 @@ staffCodeInput.addEventListener("input", function () {
             .join("");
         
         document.getElementById("confirmRegistrationNumber").textContent =
-          registrationNumberInput.value.trim();
-        
-        document.getElementById("confirmCarName").textContent =
-          carNameInput.value.trim();
+  registrationNumberInput.value.trim();
+
+document.getElementById("confirmCarMaker").textContent =
+  carMakerInput.value.trim();
+
+document.getElementById("confirmCarName").textContent =
+  carNameInput.value.trim();
         
         
         // 完了画面を非表示
@@ -1320,7 +1544,15 @@ staffCodeInput.addEventListener("input", function () {
       registrationNumberInput.addEventListener("input", function () {
         this.setCustomValidity("");
       });
-      
+
+        // メーカー
+carMakerInput.addEventListener("invalid", function () {
+  this.setCustomValidity("メーカーを選択して下さい。");
+});
+
+carMakerInput.addEventListener("change", function () {
+  this.setCustomValidity("");
+});   
       
       // 車名
       carNameInput.addEventListener("invalid", function () {
@@ -1607,14 +1839,19 @@ staffCodeInput.addEventListener("input", function () {
             .trim();
 
         const registrationNumber =
-          registrationNumberInput
-            .value
-            .trim();
-        
-        const carName =
-          carNameInput
-            .value
-            .trim();
+  registrationNumberInput
+    .value
+    .trim();
+
+const carMaker =
+  carMakerInput
+    .value
+    .trim();
+
+const carName =
+  carNameInput
+    .value
+    .trim();
 
 
         // ========================================
@@ -1698,8 +1935,10 @@ staffCodeInput.addEventListener("input", function () {
             address4: address4,
                     
             registrationNumber: registrationNumber,
-          
-            carName: carName
+
+carMaker: carMaker,
+
+carName: carName
           
           };
 
@@ -1741,6 +1980,9 @@ staffCodeInput.addEventListener("input", function () {
           "customerConfirmRegistrationNumber"
         ).textContent =
           registrationNumber;
+
+        document.getElementById("customerConfirmCarMaker").textContent =
+  carMakerInput.value.trim();
         
         document.getElementById("customerConfirmCarName").textContent =
           carName;
@@ -1827,10 +2069,13 @@ staffCodeInput.addEventListener("input", function () {
           address4: address4Input.value.trim(),
         
           registrationNumber:
-            registrationNumberInput.value.trim(),
-        
-          carName:
-            carNameInput.value.trim(),
+  registrationNumberInput.value.trim(),
+
+carMaker:
+  carMakerInput.value.trim(),
+
+carName:
+  carNameInput.value.trim(),
         
           telAppointmentMemo:
             telAppointmentMemo,
