@@ -678,6 +678,7 @@
     <span class="required">必須</span>
   </label>
 
+  <!-- 通常メーカー用 -->
   <select
     id="carName"
     name="carName"
@@ -686,6 +687,14 @@
   >
     <option value="">先にメーカーを選択して下さい</option>
   </select>
+
+  <!-- 「その他」選択時用 -->
+  <input
+    type="text"
+    id="carNameOther"
+    placeholder="車名を入力して下さい"
+    style="display: none;"
+  >
 
 </div>
         
@@ -1042,6 +1051,9 @@ const carMakerInput =
 
 const carNameInput =
   document.getElementById("carName");
+
+        const carNameOtherInput =
+  document.getElementById("carNameOther");
       
       const zipMessage =
   document.getElementById("zipMessage");
@@ -1274,7 +1286,7 @@ const carModels = {
 
 };
 
-        // ========================================
+// ========================================
 // メーカー選択時に車名を切り替える
 // ========================================
 
@@ -1283,54 +1295,127 @@ carMakerInput.addEventListener("change", function () {
   const selectedMaker =
     this.value;
 
-  // 車名プルダウンを初期化
+  // ========================================
+  // 車名欄を初期化
+  // ========================================
+
   carNameInput.innerHTML = "";
 
+  carNameOtherInput.value = "";
+  carNameOtherInput.style.display = "none";
+  carNameOtherInput.required = false;
+
+
+  // ========================================
   // メーカー未選択
+  // ========================================
+
   if (selectedMaker === "") {
 
     const option =
       document.createElement("option");
 
     option.value = "";
+
     option.textContent =
       "先にメーカーを選択して下さい";
 
     carNameInput.appendChild(option);
+
+    carNameInput.style.display = "block";
     carNameInput.disabled = true;
+    carNameInput.required = true;
 
     return;
 
   }
 
+
+  // ========================================
+  // 「その他」の場合
+  // ========================================
+
+  if (selectedMaker === "その他") {
+
+    // 車名プルダウンを非表示
+    carNameInput.style.display = "none";
+    carNameInput.disabled = true;
+    carNameInput.required = false;
+
+    // 車名直接入力欄を表示
+    carNameOtherInput.style.display = "block";
+    carNameOtherInput.required = true;
+
+    carNameOtherInput.focus();
+
+    return;
+
+  }
+
+
+  // ========================================
+  // 通常メーカー
+  // ========================================
+
+  carNameInput.style.display = "block";
+  carNameInput.disabled = false;
+  carNameInput.required = true;
+
+
+  // ========================================
   // 最初の選択肢
+  // ========================================
+
   const defaultOption =
     document.createElement("option");
 
   defaultOption.value = "";
+
   defaultOption.textContent =
     "車名を選択して下さい";
 
   carNameInput.appendChild(defaultOption);
 
+
+  // ========================================
   // 選択したメーカーの車名を追加
-  carModels[selectedMaker].forEach(function (carName) {
+  // ========================================
 
-    const option =
-      document.createElement("option");
+  if (carModels[selectedMaker]) {
 
-    option.value = carName;
-    option.textContent = carName;
+    carModels[selectedMaker].forEach(function (carName) {
 
-    carNameInput.appendChild(option);
+      const option =
+        document.createElement("option");
 
-  });
+      option.value = carName;
+      option.textContent = carName;
 
-  // 車名プルダウンを有効化
-  carNameInput.disabled = false;
+      carNameInput.appendChild(option);
+
+    });
+
+  }
 
 });
 
+
+// ========================================
+// 車名を取得
+// 「その他」の場合は直接入力した車名を取得
+// ========================================
+
+function getCarName() {
+
+  if (carMakerInput.value === "その他") {
+
+    return carNameOtherInput.value.trim();
+
+  }
+
+  return carNameInput.value.trim();
+
+}
 
 // ========================================
 // 入口パスワード入力
@@ -1557,7 +1642,7 @@ document.getElementById("confirmCarMaker").textContent =
   carMakerInput.value.trim();
 
 document.getElementById("confirmCarName").textContent =
-  carNameInput.value.trim();
+  getCarName();
         
         
         // 完了画面を非表示
@@ -1683,14 +1768,39 @@ carMakerInput.addEventListener("change", function () {
   this.setCustomValidity("");
 });   
       
-      // 車名
-      carNameInput.addEventListener("invalid", function () {
-        this.setCustomValidity("車名を入力して下さい。");
-      });
-      
-      carNameInput.addEventListener("input", function () {
-        this.setCustomValidity("");
-      });
+      // ========================================
+// 車名の必須チェック
+// ========================================
+
+// 通常メーカーの車名プルダウン
+carNameInput.addEventListener("invalid", function () {
+
+  this.setCustomValidity(
+    "車名を選択して下さい。"
+  );
+
+});
+
+carNameInput.addEventListener("change", function () {
+
+  this.setCustomValidity("");
+
+});
+
+// 「その他」の車名直接入力
+carNameOtherInput.addEventListener("invalid", function () {
+
+  this.setCustomValidity(
+    "車名を入力して下さい。"
+  );
+
+});
+
+carNameOtherInput.addEventListener("input", function () {
+
+  this.setCustomValidity("");
+
+});
 
     // ========================================
     // 電話番号入力制限
@@ -1978,9 +2088,7 @@ const carMaker =
     .trim();
 
 const carName =
-  carNameInput
-    .value
-    .trim();
+  getCarName();
 
 
         // ========================================
@@ -2204,7 +2312,7 @@ carMaker:
   carMakerInput.value.trim(),
 
 carName:
-  carNameInput.value.trim(),
+  getCarName(),
         
           telAppointmentMemo:
             telAppointmentMemo,
