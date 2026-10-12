@@ -917,6 +917,24 @@
                   
           </div>
 
+          <!-- 顧客メモ -->
+
+          <div class="form-group">
+          
+            <label for="customerMemo">
+              顧客メモ
+              <span class="optional">任意</span>
+            </label>
+          
+            <input
+              type="text"
+              id="customerMemo"
+              name="customerMemo"
+              placeholder="顧客メモを入力して下さい。"
+            >
+          
+          </div>
+
           <!-- 車検満了日 -->
 
           <div class="form-group">
@@ -990,10 +1008,13 @@
         document.getElementById("staffScreen");
   
     const telAppointmentMemoInput =
-        document.getElementById("telAppointmentMemo");
+    document.getElementById("telAppointmentMemo");
 
-    const inspectionExpiryDateInput =
-        document.getElementById("inspectionExpiryDate");
+const customerMemoInput =
+    document.getElementById("customerMemo");
+
+const inspectionExpiryDateInput =
+    document.getElementById("inspectionExpiryDate");
   
     const staffCompleteButton =
         document.getElementById("staffCompleteButton");
@@ -2279,11 +2300,14 @@ carName: carName
         // ========================================
         
         staffCompleteButton.addEventListener("click", function () {
-        
-          const telAppointmentMemo =
-            telAppointmentMemoInput.value.trim();
-        
-          const finalData = {
+
+  const telAppointmentMemo =
+    telAppointmentMemoInput.value.trim();
+
+  const customerMemo =
+    customerMemoInput.value.trim();
+
+  const finalData = {
 
   staffSS: staffSSValue,
 
@@ -2315,10 +2339,13 @@ carName:
   getCarName(),
         
           telAppointmentMemo:
-            telAppointmentMemo,
-        
-          inspectionExpiryDate:
-            inspectionExpiryDateInput.value
+  telAppointmentMemo,
+
+customerMemo:
+  customerMemo,
+
+inspectionExpiryDate:
+  inspectionExpiryDateInput.value
         
         };
         
