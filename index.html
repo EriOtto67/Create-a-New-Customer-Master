@@ -341,11 +341,13 @@ input[type="date"] {
         </label>
 
         <input
-          type="password"
-          id="authPassword"
-          placeholder="パスワードを入力して下さい"
-          autocomplete="off"
-        >
+  type="password"
+  id="authPassword"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  placeholder="パスワードを入力して下さい"
+  autocomplete="off"
+>
 
         <div
           id="authMessage"
@@ -1532,10 +1534,16 @@ function getCarName() {
 
 // ========================================
 // 入口パスワード入力
+// 半角数字のみ
 // ========================================
 
 authPasswordInput.addEventListener("input", function () {
 
+  // 数字以外を削除
+  this.value =
+    this.value.replace(/[^0-9]/g, "");
+
+  // エラーメッセージを消去
   authMessage.textContent = "";
 
 });
