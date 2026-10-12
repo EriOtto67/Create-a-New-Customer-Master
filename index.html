@@ -123,6 +123,45 @@
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
+    /* 日付入力欄のスマホはみ出し防止 */
+input[type="date"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* 日付入力の案内表示 */
+.date-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.date-input-wrap input[type="date"] {
+  color: transparent;
+}
+
+.date-input-wrap .date-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #888888;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.date-input-wrap.has-value input[type="date"] {
+  color: #333333;
+}
+
+.date-input-wrap.has-value .date-placeholder {
+  display: none;
+}
+
+
     /* 郵便番号から自動入力される住所1・2・3 */
     input[readonly] {
       background-color: #eeeeee;
@@ -937,20 +976,28 @@
 
           <!-- 車検満了日 -->
 
-          <div class="form-group">
-          
-            <label for="inspectionExpiryDate">
-              車検満了日
-              <span class="optional">カレンダーから選択して下さい。</span>
-            </label>
-            
-            <input
-              type="date"
-              id="inspectionExpiryDate"
-              name="inspectionExpiryDate"
-            >
-          
-          </div>
+<div class="form-group">
+
+  <label for="inspectionExpiryDate">
+    車検満了日
+    <span class="optional">カレンダーから選択して下さい。</span>
+  </label>
+
+  <div class="date-input-wrap">
+
+    <input
+      type="date"
+      id="inspectionExpiryDate"
+      name="inspectionExpiryDate"
+    >
+
+    <span class="date-placeholder">
+      カレンダーから選択
+    </span>
+
+  </div>
+
+</div>
           
         </div>
       
@@ -1079,7 +1126,52 @@ const carNameInput =
       const zipMessage =
   document.getElementById("zipMessage");
 
-        // ========================================
+
+// ========================================
+// 車検満了日の日付案内表示
+// ========================================
+
+const inspectionExpiryDateWrap =
+  inspectionExpiryDateInput.closest(
+    ".date-input-wrap"
+  );
+
+
+function updateInspectionExpiryDatePlaceholder() {
+
+  if (inspectionExpiryDateInput.value) {
+
+    inspectionExpiryDateWrap.classList.add(
+      "has-value"
+    );
+
+  } else {
+
+    inspectionExpiryDateWrap.classList.remove(
+      "has-value"
+    );
+
+  }
+
+}
+
+
+inspectionExpiryDateInput.addEventListener(
+  "change",
+  updateInspectionExpiryDatePlaceholder
+);
+
+
+inspectionExpiryDateInput.addEventListener(
+  "input",
+  updateInspectionExpiryDatePlaceholder
+);
+
+
+updateInspectionExpiryDatePlaceholder();
+
+
+// ========================================
 // メーカー別車名一覧
 // ========================================
 
