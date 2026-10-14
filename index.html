@@ -967,14 +967,12 @@ input[type="date"] {
           </label>
       
           <input
-            type="password"
-            id="staffCode"
-            name="staffCode"
-            inputmode="numeric"
-            maxlength="4"
-            placeholder="スタッフコードを入力"
-            autocomplete="off"
-          >
+  type="password"
+  id="staffCode"
+  name="staffCode"
+  placeholder="スタッフコードを入力"
+  autocomplete="off"
+>
       
           <div
             id="staffCodeMessage"
@@ -2006,14 +2004,10 @@ authPasswordInput.addEventListener("keydown", function (event) {
 // ========================================
 
 staffCodeInput.addEventListener("input", function () {
-      
-        // 数字以外は入力させない
-        this.value =
-          this.value.replace(/[^0-9]/g, "");
-      
-        staffCodeMessage.textContent = "";
-      
-      });
+
+  staffCodeMessage.textContent = "";
+
+});
 
         // ========================================
 // Enterキーでスタッフモードへ
@@ -2052,18 +2046,18 @@ staffCodeInput.addEventListener("keydown", function (event) {
       
       
         // スタッフコード不一致
-        if (staffCode !== "0000") {
-      
-          staffCodeMessage.textContent =
-            "スタッフコードが違います。";
-      
-          staffCodeInput.value = "";
-      
-          staffCodeInput.focus();
-      
-          return;
-      
-        }
+if (staffCode !== "ogakame1234") {
+
+  staffCodeMessage.textContent =
+    "スタッフコードが違います。";
+
+  staffCodeInput.value = "";
+
+  staffCodeInput.focus();
+
+  return;
+
+}
       
       
         // スタッフコード一致
