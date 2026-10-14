@@ -204,6 +204,72 @@ input[type="date"] {
       color: #d93025;
     }
 
+    /* ====================================== */
+/* 個人情報の取り扱いへの同意 */
+/* ====================================== */
+
+.privacy-consent {
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 22px;
+  background-color: #ffffff;
+  border-top: 5px solid #00c853;
+  border-radius: 12px;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.privacy-consent-title {
+  margin: 0 0 14px;
+  color: #00b84f;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.privacy-consent-text {
+  margin: 0 0 18px;
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.privacy-consent-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 14px;
+  background-color: #f0f8f3;
+  border: 1px solid #cfe8d7;
+  border-radius: 6px;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.privacy-consent-check input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  accent-color: #00b84f;
+  cursor: pointer;
+}
+
+.privacy-consent-check span {
+  flex: 1;
+}
+
+.privacy-consent-message {
+  min-height: 20px;
+  margin-top: 8px;
+  color: #d93025;
+  font-size: 13px;
+}
+
     /* 入力完了ボタン */
     button {
       width: 100%;
@@ -721,6 +787,61 @@ input[type="date"] {
         
         </div>
       
+            <!-- ====================================== -->
+      <!-- 個人情報の取り扱いへの同意 -->
+      <!-- ====================================== -->
+
+      <div class="privacy-consent">
+
+        <div class="privacy-consent-title">
+          個人情報の取り扱いについて
+        </div>
+
+        <div class="privacy-consent-text">
+
+          ご入力いただいた個人情報は、車検・点検・整備など、
+          当社が提供するカーサービスのご案内・ご連絡および
+          サービス提供のために利用いたします。
+
+          <br><br>
+
+          ご入力いただいた個人情報は適切に管理し、
+          上記の目的以外には利用いたしません。
+
+          <br><br>
+
+          内容をご確認のうえ、同意いただける場合は
+          チェックしてください。
+
+        </div>
+
+        <label
+          for="privacyConsent"
+          class="privacy-consent-check"
+        >
+
+          <input
+            type="checkbox"
+            id="privacyConsent"
+            name="privacyConsent"
+            required
+          >
+
+          <span>
+            個人情報の取り扱いについて確認し、同意します
+          </span>
+
+        </label>
+
+        <div
+          id="privacyConsentMessage"
+          class="privacy-consent-message"
+          aria-live="polite"
+        ></div>
+
+      </div>
+
+
       <!-- 入力完了 -->
 
       <button type="submit">
@@ -1102,8 +1223,14 @@ const carNameInput =
 
         const carNameOtherInput =
   document.getElementById("carNameOther");
-      
-      const zipMessage =
+
+const privacyConsentInput =
+  document.getElementById("privacyConsent");
+
+const privacyConsentMessage =
+  document.getElementById("privacyConsentMessage");
+
+const zipMessage =
   document.getElementById("zipMessage");
 
 
@@ -2129,6 +2256,40 @@ carNameOtherInput.addEventListener("input", function () {
 
 });
 
+        // ========================================
+// 個人情報の取り扱いへの同意
+// ========================================
+
+privacyConsentInput.addEventListener(
+  "invalid",
+  function () {
+
+    if (!this.checked) {
+
+      this.setCustomValidity(
+        "個人情報の取り扱いをご確認のうえ、同意して下さい。"
+      );
+
+      privacyConsentMessage.textContent =
+        "個人情報の取り扱いへの同意が必要です。";
+
+    }
+
+  }
+);
+
+
+privacyConsentInput.addEventListener(
+  "change",
+  function () {
+
+    this.setCustomValidity("");
+
+    privacyConsentMessage.textContent = "";
+
+  }
+);
+
     // ========================================
     // 電話番号入力制限
     // 半角数字と半角ハイフンのみ
@@ -2414,8 +2575,26 @@ const carMaker =
     .value
     .trim();
 
-const carName =
-  getCarName();
+        const carName =
+          getCarName();
+
+
+        // ========================================
+        // 個人情報の取り扱いへの同意チェック
+        // ========================================
+
+        if (!privacyConsentInput.checked) {
+
+          privacyConsentMessage.textContent =
+            "個人情報の取り扱いへの同意が必要です。";
+
+          privacyConsentInput.focus();
+
+          privacyConsentInput.reportValidity();
+
+          return;
+
+        }
 
 
         // ========================================
@@ -2615,46 +2794,61 @@ carName: carName
 
   const finalData = {
 
-  staffSS: staffSSValue,
+    staffSS:
+      staffSSValue,
 
-  furigana: furiganaInput.value.trim(),
-        
-          name: nameInput.value.trim(),
-        
-          homeTel: homeTelInput.value.trim(),
-        
-          mobileTel: mobileTelInput.value.trim(),
-        
-          zipcode: zipcodeInput.value.trim(),
-        
-          address1: address1Input.value.trim(),
-        
-          address2: address2Input.value.trim(),
-        
-          address3: address3Input.value.trim(),
-        
-          address4: address4Input.value.trim(),
-        
-          registrationNumber:
-  registrationNumberInput.value.trim(),
+    furigana:
+      furiganaInput.value.trim(),
 
-carMaker:
-  carMakerInput.value.trim(),
+    name:
+      nameInput.value.trim(),
 
-carName:
-  getCarName(),
-        
-          telAppointmentMemo:
-  telAppointmentMemo,
+    homeTel:
+      homeTelInput.value.trim(),
 
-customerMemo:
-  customerMemo,
+    mobileTel:
+      mobileTelInput.value.trim(),
 
-inspectionExpiryDate:
-  inspectionExpiryDateInput.value
-        
-        };
-        
+    zipcode:
+      zipcodeInput.value.trim(),
+
+    address1:
+      address1Input.value.trim(),
+
+    address2:
+      address2Input.value.trim(),
+
+    address3:
+      address3Input.value.trim(),
+
+    address4:
+      address4Input.value.trim(),
+
+    registrationNumber:
+      registrationNumberInput.value.trim(),
+
+    carMaker:
+      carMakerInput.value.trim(),
+
+    carName:
+      getCarName(),
+
+    privacyConsent:
+      privacyConsentInput.checked,
+
+    privacyConsentDateTime:
+      new Date().toISOString(),
+
+    telAppointmentMemo:
+      telAppointmentMemo,
+
+    customerMemo:
+      customerMemo,
+
+    inspectionExpiryDate:
+      inspectionExpiryDateInput.value
+
+  };        
           console.log(finalData);
 
 const powerAutomateUrl =
