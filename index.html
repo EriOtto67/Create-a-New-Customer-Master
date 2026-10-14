@@ -379,6 +379,87 @@ input[type="date"] {
         margin-bottom: 18px;
       }
     }
+
+        /* ====================================== */
+    /* 登録確認用パスワードポップアップ */
+    /* ====================================== */
+
+    .password-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.55);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .password-modal-overlay.is-open {
+      display: flex;
+    }
+
+    .password-modal {
+      width: 100%;
+      max-width: 420px;
+      padding: 26px;
+      background-color: #ffffff;
+      border-top: 5px solid #00c853;
+      border-radius: 12px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
+    }
+
+    .password-modal-title {
+      margin: 0 0 12px;
+      color: #00b84f;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .password-modal-description {
+      margin: 0 0 20px;
+      color: #555555;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .password-modal-button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .password-modal-button-row button {
+      flex: 1;
+      width: auto;
+      margin-top: 0;
+    }
+
+    .password-modal-cancel-button {
+      background-color: #777777;
+    }
+
+    .password-modal-cancel-button:hover {
+      background-color: #666666;
+    }
+
+    .password-modal-cancel-button:active {
+      background-color: #555555;
+    }
+
+    #registrationPasswordMessage {
+      margin-top: 14px;
+      color: #d93025;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #registrationPasswordMessage:empty {
+      display: none;
+    }
   </style>
 </head>
 
@@ -1123,7 +1204,72 @@ input[type="date"] {
       
       
       </div>
-      
+
+<!-- ====================================== -->
+<!-- 登録確認用パスワードポップアップ -->
+<!-- ====================================== -->
+
+<div
+  id="registrationPasswordModal"
+  class="password-modal-overlay"
+  aria-hidden="true"
+>
+
+  <div
+    class="password-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="registrationPasswordModalTitle"
+  >
+
+    <div
+      id="registrationPasswordModalTitle"
+      class="password-modal-title"
+    >
+      登録確認
+    </div>
+
+    <p class="password-modal-description">
+      お客さま情報を登録するため、登録用パスワードを入力して下さい。
+    </p>
+
+    <label for="registrationPasswordInput">
+      登録用パスワード
+      <span class="required">必須</span>
+    </label>
+
+    <input
+      type="password"
+      id="registrationPasswordInput"
+      placeholder="登録用パスワードを入力して下さい"
+      autocomplete="off"
+    >
+
+    <div id="registrationPasswordMessage"></div>
+
+    <div class="password-modal-button-row">
+
+      <button
+        type="button"
+        id="registrationPasswordCancelButton"
+        class="password-modal-cancel-button"
+      >
+        キャンセル
+      </button>
+
+      <button
+        type="button"
+        id="registrationPasswordConfirmButton"
+      >
+        確認して登録
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+  
       <script>
   "use strict";
 
@@ -1243,6 +1389,161 @@ const privacyConsentMessage =
 const zipMessage =
   document.getElementById("zipMessage");
 
+        // ========================================
+// 登録確認用パスワードポップアップ
+// ========================================
+
+const registrationPasswordModal =
+  document.getElementById(
+    "registrationPasswordModal"
+  );
+
+const registrationPasswordInput =
+  document.getElementById(
+    "registrationPasswordInput"
+  );
+
+const registrationPasswordMessage =
+  document.getElementById(
+    "registrationPasswordMessage"
+  );
+
+const registrationPasswordCancelButton =
+  document.getElementById(
+    "registrationPasswordCancelButton"
+  );
+
+const registrationPasswordConfirmButton =
+  document.getElementById(
+    "registrationPasswordConfirmButton"
+  );
+
+
+function requestRegistrationPassword(
+  initialMessage = ""
+) {
+
+  return new Promise(function (resolve) {
+
+    registrationPasswordInput.value = "";
+
+    registrationPasswordMessage.textContent =
+      initialMessage;
+
+    registrationPasswordModal.classList.add(
+      "is-open"
+    );
+
+    registrationPasswordModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    setTimeout(function () {
+
+      registrationPasswordInput.focus();
+
+    }, 0);
+
+
+    function closeRegistrationPasswordModal() {
+
+      registrationPasswordModal.classList.remove(
+        "is-open"
+      );
+
+      registrationPasswordModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      registrationPasswordInput.value = "";
+
+      registrationPasswordMessage.textContent = "";
+
+      registrationPasswordConfirmButton.onclick =
+        null;
+
+      registrationPasswordCancelButton.onclick =
+        null;
+
+      registrationPasswordInput.onkeydown =
+        null;
+
+    }
+
+
+    function confirmRegistrationPassword() {
+
+      const password =
+        registrationPasswordInput.value.trim();
+
+
+      if (!password) {
+
+        registrationPasswordMessage.textContent =
+          "登録用パスワードを入力して下さい。";
+
+        registrationPasswordInput.focus();
+
+        return;
+
+      }
+
+
+      closeRegistrationPasswordModal();
+
+      resolve(password);
+
+    }
+
+
+    registrationPasswordCancelButton.onclick =
+      function () {
+
+        closeRegistrationPasswordModal();
+
+        resolve(null);
+
+      };
+
+
+    registrationPasswordConfirmButton.onclick =
+      function () {
+
+        confirmRegistrationPassword();
+
+      };
+
+
+    registrationPasswordInput.onkeydown =
+      function (event) {
+
+        if (event.key === "Enter") {
+
+          event.preventDefault();
+
+          confirmRegistrationPassword();
+
+        }
+
+
+        if (event.key === "Escape") {
+
+          event.preventDefault();
+
+          closeRegistrationPasswordModal();
+
+          resolve(null);
+
+        }
+
+      };
+
+  });
+
+}
 
 // ========================================
 // 車検満了日の日付案内表示
@@ -2787,127 +3088,268 @@ carName: carName
         });
         
         // ========================================
-        // スタッフ入力完了
-        // ========================================
-        
-        staffCompleteButton.addEventListener("click", function () {
+// スタッフ入力完了
+// ========================================
 
-  const telAppointmentMemo =
-    telAppointmentMemoInput.value.trim();
+staffCompleteButton.addEventListener(
+  "click",
+  async function () {
 
-  const customerMemo =
-    customerMemoInput.value.trim();
+    // ========================================
+    // 登録用パスワード入力
+    // ========================================
 
-  const finalData = {
+    const registrationPassword =
+      await requestRegistrationPassword();
 
-    staffSS:
-      staffSSValue,
 
-    furigana:
-      furiganaInput.value.trim(),
+    // キャンセルされた場合
+    if (registrationPassword === null) {
 
-    name:
-      nameInput.value.trim(),
+      return;
 
-    homeTel:
-      homeTelInput.value.trim(),
-
-    mobileTel:
-      mobileTelInput.value.trim(),
-
-    zipcode:
-      zipcodeInput.value.trim(),
-
-    address1:
-      address1Input.value.trim(),
-
-    address2:
-      address2Input.value.trim(),
-
-    address3:
-      address3Input.value.trim(),
-
-    address4:
-      address4Input.value.trim(),
-
-    registrationNumber:
-      registrationNumberInput.value.trim(),
-
-    carMaker:
-      carMakerInput.value.trim(),
-
-    carName:
-      getCarName(),
-
-    privacyConsent:
-      privacyConsentInput.checked,
-
-    privacyConsentDateTime:
-      new Date().toISOString(),
-
-    telAppointmentMemo:
-      telAppointmentMemo,
-
-    customerMemo:
-      customerMemo,
-
-    inspectionExpiryDate:
-      inspectionExpiryDateInput.value
-
-  };        
-          console.log(finalData);
-
-const powerAutomateUrl =
-  "https://default1a2cf14ad33440fe9e6c8e9728b84d.0d.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/30/workflows/0eb5cfb8d1cd41079adb8bccd4bc2614/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kZN_VAyhxNx0yQDKSvJCgahXmIH9LTlNiE-DO0WzVgY";
-
-staffCompleteButton.disabled = true;
-staffCompleteButton.textContent = "登録中です...";
-
-fetch(powerAutomateUrl, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(finalData)
-})
-  .then(function (response) {
-
-    if (!response.ok) {
-      throw new Error(
-        "送信エラー：" + response.status
-      );
     }
 
-    return response.text();
 
-  })
-  .then(function () {
+    // ========================================
+    // スタッフ入力内容を取得
+    // ========================================
 
-    alert(
-      "kintoneへの登録が完了しました。"
-    );
+    const telAppointmentMemo =
+      telAppointmentMemoInput.value.trim();
+
+    const customerMemo =
+      customerMemoInput.value.trim();
+
+
+    // ========================================
+    // Power Automateへ送るデータ
+    // ========================================
+
+    const finalData = {
+
+      staffSS:
+        staffSSValue,
+
+      furigana:
+        furiganaInput.value.trim(),
+
+      name:
+        nameInput.value.trim(),
+
+      homeTel:
+        homeTelInput.value.trim(),
+
+      mobileTel:
+        mobileTelInput.value.trim(),
+
+      zipcode:
+        zipcodeInput.value.trim(),
+
+      address1:
+        address1Input.value.trim(),
+
+      address2:
+        address2Input.value.trim(),
+
+      address3:
+        address3Input.value.trim(),
+
+      address4:
+        address4Input.value.trim(),
+
+      registrationNumber:
+        registrationNumberInput.value.trim(),
+
+      carMaker:
+        carMakerInput.value.trim(),
+
+      carName:
+        getCarName(),
+
+      privacyConsent:
+        privacyConsentInput.checked,
+
+      privacyConsentDateTime:
+        new Date().toISOString(),
+
+      telAppointmentMemo:
+        telAppointmentMemo,
+
+      customerMemo:
+        customerMemo,
+
+      inspectionExpiryDate:
+        inspectionExpiryDateInput.value,
+
+      password:
+        registrationPassword
+
+    };
+
+
+    console.log(finalData);
+
+
+    // ========================================
+    // 登録用Power Automate URL
+    // ========================================
+
+    const powerAutomateUrl =
+      "https://default1a2cf14ad33440fe9e6c8e9728b84d.0d.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/30/workflows/0eb5cfb8d1cd41079adb8bccd4bc2614/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kZN_VAyhxNx0yQDKSvJCgahXmIH9LTlNiE-DO0WzVgY";
+
+
+    // ========================================
+    // 登録開始
+    // ========================================
+
+    staffCompleteButton.disabled = true;
 
     staffCompleteButton.textContent =
-      "登録完了";
+      "登録中です...";
 
-  })
-  .catch(function (error) {
 
-    console.error(error);
+    try {
 
-    alert(
-      "登録に失敗しました。\n" +
-      "入力内容は消えていません。\n" +
-      "もう一度お試し下さい。"
-    );
+      let response;
+      let result;
 
-    staffCompleteButton.disabled = false;
-    staffCompleteButton.textContent =
-      "スタッフ入力完了";
 
-  });
-        
-        });
+      // ========================================
+      // Power Automateへ送信
+      // ========================================
+
+      while (true) {
+
+        response =
+          await fetch(
+            powerAutomateUrl,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify(
+                finalData
+              )
+            }
+          );
+
+
+        // ========================================
+        // 登録用パスワードが違う場合
+        // ========================================
+
+        if (response.status === 401) {
+
+          const newRegistrationPassword =
+            await requestRegistrationPassword(
+              "登録用パスワードが違います。"
+            );
+
+
+          // 再入力画面でキャンセルした場合
+          if (newRegistrationPassword === null) {
+
+            staffCompleteButton.disabled = false;
+
+            staffCompleteButton.textContent =
+              "スタッフ入力完了";
+
+            return;
+
+          }
+
+
+          // 入力し直したパスワードへ差し替え
+          finalData.password =
+            newRegistrationPassword;
+
+
+          // 新しいパスワードで再送信
+          continue;
+
+        }
+
+
+        // ========================================
+        // 401以外のHTTPエラー
+        // ========================================
+
+        if (!response.ok) {
+
+          throw new Error(
+            "送信エラー：" + response.status
+          );
+
+        }
+
+
+        // ========================================
+        // Power AutomateからJSONを受け取る
+        // ========================================
+
+        result =
+          await response.json();
+
+
+        // ========================================
+        // Power Automateの処理結果を確認
+        // ========================================
+
+        if (result.success !== true) {
+
+          throw new Error(
+            result.message ||
+            "登録処理が正常終了しませんでした。"
+          );
+
+        }
+
+
+        // 登録成功
+        break;
+
+      }
+
+
+      // ========================================
+      // 登録成功
+      // ========================================
+
+      alert(
+        "kintoneへの登録が完了しました。"
+      );
+
+
+      staffCompleteButton.textContent =
+        "登録完了";
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      alert(
+        "登録に失敗しました。\n" +
+        "入力内容は消えていません。\n" +
+        "もう一度お試し下さい。"
+      );
+
+
+      staffCompleteButton.disabled = false;
+
+      staffCompleteButton.textContent =
+        "スタッフ入力完了";
+
+    }
+
+  }
+);
         
   </script>
 
