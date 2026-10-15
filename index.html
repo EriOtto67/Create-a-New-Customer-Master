@@ -3564,25 +3564,42 @@ document.getElementById("confirmCarName").textContent =
         this.setCustomValidity("");
       });
 
-        // メーカー
+// ========================================
+// メーカーの必須チェック
+// ========================================
+
 carMakerInput.addEventListener("invalid", function () {
-  this.setCustomValidity("メーカーを選択して下さい。");
+
+  if (this.value === "") {
+
+    this.setCustomValidity(
+      "メーカーを選択して下さい。"
+    );
+
+  }
+
 });
 
 carMakerInput.addEventListener("change", function () {
+
   this.setCustomValidity("");
+
 });   
       
-      // ========================================
+// ========================================
 // 車名の必須チェック
 // ========================================
 
 // 通常メーカーの車名プルダウン
 carNameInput.addEventListener("invalid", function () {
 
-  this.setCustomValidity(
-    "車名を選択して下さい。"
-  );
+  if (!this.disabled && this.value === "") {
+
+    this.setCustomValidity(
+      "車名を選択して下さい。"
+    );
+
+  }
 
 });
 
@@ -3592,12 +3609,20 @@ carNameInput.addEventListener("change", function () {
 
 });
 
+
 // 「その他」の車名直接入力
 carNameOtherInput.addEventListener("invalid", function () {
 
-  this.setCustomValidity(
-    "車名を入力して下さい。"
-  );
+  if (
+    carMakerInput.value === "その他" &&
+    this.value.trim() === ""
+  ) {
+
+    this.setCustomValidity(
+      "車名を入力して下さい。"
+    );
+
+  }
 
 });
 
@@ -3643,40 +3668,6 @@ valuablesConfirmedInput.addEventListener(
 
 
 // ========================================
-// 個人情報の取り扱いへの同意
-// ========================================
-
-privacyConsentInput.addEventListener(
-  "invalid",
-  function () {
-
-    if (!this.checked) {
-
-      this.setCustomValidity(
-        "個人情報の取り扱いをご確認のうえ、同意して下さい。"
-      );
-
-      privacyConsentMessage.textContent =
-        "個人情報の取り扱いへの同意が必要です。";
-
-    }
-
-  }
-);
-
-
-privacyConsentInput.addEventListener(
-  "change",
-  function () {
-
-    this.setCustomValidity("");
-
-    privacyConsentMessage.textContent = "";
-
-  }
-);
-
-        // ========================================
 // 個人情報の取り扱いへの同意
 // ========================================
 
