@@ -1040,26 +1040,32 @@ input[type="date"] {
   </label>
 
   <select
-    id="carMaker"
-    name="carMaker"
-    required
-  >
-    <option value="">選択して下さい</option>
-    <option value="トヨタ">トヨタ</option>
-    <option value="レクサス">レクサス</option>
-    <option value="日産">日産</option>
-    <option value="ホンダ">ホンダ</option>
-    <option value="マツダ">マツダ</option>
-    <option value="スバル">スバル</option>
-    <option value="スズキ">スズキ</option>
-    <option value="ダイハツ">ダイハツ</option>
-    <option value="三菱">三菱</option>
-    <option value="BMW">BMW</option>
-    <option value="アウディ">アウディ</option>
-    <option value="フォルクスワーゲン">フォルクスワーゲン</option>
-    <option value="メルセデスベンツ">メルセデスベンツ</option>
-    <option value="その他">その他</option>    
-  </select>
+  id="carMaker"
+  name="carMaker"
+  required
+>
+  <option value="">選択して下さい</option>
+  <option value="トヨタ">トヨタ</option>
+  <option value="レクサス">レクサス</option>
+  <option value="日産">日産</option>
+  <option value="ホンダ">ホンダ</option>
+  <option value="マツダ">マツダ</option>
+  <option value="スバル">スバル</option>
+  <option value="スズキ">スズキ</option>
+  <option value="ダイハツ">ダイハツ</option>
+  <option value="三菱">三菱</option>
+  <option value="BMW">BMW</option>
+  <option value="アウディ">アウディ</option>
+  <option value="フォルクスワーゲン">フォルクスワーゲン</option>
+  <option value="メルセデスベンツ">メルセデスベンツ</option>
+  <option value="その他">その他</option>
+</select>
+
+<div
+  id="carMakerMessage"
+  class="privacy-consent-message"
+  aria-live="polite"
+></div>
 
 </div>
 
@@ -1775,6 +1781,9 @@ const nameInput =
 
 const carMakerInput =
   document.getElementById("carMaker");
+
+const carMakerMessage =
+  document.getElementById("carMakerMessage");
 
 const carNameInput =
   document.getElementById("carName");
@@ -3578,10 +3587,10 @@ carMakerInput.addEventListener(
   "change",
   function () {
 
-    // メーカーのエラーを解除
     this.setCustomValidity("");
 
-    // 車名のエラーも解除
+    carMakerMessage.textContent = "";
+
     carNameInput.setCustomValidity("");
     carNameOtherInput.setCustomValidity("");
 
@@ -3621,29 +3630,30 @@ customerSubmitButton.addEventListener(
   function () {
 
     // ========================================
-    // 前回のメーカー・車名エラーを解除
+    // 前回のエラーを解除
     // ========================================
 
     carMakerInput.setCustomValidity("");
+    carMakerMessage.textContent = "";
+
     carNameInput.setCustomValidity("");
     carNameOtherInput.setCustomValidity("");
 
 
     // ========================================
-    // メーカーの検証内容を設定
+    // メーカー未選択
     // ========================================
 
     if (carMakerInput.value === "") {
 
-      carMakerInput.setCustomValidity(
-        "メーカーを選択して下さい。"
-      );
+      carMakerMessage.textContent =
+        "メーカーを選択して下さい。";
 
     }
 
 
     // ========================================
-    // 通常メーカーの車名検証内容を設定
+    // 通常メーカーの車名未選択
     // ========================================
 
     if (
@@ -3660,7 +3670,7 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // 「その他」の車名検証内容を設定
+    // その他の車名未入力
     // ========================================
 
     if (
@@ -3676,10 +3686,12 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // フォーム全体をHTMLの並び順で検証
+    // 通常の必須項目チェック
     // ========================================
 
-    if (!form.reportValidity()) {
+    if (!form.checkValidity()) {
+
+      form.reportValidity();
 
       return;
 
@@ -3687,13 +3699,32 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // すべて正常なら既存のsubmit処理を実行
+    // メーカー独自チェック
+    // ========================================
+
+    if (carMakerInput.value === "") {
+
+      carMakerInput.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      carMakerInput.focus();
+
+      return;
+
+    }
+
+
+    // ========================================
+    // すべて正常
     // ========================================
 
     form.requestSubmit();
 
   }
 );
+        
         // ========================================
 // 貴重品の管理についての確認
 // ========================================
