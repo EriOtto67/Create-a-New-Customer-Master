@@ -1097,6 +1097,12 @@ input[type="date"] {
     style="display: none;"
   >
 
+  <div
+    id="carNameMessage"
+    class="privacy-consent-message"
+    aria-live="polite"
+  ></div>
+
 </div>
         
         </div>
@@ -1788,8 +1794,11 @@ const carMakerMessage =
 const carNameInput =
   document.getElementById("carName");
 
-        const carNameOtherInput =
+const carNameOtherInput =
   document.getElementById("carNameOther");
+
+const carNameMessage =
+  document.getElementById("carNameMessage");
 
 const customerSubmitButton =
   document.getElementById("customerSubmitButton");
@@ -3579,18 +3588,17 @@ document.getElementById("confirmCarName").textContent =
       });
 
 // ========================================
-// メーカー・車名の必須チェック
+// メーカー・車名
 // ========================================
 
-// メーカー変更時
 carMakerInput.addEventListener(
   "change",
   function () {
 
-    this.setCustomValidity("");
-
     carMakerMessage.textContent = "";
+    carNameMessage.textContent = "";
 
+    carMakerInput.setCustomValidity("");
     carNameInput.setCustomValidity("");
     carNameOtherInput.setCustomValidity("");
 
@@ -3598,22 +3606,22 @@ carMakerInput.addEventListener(
 );
 
 
-// 通常メーカーの車名変更時
 carNameInput.addEventListener(
   "change",
   function () {
 
+    carNameMessage.textContent = "";
     this.setCustomValidity("");
 
   }
 );
 
 
-// 「その他」の車名入力時
 carNameOtherInput.addEventListener(
   "input",
   function () {
 
+    carNameMessage.textContent = "";
     this.setCustomValidity("");
 
   }
@@ -3622,87 +3630,29 @@ carNameOtherInput.addEventListener(
 
 // ========================================
 // 入力完了ボタン
-// 必須項目を画面上から順番に確認
 // ========================================
 
 customerSubmitButton.addEventListener(
   "click",
   function () {
 
-    // ========================================
-    // 前回のエラーを解除
-    // ========================================
+    // 前回のエラー表示を消す
+    carMakerMessage.textContent = "";
+    carNameMessage.textContent = "";
 
     carMakerInput.setCustomValidity("");
-    carMakerMessage.textContent = "";
-
     carNameInput.setCustomValidity("");
     carNameOtherInput.setCustomValidity("");
 
 
     // ========================================
-    // メーカー未選択
+    // メーカー
     // ========================================
 
     if (carMakerInput.value === "") {
 
       carMakerMessage.textContent =
         "メーカーを選択して下さい。";
-
-    }
-
-
-    // ========================================
-    // 通常メーカーの車名未選択
-    // ========================================
-
-    if (
-      carMakerInput.value !== "" &&
-      carMakerInput.value !== "その他" &&
-      carNameInput.value === ""
-    ) {
-
-      carNameInput.setCustomValidity(
-        "車名を選択して下さい。"
-      );
-
-    }
-
-
-    // ========================================
-    // その他の車名未入力
-    // ========================================
-
-    if (
-      carMakerInput.value === "その他" &&
-      carNameOtherInput.value.trim() === ""
-    ) {
-
-      carNameOtherInput.setCustomValidity(
-        "車名を入力して下さい。"
-      );
-
-    }
-
-
-    // ========================================
-    // 通常の必須項目チェック
-    // ========================================
-
-    if (!form.checkValidity()) {
-
-      form.reportValidity();
-
-      return;
-
-    }
-
-
-    // ========================================
-    // メーカー独自チェック
-    // ========================================
-
-    if (carMakerInput.value === "") {
 
       carMakerInput.scrollIntoView({
         behavior: "smooth",
@@ -3717,13 +3667,35 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // すべて正常
+    // 通常メーカーの車名
     // ========================================
 
-    form.requestSubmit();
+    if (
+      carMakerInput.value !== "その他" &&
+      carNameInput.value === ""
+    ) {
 
-  }
-);
+      carNameMessage.textContent =
+        "車名を選択して下さい。";
+
+      carNameInput.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      carNameInput.focus();
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 「その他」の車名
+    // ========================================
+
+    if (
+      carMakerInput
         
         // ========================================
 // 貴重品の管理についての確認
