@@ -3573,97 +3573,127 @@ document.getElementById("confirmCarName").textContent =
 // メーカー・車名の必須チェック
 // ========================================
 
-carMakerInput.addEventListener("change", function () {
+// メーカー変更時
+carMakerInput.addEventListener(
+  "change",
+  function () {
 
-  this.setCustomValidity("");
+    // メーカーのエラーを解除
+    this.setCustomValidity("");
 
-});
+    // 車名のエラーも解除
+    carNameInput.setCustomValidity("");
+    carNameOtherInput.setCustomValidity("");
+
+  }
+);
 
 
-carNameInput.addEventListener("change", function () {
+// 通常メーカーの車名変更時
+carNameInput.addEventListener(
+  "change",
+  function () {
 
-  this.setCustomValidity("");
+    this.setCustomValidity("");
 
-});
+  }
+);
 
 
-carNameOtherInput.addEventListener("input", function () {
+// 「その他」の車名入力時
+carNameOtherInput.addEventListener(
+  "input",
+  function () {
 
-  this.setCustomValidity("");
+    this.setCustomValidity("");
 
-});
+  }
+);
 
 
 // ========================================
 // 入力完了ボタン
-// フォーム全体を上から順番に確認
+// 必須項目を画面上から順番に確認
 // ========================================
 
 customerSubmitButton.addEventListener(
   "click",
   function () {
 
-    // フォーム全体の必須チェック
-    // 最初に問題がある項目へ移動して警告を表示
+    // ========================================
+    // 前回のメーカー・車名エラーを解除
+    // ========================================
+
+    carMakerInput.setCustomValidity("");
+    carNameInput.setCustomValidity("");
+    carNameOtherInput.setCustomValidity("");
+
+
+    // ========================================
+    // メーカーの検証内容を設定
+    // ========================================
+
+    if (carMakerInput.value === "") {
+
+      carMakerInput.setCustomValidity(
+        "メーカーを選択して下さい。"
+      );
+
+    }
+
+
+    // ========================================
+    // 通常メーカーの車名検証内容を設定
+    // ========================================
+
+    if (
+      carMakerInput.value !== "" &&
+      carMakerInput.value !== "その他" &&
+      carNameInput.value === ""
+    ) {
+
+      carNameInput.setCustomValidity(
+        "車名を選択して下さい。"
+      );
+
+    }
+
+
+    // ========================================
+    // 「その他」の車名検証内容を設定
+    // ========================================
+
+    if (
+      carMakerInput.value === "その他" &&
+      carNameOtherInput.value.trim() === ""
+    ) {
+
+      carNameOtherInput.setCustomValidity(
+        "車名を入力して下さい。"
+      );
+
+    }
+
+
+    // ========================================
+    // フォーム全体をHTMLの並び順で検証
+    // ========================================
+
     if (!form.reportValidity()) {
 
       return;
 
     }
 
-    // 必須チェックに問題がなければ
-    // 既存のsubmit処理を実行
+
+    // ========================================
+    // すべて正常なら既存のsubmit処理を実行
+    // ========================================
+
     form.requestSubmit();
 
   }
-);   
-      
-// ========================================
-// 車名の必須チェック
-// ========================================
-
-// 通常メーカーの車名プルダウン
-carNameInput.addEventListener("invalid", function () {
-
-  if (!this.disabled && this.value === "") {
-
-    this.setCustomValidity(
-      "車名を選択して下さい。"
-    );
-
-  }
-
-});
-
-carNameInput.addEventListener("change", function () {
-
-  this.setCustomValidity("");
-
-});
-
-
-// 「その他」の車名直接入力
-carNameOtherInput.addEventListener("invalid", function () {
-
-  if (
-    carMakerInput.value === "その他" &&
-    this.value.trim() === ""
-  ) {
-
-    this.setCustomValidity(
-      "車名を入力して下さい。"
-    );
-
-  }
-
-});
-
-carNameOtherInput.addEventListener("input", function () {
-
-  this.setCustomValidity("");
-
-});
-
+);
         // ========================================
 // 貴重品の管理についての確認
 // ========================================
