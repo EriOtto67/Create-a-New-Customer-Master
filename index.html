@@ -688,6 +688,145 @@ input[type="date"] {
   }
 }
 
+    /* ====================================== */
+/* スタッフ確認画面・項目別編集 */
+/* ====================================== */
+
+.staff-confirm-list {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.staff-confirm-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #dddddd;
+}
+
+.staff-confirm-item:first-child {
+  border-top: 1px solid #dddddd;
+}
+
+.staff-confirm-display {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.staff-confirm-label {
+  color: #444444;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.staff-confirm-value {
+  min-width: 0;
+  color: #333333;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.staff-confirm-edit-button {
+  width: auto;
+  min-width: 72px;
+  height: 40px;
+  margin: 0;
+  padding: 0 14px;
+  background-color: #555555;
+  font-size: 14px;
+}
+
+.staff-confirm-edit-button:hover {
+  background-color: #3f3f3f;
+}
+
+.staff-confirm-edit-button:active {
+  background-color: #2f2f2f;
+}
+
+.staff-confirm-editor {
+  display: none;
+  margin-top: 14px;
+  padding: 16px;
+  background-color: #f7f7f7;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+}
+
+.staff-confirm-editor.is-open {
+  display: block;
+}
+
+.staff-confirm-editor .form-group {
+  margin-bottom: 16px;
+}
+
+.staff-confirm-editor .form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.staff-confirm-button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.staff-confirm-button-row button {
+  flex: 1;
+  width: auto;
+  height: 42px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.staff-confirm-save-button {
+  background-color: #00b84f;
+}
+
+.staff-confirm-cancel-button {
+  background-color: #777777;
+}
+
+.staff-confirm-cancel-button:hover {
+  background-color: #666666;
+}
+
+.staff-confirm-cancel-button:active {
+  background-color: #555555;
+}
+
+.staff-confirm-message {
+  min-height: 20px;
+  margin-top: 8px;
+  color: #d93025;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .staff-confirm-display {
+    grid-template-columns: 1fr auto;
+  }
+
+  .staff-confirm-label {
+    grid-column: 1 / 3;
+  }
+
+  .staff-confirm-value {
+    grid-column: 1;
+  }
+
+  .staff-confirm-edit-button {
+    grid-column: 2;
+  }
+
+  .staff-confirm-editor {
+    padding: 14px;
+  }
+}
+
+
 </style>
 </head>
 
@@ -1388,44 +1527,693 @@ input[type="date"] {
             お客さま入力内容確認
           </div>
           
-          <div id="customerConfirm">
-          
-            <p><strong>担当SS：</strong><span id="confirmStaffSS"></span></p>
-          
-            <p><strong>フリガナ：</strong><span id="confirmFurigana"></span></p>
-          
-            <p><strong>氏名：</strong><span id="confirmName"></span></p>
-          
-            <p><strong>自宅番号：</strong><span id="confirmHomeTel"></span></p>
-          
-            <p><strong>携帯番号：</strong><span id="confirmMobileTel"></span></p>
-          
-            <p><strong>郵便番号：</strong><span id="confirmZipcode"></span></p>
-          
-            <p><strong>住所：</strong><span id="confirmAddress"></span></p>
-          
-            <p><strong>登録番号：</strong><span id="confirmRegistrationNumber"></span></p>
-
-<p><strong>メーカー：</strong><span id="confirmCarMaker"></span></p>
-
-<p><strong>車名：</strong><span id="confirmCarName"></span></p>
-
-<p>
-  <strong>個人情報の取り扱い：</strong>
-  <span style="color: #00a847; font-weight: 700;">
-    同意済み
-  </span>
-</p>
-
-<button
-  type="button"
-  id="backToFormButton"
-  class="staff-mode-button"
+          <div
+  id="customerConfirm"
+  class="staff-confirm-list"
 >
-  入力内容を修正する
-</button>
-            
-          </div>
+
+  <!-- 担当SS -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        担当SS
+      </div>
+
+      <div
+        id="confirmStaffSS"
+        class="staff-confirm-value"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- フリガナ -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        フリガナ
+      </div>
+
+      <div
+        id="confirmFurigana"
+        class="staff-confirm-value"
+      ></div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffFuriganaEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffFuriganaEditor"
+      class="staff-confirm-editor"
+    >
+
+      <label for="staffEditFurigana">
+        フリガナ
+      </label>
+
+      <input
+        type="text"
+        id="staffEditFurigana"
+        placeholder="例：ヤマダ タロウ"
+      >
+
+      <div
+        id="staffEditFuriganaMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffFuriganaEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveFuriganaButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 氏名 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        氏名
+      </div>
+
+      <div
+        id="confirmName"
+        class="staff-confirm-value"
+      ></div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffNameEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffNameEditor"
+      class="staff-confirm-editor"
+    >
+
+      <label for="staffEditName">
+        氏名
+      </label>
+
+      <input
+        type="text"
+        id="staffEditName"
+        placeholder="例：山田 太郎"
+      >
+
+      <div
+        id="staffEditNameMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffNameEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveNameButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 自宅番号 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        自宅番号
+      </div>
+
+      <div
+        id="confirmHomeTel"
+        class="staff-confirm-value"
+      ></div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffHomeTelEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffHomeTelEditor"
+      class="staff-confirm-editor"
+    >
+
+      <label for="staffEditHomeTel">
+        自宅番号
+      </label>
+
+      <input
+        type="tel"
+        id="staffEditHomeTel"
+        inputmode="tel"
+        placeholder="例：0748-12-3456"
+      >
+
+      <div
+        id="staffEditHomeTelMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffHomeTelEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveHomeTelButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 携帯番号 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        携帯番号
+      </div>
+
+      <div
+        id="confirmMobileTel"
+        class="staff-confirm-value"
+      ></div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffMobileTelEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffMobileTelEditor"
+      class="staff-confirm-editor"
+    >
+
+      <label for="staffEditMobileTel">
+        携帯番号
+      </label>
+
+      <input
+        type="tel"
+        id="staffEditMobileTel"
+        inputmode="tel"
+        placeholder="例：090-1234-5678"
+      >
+
+      <div
+        id="staffEditMobileTelMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffMobileTelEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveMobileTelButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 住所 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        郵便番号・住所
+      </div>
+
+      <div class="staff-confirm-value">
+
+        <div id="confirmZipcode"></div>
+
+        <div id="confirmAddress"></div>
+
+      </div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffAddressEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffAddressEditor"
+      class="staff-confirm-editor"
+    >
+
+      <div class="form-group">
+
+        <label for="staffEditZipcode">
+          郵便番号
+        </label>
+
+        <input
+          type="text"
+          id="staffEditZipcode"
+          inputmode="numeric"
+          maxlength="8"
+          placeholder="例：523-0892"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="staffEditAddress1">
+          住所1
+        </label>
+
+        <input
+          type="text"
+          id="staffEditAddress1"
+          placeholder="都道府県"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="staffEditAddress2">
+          住所2
+        </label>
+
+        <input
+          type="text"
+          id="staffEditAddress2"
+          placeholder="市区町村"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="staffEditAddress3">
+          住所3
+        </label>
+
+        <input
+          type="text"
+          id="staffEditAddress3"
+          placeholder="町域"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="staffEditAddress4">
+          住所4
+        </label>
+
+        <input
+          type="text"
+          id="staffEditAddress4"
+          placeholder="丁目・番地・マンション・アパート"
+        >
+
+      </div>
+
+      <div
+        id="staffEditAddressMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffAddressEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveAddressButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 登録番号 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        登録番号
+      </div>
+
+      <div
+        id="confirmRegistrationNumber"
+        class="staff-confirm-value"
+      ></div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffRegistrationNumberEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffRegistrationNumberEditor"
+      class="staff-confirm-editor"
+    >
+
+      <label for="staffEditRegistrationNumber">
+        登録番号
+      </label>
+
+      <input
+        type="text"
+        id="staffEditRegistrationNumber"
+        placeholder="例：滋賀580あ1234"
+      >
+
+      <div
+        id="staffEditRegistrationNumberMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffRegistrationNumberEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveRegistrationNumberButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 車両 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        メーカー・車名
+      </div>
+
+      <div class="staff-confirm-value">
+
+        <div>
+          メーカー：
+          <span id="confirmCarMaker"></span>
+        </div>
+
+        <div>
+          車名：
+          <span id="confirmCarName"></span>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="staff-confirm-edit-button"
+        data-editor-id="staffVehicleEditor"
+      >
+        修正
+      </button>
+
+    </div>
+
+    <div
+      id="staffVehicleEditor"
+      class="staff-confirm-editor"
+    >
+
+      <div class="form-group">
+
+        <label for="staffEditCarMaker">
+          メーカー
+        </label>
+
+        <select id="staffEditCarMaker">
+
+          <option value="">
+            選択して下さい
+          </option>
+
+          <option value="トヨタ">トヨタ</option>
+          <option value="レクサス">レクサス</option>
+          <option value="日産">日産</option>
+          <option value="ホンダ">ホンダ</option>
+          <option value="マツダ">マツダ</option>
+          <option value="スバル">スバル</option>
+          <option value="スズキ">スズキ</option>
+          <option value="ダイハツ">ダイハツ</option>
+          <option value="三菱">三菱</option>
+          <option value="BMW">BMW</option>
+          <option value="アウディ">アウディ</option>
+          <option value="フォルクスワーゲン">
+            フォルクスワーゲン
+          </option>
+          <option value="メルセデスベンツ">
+            メルセデスベンツ
+          </option>
+          <option value="その他">その他</option>
+
+        </select>
+
+      </div>
+
+      <div
+        id="staffEditCarNameSelectGroup"
+        class="form-group"
+      >
+
+        <label for="staffEditCarName">
+          車名
+        </label>
+
+        <select id="staffEditCarName">
+
+          <option value="">
+            先にメーカーを選択して下さい
+          </option>
+
+        </select>
+
+      </div>
+
+      <div
+        id="staffEditCarNameOtherGroup"
+        class="form-group"
+        style="display: none;"
+      >
+
+        <label for="staffEditCarNameOther">
+          車名
+        </label>
+
+        <input
+          type="text"
+          id="staffEditCarNameOther"
+          placeholder="車名を入力して下さい"
+        >
+
+      </div>
+
+      <div
+        id="staffEditVehicleMessage"
+        class="staff-confirm-message"
+      ></div>
+
+      <div class="staff-confirm-button-row">
+
+        <button
+          type="button"
+          class="staff-confirm-cancel-button"
+          data-editor-id="staffVehicleEditor"
+        >
+          キャンセル
+        </button>
+
+        <button
+          type="button"
+          id="staffSaveVehicleButton"
+          class="staff-confirm-save-button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 貴重品確認 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        貴重品の管理
+      </div>
+
+      <div
+        class="staff-confirm-value"
+        style="color: #00a847; font-weight: 700;"
+      >
+        確認済み
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 個人情報同意 -->
+  <div class="staff-confirm-item">
+
+    <div class="staff-confirm-display">
+
+      <div class="staff-confirm-label">
+        個人情報の取り扱い
+      </div>
+
+      <div
+        class="staff-confirm-value"
+        style="color: #00a847; font-weight: 700;"
+      >
+        同意済み
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
           
           <div class="form-group">
       
@@ -1736,9 +2524,6 @@ const inspectionExpiryDateInput =
   
     const staffCompleteButton =
         document.getElementById("staffCompleteButton");
-    
-    const backToFormButton =
-        document.getElementById("backToFormButton");
         
     const staffCodeInput =
         document.getElementById("staffCode");
@@ -3395,124 +4180,927 @@ staffCodeInput.addEventListener("keydown", function (event) {
       
       
       staffModeButton.addEventListener("click", function () {
-      
-        const staffCode =
-          staffCodeInput.value.trim();
-      
-      
-        // 未入力
-        if (staffCode === "") {
-      
-          staffCodeMessage.textContent =
-            "スタッフコードを入力して下さい。";
-      
-          staffCodeInput.focus();
-      
-          return;
-      
-        }
-      
-      
-        // スタッフコード不一致
-if (staffCode !== "ogakame1234") {
 
-  staffCodeMessage.textContent =
-    "スタッフコードが違います。";
+  const staffCode =
+    staffCodeInput.value.trim();
 
+
+  // 未入力
+  if (staffCode === "") {
+
+    staffCodeMessage.textContent =
+      "スタッフコードを入力して下さい。";
+
+    staffCodeInput.focus();
+
+    return;
+
+  }
+
+
+  // スタッフコード不一致
+  if (staffCode !== "ogakame1234") {
+
+    staffCodeMessage.textContent =
+      "スタッフコードが違います。";
+
+    staffCodeInput.value = "";
+
+    staffCodeInput.focus();
+
+    return;
+
+  }
+
+
+  // スタッフコード一致
+  staffCodeMessage.textContent = "";
+
+
+  // お客さま入力内容をスタッフ確認画面へ表示
+  updateStaffConfirmDisplay();
+
+
+  // 開いている編集欄を閉じる
+  closeAllStaffEditors();
+
+
+  // 完了画面を非表示
+  completeScreen.style.display = "none";
+
+
+  // スタッフモード画面を表示
+  staffScreen.style.display = "block";
+
+
+  // スタッフコードを消去
   staffCodeInput.value = "";
 
-  staffCodeInput.focus();
 
-  return;
+  // ページ上部へ移動
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+});
+
+        // ========================================
+// スタッフ確認画面・項目別編集
+// ========================================
+
+const staffEditFuriganaInput =
+  document.getElementById("staffEditFurigana");
+
+const staffEditFuriganaMessage =
+  document.getElementById("staffEditFuriganaMessage");
+
+const staffEditNameInput =
+  document.getElementById("staffEditName");
+
+const staffEditNameMessage =
+  document.getElementById("staffEditNameMessage");
+
+const staffEditHomeTelInput =
+  document.getElementById("staffEditHomeTel");
+
+const staffEditHomeTelMessage =
+  document.getElementById("staffEditHomeTelMessage");
+
+const staffEditMobileTelInput =
+  document.getElementById("staffEditMobileTel");
+
+const staffEditMobileTelMessage =
+  document.getElementById("staffEditMobileTelMessage");
+
+const staffEditZipcodeInput =
+  document.getElementById("staffEditZipcode");
+
+const staffEditAddress1Input =
+  document.getElementById("staffEditAddress1");
+
+const staffEditAddress2Input =
+  document.getElementById("staffEditAddress2");
+
+const staffEditAddress3Input =
+  document.getElementById("staffEditAddress3");
+
+const staffEditAddress4Input =
+  document.getElementById("staffEditAddress4");
+
+const staffEditAddressMessage =
+  document.getElementById("staffEditAddressMessage");
+
+const staffEditRegistrationNumberInput =
+  document.getElementById(
+    "staffEditRegistrationNumber"
+  );
+
+const staffEditRegistrationNumberMessage =
+  document.getElementById(
+    "staffEditRegistrationNumberMessage"
+  );
+
+const staffEditCarMakerInput =
+  document.getElementById("staffEditCarMaker");
+
+const staffEditCarNameInput =
+  document.getElementById("staffEditCarName");
+
+const staffEditCarNameOtherInput =
+  document.getElementById("staffEditCarNameOther");
+
+const staffEditCarNameSelectGroup =
+  document.getElementById(
+    "staffEditCarNameSelectGroup"
+  );
+
+const staffEditCarNameOtherGroup =
+  document.getElementById(
+    "staffEditCarNameOtherGroup"
+  );
+
+const staffEditVehicleMessage =
+  document.getElementById("staffEditVehicleMessage");
+
+
+// ========================================
+// スタッフ確認画面の表示内容を更新
+// ========================================
+
+function updateStaffConfirmDisplay() {
+
+  document.getElementById(
+    "confirmStaffSS"
+  ).textContent =
+    staffSSInput.value.trim();
+
+  document.getElementById(
+    "confirmFurigana"
+  ).textContent =
+    furiganaInput.value.trim();
+
+  document.getElementById(
+    "confirmName"
+  ).textContent =
+    nameInput.value.trim();
+
+  document.getElementById(
+    "confirmHomeTel"
+  ).textContent =
+    homeTelInput.value.trim() || "未入力";
+
+  document.getElementById(
+    "confirmMobileTel"
+  ).textContent =
+    mobileTelInput.value.trim() || "未入力";
+
+  document.getElementById(
+    "confirmZipcode"
+  ).textContent =
+    zipcodeInput.value.trim();
+
+  document.getElementById(
+    "confirmAddress"
+  ).textContent =
+    [
+      address1Input.value.trim(),
+      address2Input.value.trim(),
+      address3Input.value.trim(),
+      address4Input.value.trim()
+    ]
+      .filter(Boolean)
+      .join("");
+
+  document.getElementById(
+    "confirmRegistrationNumber"
+  ).textContent =
+    registrationNumberInput.value.trim();
+
+  document.getElementById(
+    "confirmCarMaker"
+  ).textContent =
+    carMakerInput.value.trim();
+
+  document.getElementById(
+    "confirmCarName"
+  ).textContent =
+    getCarName();
 
 }
-      
-      
-        // スタッフコード一致
-        staffCodeMessage.textContent = "";
-        
-        // ========================================
-        // お客さま入力内容を確認画面へ表示
-        // ========================================
-        
-        document.getElementById("confirmStaffSS").textContent =
-          staffSSInput.value.trim();
-        
-        document.getElementById("confirmFurigana").textContent =
-          furiganaInput.value.trim();
-        
-        document.getElementById("confirmName").textContent =
-          nameInput.value.trim();
-        
-        document.getElementById("confirmHomeTel").textContent =
-          homeTelInput.value.trim() || "未入力";
-        
-        document.getElementById("confirmMobileTel").textContent =
-          mobileTelInput.value.trim() || "未入力";
-        
-        document.getElementById("confirmZipcode").textContent =
-          zipcodeInput.value.trim();
-        
-        document.getElementById("confirmAddress").textContent =
-          [
-            address1Input.value.trim(),
-            address2Input.value.trim(),
-            address3Input.value.trim(),
-            address4Input.value.trim()
-          ]
-            .filter(Boolean)
-            .join("");
-        
-        document.getElementById("confirmRegistrationNumber").textContent =
-  registrationNumberInput.value.trim();
 
-document.getElementById("confirmCarMaker").textContent =
-  carMakerInput.value.trim();
 
-document.getElementById("confirmCarName").textContent =
-  getCarName();
-        
-        
-        // 完了画面を非表示
-        completeScreen.style.display = "none";
-        
-        // スタッフモード画面を表示
-        staffScreen.style.display = "block";
-        
-        // スタッフコードを消去
-        staffCodeInput.value = "";
-        
-        // TELアポメモへカーソルを移動
-        telAppointmentMemoInput.focus();
-        
-        // ページ上部へ移動
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-      });
-      
-      });  //
+// ========================================
+// 開いている編集欄をすべて閉じる
+// ========================================
 
-      // ========================================
-      // 入力内容を修正
-      // ========================================
-      
-      backToFormButton.addEventListener("click", function () {
-      
-        // スタッフモードを非表示
-        staffScreen.style.display = "none";
-      
-        // お客さま入力フォームを再表示
-        form.style.display = "block";
-      
-        // ページ上部へ戻る
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      
-      });
+function closeAllStaffEditors() {
 
+  document
+    .querySelectorAll(".staff-confirm-editor")
+    .forEach(function (editor) {
+
+      editor.classList.remove("is-open");
+
+    });
+
+}
+
+
+// ========================================
+// 編集欄へ現在値を設定
+// ========================================
+
+function setStaffEditorCurrentValue(editorId) {
+
+  if (editorId === "staffFuriganaEditor") {
+
+    staffEditFuriganaInput.value =
+      furiganaInput.value.trim();
+
+    staffEditFuriganaMessage.textContent = "";
+
+  }
+
+  if (editorId === "staffNameEditor") {
+
+    staffEditNameInput.value =
+      nameInput.value.trim();
+
+    staffEditNameMessage.textContent = "";
+
+  }
+
+  if (editorId === "staffHomeTelEditor") {
+
+    staffEditHomeTelInput.value =
+      homeTelInput.value.trim();
+
+    staffEditHomeTelMessage.textContent = "";
+
+  }
+
+  if (editorId === "staffMobileTelEditor") {
+
+    staffEditMobileTelInput.value =
+      mobileTelInput.value.trim();
+
+    staffEditMobileTelMessage.textContent = "";
+
+  }
+
+  if (editorId === "staffAddressEditor") {
+
+    staffEditZipcodeInput.value =
+      zipcodeInput.value.trim();
+
+    staffEditAddress1Input.value =
+      address1Input.value.trim();
+
+    staffEditAddress2Input.value =
+      address2Input.value.trim();
+
+    staffEditAddress3Input.value =
+      address3Input.value.trim();
+
+    staffEditAddress4Input.value =
+      address4Input.value.trim();
+
+    staffEditAddressMessage.textContent = "";
+
+  }
+
+  if (
+    editorId ===
+    "staffRegistrationNumberEditor"
+  ) {
+
+    staffEditRegistrationNumberInput.value =
+      registrationNumberInput.value.trim();
+
+    staffEditRegistrationNumberMessage.textContent =
+      "";
+
+  }
+
+  if (editorId === "staffVehicleEditor") {
+
+    staffEditCarMakerInput.value =
+      carMakerInput.value.trim();
+
+    staffEditVehicleMessage.textContent = "";
+
+    updateStaffCarNameOptions(
+      getCarName()
+    );
+
+  }
+
+}
+
+
+// ========================================
+// 修正ボタン
+// ========================================
+
+document
+  .querySelectorAll(".staff-confirm-edit-button")
+  .forEach(function (button) {
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        const editorId =
+          this.dataset.editorId;
+
+        const editor =
+          document.getElementById(editorId);
+
+        closeAllStaffEditors();
+
+        setStaffEditorCurrentValue(editorId);
+
+        editor.classList.add("is-open");
+
+        const firstInput =
+          editor.querySelector(
+            "input:not([type='hidden']), select"
+          );
+
+        if (firstInput) {
+
+          setTimeout(function () {
+
+            firstInput.focus();
+
+          }, 0);
+
+        }
+
+      }
+    );
+
+  });
+
+
+// ========================================
+// キャンセルボタン
+// ========================================
+
+document
+  .querySelectorAll(".staff-confirm-cancel-button")
+  .forEach(function (button) {
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        const editorId =
+          this.dataset.editorId;
+
+        document
+          .getElementById(editorId)
+          .classList.remove("is-open");
+
+      }
+    );
+
+  });
+
+
+// ========================================
+// フリガナを保存
+// ========================================
+
+document
+  .getElementById("staffSaveFuriganaButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const value =
+        staffEditFuriganaInput.value.trim();
+
+      staffEditFuriganaMessage.textContent = "";
+
+      if (value === "") {
+
+        staffEditFuriganaMessage.textContent =
+          "フリガナを入力して下さい。";
+
+        staffEditFuriganaInput.focus();
+
+        return;
+
+      }
+
+      if (
+        !/^[ァ-ヶーＡ-Ｚａ-ｚ０-９　]+$/.test(
+          value
+        )
+      ) {
+
+        staffEditFuriganaMessage.textContent =
+          "全角カタカナまたは全角英数字で入力して下さい。";
+
+        staffEditFuriganaInput.focus();
+
+        return;
+
+      }
+
+      furiganaInput.value = value;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffFuriganaEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// 氏名を保存
+// ========================================
+
+document
+  .getElementById("staffSaveNameButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const value =
+        staffEditNameInput.value.trim();
+
+      staffEditNameMessage.textContent = "";
+
+      if (value === "") {
+
+        staffEditNameMessage.textContent =
+          "氏名を入力して下さい。";
+
+        staffEditNameInput.focus();
+
+        return;
+
+      }
+
+      nameInput.value = value;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffNameEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// 自宅番号を保存
+// ========================================
+
+document
+  .getElementById("staffSaveHomeTelButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const value =
+        staffEditHomeTelInput.value.trim();
+
+      staffEditHomeTelMessage.textContent = "";
+
+      if (!checkPhoneNumber(value)) {
+
+        staffEditHomeTelMessage.textContent =
+          "自宅番号は例の形式で入力して下さい。例：0748-12-3456";
+
+        staffEditHomeTelInput.focus();
+
+        return;
+
+      }
+
+      homeTelInput.value = value;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffHomeTelEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// 携帯番号を保存
+// ========================================
+
+document
+  .getElementById("staffSaveMobileTelButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const value =
+        staffEditMobileTelInput.value.trim();
+
+      staffEditMobileTelMessage.textContent = "";
+
+      if (!checkPhoneNumber(value)) {
+
+        staffEditMobileTelMessage.textContent =
+          "携帯番号は例の形式で入力して下さい。例：090-1234-5678";
+
+        staffEditMobileTelInput.focus();
+
+        return;
+
+      }
+
+      mobileTelInput.value = value;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffMobileTelEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// スタッフ編集用郵便番号
+// ========================================
+
+staffEditZipcodeInput.addEventListener(
+  "input",
+  function () {
+
+    let numbers =
+      this.value.replace(/[^0-9]/g, "");
+
+    numbers =
+      numbers.slice(0, 7);
+
+    if (numbers.length > 3) {
+
+      this.value =
+        numbers.slice(0, 3) +
+        "-" +
+        numbers.slice(3);
+
+    } else {
+
+      this.value = numbers;
+
+    }
+
+    staffEditAddressMessage.textContent = "";
+
+  }
+);
+
+
+// ========================================
+// 住所を保存
+// ========================================
+
+document
+  .getElementById("staffSaveAddressButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const zipcode =
+        staffEditZipcodeInput.value.trim();
+
+      const address1 =
+        staffEditAddress1Input.value.trim();
+
+      const address2 =
+        staffEditAddress2Input.value.trim();
+
+      const address3 =
+        staffEditAddress3Input.value.trim();
+
+      const address4 =
+        staffEditAddress4Input.value.trim();
+
+      staffEditAddressMessage.textContent = "";
+
+      if (!checkZipcode(zipcode)) {
+
+        staffEditAddressMessage.textContent =
+          "郵便番号を例の形式で入力して下さい。例：523-0892";
+
+        staffEditZipcodeInput.focus();
+
+        return;
+
+      }
+
+      if (address4 === "") {
+
+        staffEditAddressMessage.textContent =
+          "丁目や番地を入力して下さい。";
+
+        staffEditAddress4Input.focus();
+
+        return;
+
+      }
+
+      zipcodeInput.value = zipcode;
+      address1Input.value = address1;
+      address2Input.value = address2;
+      address3Input.value = address3;
+      address4Input.value = address4;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffAddressEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// 登録番号を保存
+// ========================================
+
+document
+  .getElementById(
+    "staffSaveRegistrationNumberButton"
+  )
+  .addEventListener(
+    "click",
+    function () {
+
+      const value =
+        staffEditRegistrationNumberInput
+          .value
+          .trim();
+
+      staffEditRegistrationNumberMessage
+        .textContent = "";
+
+      if (value === "") {
+
+        staffEditRegistrationNumberMessage
+          .textContent =
+          "登録番号を入力して下さい。";
+
+        staffEditRegistrationNumberInput.focus();
+
+        return;
+
+      }
+
+      registrationNumberInput.value = value;
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById(
+          "staffRegistrationNumberEditor"
+        )
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// スタッフ編集用車名候補を更新
+// ========================================
+
+function updateStaffCarNameOptions(
+  selectedCarName = ""
+) {
+
+  const maker =
+    staffEditCarMakerInput.value;
+
+  staffEditCarNameInput.innerHTML = "";
+
+  staffEditCarNameOtherInput.value = "";
+
+  if (maker === "") {
+
+    staffEditCarNameSelectGroup.style.display =
+      "block";
+
+    staffEditCarNameOtherGroup.style.display =
+      "none";
+
+    const option =
+      document.createElement("option");
+
+    option.value = "";
+
+    option.textContent =
+      "先にメーカーを選択して下さい";
+
+    staffEditCarNameInput.appendChild(option);
+
+    staffEditCarNameInput.disabled = true;
+
+    return;
+
+  }
+
+  if (maker === "その他") {
+
+    staffEditCarNameSelectGroup.style.display =
+      "none";
+
+    staffEditCarNameOtherGroup.style.display =
+      "block";
+
+    staffEditCarNameInput.disabled = true;
+
+    staffEditCarNameOtherInput.value =
+      selectedCarName;
+
+    return;
+
+  }
+
+  staffEditCarNameSelectGroup.style.display =
+    "block";
+
+  staffEditCarNameOtherGroup.style.display =
+    "none";
+
+  staffEditCarNameInput.disabled = false;
+
+  const defaultOption =
+    document.createElement("option");
+
+  defaultOption.value = "";
+
+  defaultOption.textContent =
+    "車名を選択して下さい";
+
+  staffEditCarNameInput.appendChild(
+    defaultOption
+  );
+
+  if (carModels[maker]) {
+
+    carModels[maker].forEach(
+      function (carName) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = carName;
+        option.textContent = carName;
+
+        staffEditCarNameInput.appendChild(
+          option
+        );
+
+      }
+    );
+
+  }
+
+  staffEditCarNameInput.value =
+    selectedCarName;
+
+}
+
+
+// ========================================
+// スタッフ編集画面でメーカー変更
+// ========================================
+
+staffEditCarMakerInput.addEventListener(
+  "change",
+  function () {
+
+    staffEditVehicleMessage.textContent = "";
+
+    updateStaffCarNameOptions();
+
+  }
+);
+
+
+// ========================================
+// メーカー・車名を保存
+// ========================================
+
+document
+  .getElementById("staffSaveVehicleButton")
+  .addEventListener(
+    "click",
+    function () {
+
+      const maker =
+        staffEditCarMakerInput.value;
+
+      let carName = "";
+
+      staffEditVehicleMessage.textContent = "";
+
+      if (maker === "") {
+
+        staffEditVehicleMessage.textContent =
+          "メーカーを選択して下さい。";
+
+        staffEditCarMakerInput.focus();
+
+        return;
+
+      }
+
+      if (maker === "その他") {
+
+        carName =
+          staffEditCarNameOtherInput
+            .value
+            .trim();
+
+        if (carName === "") {
+
+          staffEditVehicleMessage.textContent =
+            "車名を入力して下さい。";
+
+          staffEditCarNameOtherInput.focus();
+
+          return;
+
+        }
+
+      } else {
+
+        carName =
+          staffEditCarNameInput.value;
+
+        if (carName === "") {
+
+          staffEditVehicleMessage.textContent =
+            "車名を選択して下さい。";
+
+          staffEditCarNameInput.focus();
+
+          return;
+
+        }
+
+      }
+
+      carMakerInput.value = maker;
+
+      carMakerInput.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+      if (maker === "その他") {
+
+        carNameOtherInput.value = carName;
+
+      } else {
+
+        carNameInput.value = carName;
+
+      }
+
+      updateStaffConfirmDisplay();
+
+      document
+        .getElementById("staffVehicleEditor")
+        .classList.remove("is-open");
+
+    }
+  );
+
+
+// ========================================
+// スタッフ編集用電話番号
+// ========================================
+
+restrictPhoneInput(staffEditHomeTelInput);
+
+restrictPhoneInput(staffEditMobileTelInput);
+        
       // ========================================
       // 必須項目のメッセージ
       // ========================================
