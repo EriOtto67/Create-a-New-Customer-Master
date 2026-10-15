@@ -3751,52 +3751,68 @@ privacyConsentInput.addEventListener(
 
 
     // ========================================
-    // 郵便番号入力
-    // ========================================
+// 郵便番号入力
+// 3桁入力後にハイフンを自動挿入
+// ========================================
 
-    zipcodeInput.addEventListener("input", function () {
+zipcodeInput.addEventListener("input", function () {
 
-      this.value =
-        this.value.replace(/[^0-9-]/g, "");
+  // 数字以外をいったん削除
+  let numbers =
+    this.value.replace(/[^0-9]/g, "");
 
-      const zipcode = this.value;
-
-
-      if (zipcode === "") {
-
-        showZipMessage("", "");
-
-        return;
-
-      }
+  // 郵便番号は最大7桁
+  numbers =
+    numbers.slice(0, 7);
 
 
-      if (zipcode.length === 8) {
+  // 3桁を超えたら自動的にハイフンを入れる
+  if (numbers.length >= 3) {
 
-        if (!/^\d{3}-\d{4}$/.test(zipcode)) {
+    this.value =
+      numbers.slice(0, 3) +
+      "-" +
+      numbers.slice(3);
 
-          showZipMessage(
-            "郵便番号は「123-4567」の形式で入力して下さい。",
-            "error"
-          );
+  } else {
 
-          return;
+    this.value =
+      numbers;
 
-        }
-
-        searchAddress(zipcode);
-
-        return;
-
-      }
+  }
 
 
-      showZipMessage(
-        "ハイフン付きで入力して下さい。例：523-0892",
-        ""
-      );
+  const zipcode =
+    this.value;
 
-    });
+
+  // 未入力
+  if (zipcode === "") {
+
+    showZipMessage("", "");
+
+    return;
+
+  }
+
+
+  // 7桁すべて入力された
+  if (numbers.length === 7) {
+
+    searchAddress(zipcode);
+
+    return;
+
+  }
+
+
+  // 入力途中
+  showZipMessage(
+    "郵便番号を入力して下さい。例：523-0892",
+    ""
+  );
+
+});
 
 
     // ========================================
