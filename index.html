@@ -1205,12 +1205,11 @@ input[type="date"] {
       <!-- 入力完了 -->
 
 <button
-  type="submit"
+  type="button"
   id="customerSubmitButton"
 >
   入力完了
-</button>
-      
+</button>      
       </form>
 
     <!-- ====================================== -->
@@ -3596,81 +3595,25 @@ carNameOtherInput.addEventListener("input", function () {
 
 
 // ========================================
-// 入力完了ボタンを押したときの
-// メーカー・車名チェック
+// 入力完了ボタン
+// フォーム全体を上から順番に確認
 // ========================================
 
 customerSubmitButton.addEventListener(
   "click",
-  function (event) {
+  function () {
 
-    // メーカー未選択
-    if (carMakerInput.value === "") {
-
-      event.preventDefault();
-
-      carMakerInput.setCustomValidity(
-        "メーカーを選択して下さい。"
-      );
-
-      carMakerInput.focus();
-
-      carMakerInput.reportValidity();
+    // フォーム全体の必須チェック
+    // 最初に問題がある項目へ移動して警告を表示
+    if (!form.reportValidity()) {
 
       return;
 
     }
 
-
-    carMakerInput.setCustomValidity("");
-
-
-    // 「その他」以外で車名未選択
-    if (
-      carMakerInput.value !== "その他" &&
-      carNameInput.value === ""
-    ) {
-
-      event.preventDefault();
-
-      carNameInput.setCustomValidity(
-        "車名を選択して下さい。"
-      );
-
-      carNameInput.focus();
-
-      carNameInput.reportValidity();
-
-      return;
-
-    }
-
-
-    carNameInput.setCustomValidity("");
-
-
-    // 「その他」で車名未入力
-    if (
-      carMakerInput.value === "その他" &&
-      carNameOtherInput.value.trim() === ""
-    ) {
-
-      event.preventDefault();
-
-      carNameOtherInput.setCustomValidity(
-        "車名を入力して下さい。"
-      );
-
-      carNameOtherInput.focus();
-
-      carNameOtherInput.reportValidity();
-
-      return;
-
-    }
-
-
-    carNameOtherInput.setCustomValidity("");
+    // 必須チェックに問題がなければ
+    // 既存のsubmit処理を実行
+    form.requestSubmit();
 
   }
 );   
