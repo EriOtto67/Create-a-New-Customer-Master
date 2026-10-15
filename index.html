@@ -1676,23 +1676,6 @@ input[type="date"] {
   const form =
   document.getElementById("surveyForm");
 
-
-// ========================================
-// お客さま入力画面
-// Enterキーによるフォーム送信を禁止
-// ========================================
-
-form.addEventListener("keydown", function (event) {
-
-  if (event.key === "Enter") {
-
-    event.preventDefault();
-
-  }
-
-});
-
-
 const customerConfirmScreen =
   document.getElementById("customerConfirmScreen");
 
@@ -3949,17 +3932,34 @@ zipcodeInput.addEventListener("input", function () {
 
 
     // ========================================
-    // 入力完了
+// 入力完了
+// Enterキーによる送信は禁止
+// 入力完了ボタンを押した場合のみ処理
+// ========================================
+
+form.addEventListener(
+  "submit",
+  function (event) {
+
+    event.preventDefault();
+
+
+    // ========================================
+    // Enterキーによる送信は無視
     // ========================================
 
-    form.addEventListener(
-      "submit",
-      function (event) {
+    if (
+      event.submitter &&
+      event.submitter.type !== "submit"
+    ) {
 
-        event.preventDefault();
+      return;
+
+    }
 
 
-        const name =
+    const name =
+
           document
             .getElementById("name")
             .value
