@@ -458,11 +458,238 @@ input[type="date"] {
     }
 
     #registrationPasswordMessage:empty {
-      display: none;
-    }
-  </style>
-</head>
+  display: none;
+}
 
+
+/* ====================================== */
+/* 西暦・和暦併記カレンダー */
+/* ====================================== */
+
+.custom-date-picker {
+  position: relative;
+  width: 100%;
+}
+
+.custom-date-picker-button {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  margin: 0;
+  padding: 10px 46px 10px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #888888;
+  font-size: 16px;
+  font-weight: normal;
+  text-align: left;
+}
+
+.custom-date-picker-button::after {
+  content: "📅";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.custom-date-picker-button.has-value {
+  color: #333333;
+}
+
+.custom-date-picker-button:hover {
+  background-color: #ffffff;
+  border-color: #00c853;
+}
+
+.custom-date-picker-button:active {
+  background-color: #ffffff;
+}
+
+.custom-date-picker-button:focus {
+  border-color: #00c853;
+  box-shadow: 0 0 0 2px rgba(0, 200, 83, 0.12);
+  outline: none;
+}
+
+.custom-calendar {
+  display: none;
+  position: absolute;
+  top: 56px;
+  left: 0;
+  z-index: 500;
+  width: 100%;
+  padding: 18px;
+  background-color: #ffffff;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.custom-calendar.is-open {
+  display: block;
+}
+
+.custom-calendar-header {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.custom-calendar-title {
+  color: #333333;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.custom-calendar-nav {
+  width: 44px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d5d5d5;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.custom-calendar-nav:hover {
+  background-color: #f0f8f3;
+}
+
+.custom-calendar-nav:active {
+  background-color: #e1f3e7;
+}
+
+.custom-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+
+.custom-calendar-weekday {
+  padding: 5px 0;
+  color: #666666;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.custom-calendar-weekday.sunday {
+  color: #d93025;
+}
+
+.custom-calendar-weekday.saturday {
+  color: #1976d2;
+}
+
+.custom-calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.custom-calendar-day {
+  width: 100%;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.custom-calendar-day:hover {
+  background-color: #e8f7ed;
+}
+
+.custom-calendar-day:active {
+  background-color: #d5f0de;
+}
+
+.custom-calendar-day.sunday {
+  color: #d93025;
+}
+
+.custom-calendar-day.saturday {
+  color: #1976d2;
+}
+
+.custom-calendar-day.today {
+  border: 2px solid #00b84f;
+}
+
+.custom-calendar-day.selected {
+  background-color: #00b84f;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.custom-calendar-day.selected:hover {
+  background-color: #009f45;
+}
+
+.custom-calendar-empty {
+  height: 42px;
+}
+
+.custom-calendar-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.custom-calendar-footer button {
+  flex: 1;
+  width: auto;
+  height: 42px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.custom-calendar-today-button {
+  background-color: #00b84f;
+}
+
+.custom-calendar-clear-button {
+  background-color: #777777;
+}
+
+.custom-calendar-clear-button:hover {
+  background-color: #666666;
+}
+
+.custom-calendar-clear-button:active {
+  background-color: #555555;
+}
+
+@media (max-width: 600px) {
+  .custom-calendar {
+    padding: 14px 10px;
+  }
+
+  .custom-calendar-title {
+    font-size: 15px;
+  }
+
+  .custom-calendar-day {
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+</style>
+</head>
 
 <body>
 
@@ -1222,22 +1449,123 @@ input[type="date"] {
 
 <div class="form-group">
 
-  <label for="inspectionExpiryDate">
+  <label for="inspectionExpiryDateButton">
     車検満了日
-    <span class="optional">カレンダーから選択して下さい。</span>
+    <span class="optional">
+      カレンダーから選択して下さい。
+    </span>
   </label>
 
-  <div class="date-input-wrap">
+  <div class="custom-date-picker">
 
     <input
-      type="date"
+      type="hidden"
       id="inspectionExpiryDate"
       name="inspectionExpiryDate"
     >
 
-    <span class="date-placeholder">
+    <button
+      type="button"
+      id="inspectionExpiryDateButton"
+      class="custom-date-picker-button"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+    >
       カレンダーから選択
-    </span>
+    </button>
+
+    <div
+      id="inspectionExpiryCalendar"
+      class="custom-calendar"
+      role="dialog"
+      aria-label="車検満了日の選択"
+    >
+
+      <div class="custom-calendar-header">
+
+        <button
+          type="button"
+          id="inspectionPreviousMonthButton"
+          class="custom-calendar-nav"
+          aria-label="前の月"
+        >
+          ‹
+        </button>
+
+        <div
+          id="inspectionCalendarTitle"
+          class="custom-calendar-title"
+        ></div>
+
+        <button
+          type="button"
+          id="inspectionNextMonthButton"
+          class="custom-calendar-nav"
+          aria-label="次の月"
+        >
+          ›
+        </button>
+
+      </div>
+
+      <div class="custom-calendar-weekdays">
+
+        <div class="custom-calendar-weekday sunday">
+          日
+        </div>
+
+        <div class="custom-calendar-weekday">
+          月
+        </div>
+
+        <div class="custom-calendar-weekday">
+          火
+        </div>
+
+        <div class="custom-calendar-weekday">
+          水
+        </div>
+
+        <div class="custom-calendar-weekday">
+          木
+        </div>
+
+        <div class="custom-calendar-weekday">
+          金
+        </div>
+
+        <div class="custom-calendar-weekday saturday">
+          土
+        </div>
+
+      </div>
+
+      <div
+        id="inspectionCalendarDays"
+        class="custom-calendar-days"
+      ></div>
+
+      <div class="custom-calendar-footer">
+
+        <button
+          type="button"
+          id="inspectionTodayButton"
+          class="custom-calendar-today-button"
+        >
+          今日を選択
+        </button>
+
+        <button
+          type="button"
+          id="inspectionClearButton"
+          class="custom-calendar-clear-button"
+        >
+          選択を解除
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
@@ -1604,27 +1932,412 @@ function requestRegistrationPassword(
 }
 
 // ========================================
-// 車検満了日の日付案内表示
+// 西暦・和暦併記カレンダー
 // ========================================
 
-const inspectionExpiryDateWrap =
-  inspectionExpiryDateInput.closest(
-    ".date-input-wrap"
+const inspectionExpiryDateButton =
+  document.getElementById(
+    "inspectionExpiryDateButton"
+  );
+
+const inspectionExpiryCalendar =
+  document.getElementById(
+    "inspectionExpiryCalendar"
+  );
+
+const inspectionCalendarTitle =
+  document.getElementById(
+    "inspectionCalendarTitle"
+  );
+
+const inspectionCalendarDays =
+  document.getElementById(
+    "inspectionCalendarDays"
+  );
+
+const inspectionPreviousMonthButton =
+  document.getElementById(
+    "inspectionPreviousMonthButton"
+  );
+
+const inspectionNextMonthButton =
+  document.getElementById(
+    "inspectionNextMonthButton"
+  );
+
+const inspectionTodayButton =
+  document.getElementById(
+    "inspectionTodayButton"
+  );
+
+const inspectionClearButton =
+  document.getElementById(
+    "inspectionClearButton"
   );
 
 
-function updateInspectionExpiryDatePlaceholder() {
+const currentCalendarDate =
+  new Date();
 
-  if (inspectionExpiryDateInput.value) {
+let inspectionCalendarYear =
+  currentCalendarDate.getFullYear();
 
-    inspectionExpiryDateWrap.classList.add(
+let inspectionCalendarMonth =
+  currentCalendarDate.getMonth();
+
+
+// ========================================
+// 数値を2桁へ変換
+// ========================================
+
+function padInspectionDateNumber(number) {
+
+  return String(number).padStart(2, "0");
+
+}
+
+
+// ========================================
+// 西暦を和暦へ変換
+// 例：2026年 → 令和8年
+// ========================================
+
+function getJapaneseEraYear(
+  year,
+  month,
+  day
+) {
+
+  const date =
+    new Date(
+      year,
+      month,
+      day
+    );
+
+  const formatter =
+    new Intl.DateTimeFormat(
+      "ja-JP-u-ca-japanese",
+      {
+        era: "long",
+        year: "numeric"
+      }
+    );
+
+  return formatter.format(date);
+
+}
+
+
+// ========================================
+// Power Automate用の日付を作成
+// 例：2026-10-15
+// ========================================
+
+function createInspectionDateValue(
+  year,
+  month,
+  day
+) {
+
+  return (
+    year +
+    "-" +
+    padInspectionDateNumber(month + 1) +
+    "-" +
+    padInspectionDateNumber(day)
+  );
+
+}
+
+
+// ========================================
+// 選択済みの日付を取得
+// ========================================
+
+function getSelectedInspectionDate() {
+
+  const value =
+    inspectionExpiryDateInput.value;
+
+  if (!value) {
+
+    return null;
+
+  }
+
+  const parts =
+    value.split("-");
+
+  if (parts.length !== 3) {
+
+    return null;
+
+  }
+
+  return {
+
+    year:
+      Number(parts[0]),
+
+    month:
+      Number(parts[1]) - 1,
+
+    day:
+      Number(parts[2])
+
+  };
+
+}
+
+
+// ========================================
+// 日付選択ボタンの表示を更新
+// ========================================
+
+function updateInspectionDateButton() {
+
+  const selectedDate =
+    getSelectedInspectionDate();
+
+  if (!selectedDate) {
+
+    inspectionExpiryDateButton.textContent =
+      "カレンダーから選択";
+
+    inspectionExpiryDateButton.classList.remove(
       "has-value"
     );
 
-  } else {
+    return;
 
-    inspectionExpiryDateWrap.classList.remove(
-      "has-value"
+  }
+
+  const japaneseEraYear =
+    getJapaneseEraYear(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day
+    );
+
+  inspectionExpiryDateButton.textContent =
+    selectedDate.year +
+    "年" +
+    (selectedDate.month + 1) +
+    "月" +
+    selectedDate.day +
+    "日" +
+    "（" +
+    japaneseEraYear +
+    "）";
+
+  inspectionExpiryDateButton.classList.add(
+    "has-value"
+  );
+
+}
+
+
+// ========================================
+// 2つの日付が同じか確認
+// ========================================
+
+function isSameInspectionDate(
+  firstYear,
+  firstMonth,
+  firstDay,
+  secondYear,
+  secondMonth,
+  secondDay
+) {
+
+  return (
+    firstYear === secondYear &&
+    firstMonth === secondMonth &&
+    firstDay === secondDay
+  );
+
+}
+
+
+// ========================================
+// カレンダーを描画
+// ========================================
+
+function renderInspectionCalendar() {
+
+  inspectionCalendarDays.innerHTML = "";
+
+
+  const japaneseEraYear =
+    getJapaneseEraYear(
+      inspectionCalendarYear,
+      inspectionCalendarMonth,
+      1
+    );
+
+
+  inspectionCalendarTitle.textContent =
+    inspectionCalendarYear +
+    "年" +
+    "（" +
+    japaneseEraYear +
+    "）" +
+    (inspectionCalendarMonth + 1) +
+    "月";
+
+
+  const firstWeekday =
+    new Date(
+      inspectionCalendarYear,
+      inspectionCalendarMonth,
+      1
+    ).getDay();
+
+
+  const lastDay =
+    new Date(
+      inspectionCalendarYear,
+      inspectionCalendarMonth + 1,
+      0
+    ).getDate();
+
+
+  const selectedDate =
+    getSelectedInspectionDate();
+
+
+  const today =
+    new Date();
+
+  const todayYear =
+    today.getFullYear();
+
+  const todayMonth =
+    today.getMonth();
+
+  const todayDay =
+    today.getDate();
+
+
+  // 月初までの空欄
+  for (
+    let emptyIndex = 0;
+    emptyIndex < firstWeekday;
+    emptyIndex += 1
+  ) {
+
+    const emptyCell =
+      document.createElement("div");
+
+    emptyCell.className =
+      "custom-calendar-empty";
+
+    inspectionCalendarDays.appendChild(
+      emptyCell
+    );
+
+  }
+
+
+  // 1日から月末までの日付ボタン
+  for (
+    let day = 1;
+    day <= lastDay;
+    day += 1
+  ) {
+
+    const dayButton =
+      document.createElement("button");
+
+    dayButton.type = "button";
+
+    dayButton.className =
+      "custom-calendar-day";
+
+    dayButton.textContent =
+      day;
+
+
+    const weekday =
+      new Date(
+        inspectionCalendarYear,
+        inspectionCalendarMonth,
+        day
+      ).getDay();
+
+
+    if (weekday === 0) {
+
+      dayButton.classList.add(
+        "sunday"
+      );
+
+    }
+
+
+    if (weekday === 6) {
+
+      dayButton.classList.add(
+        "saturday"
+      );
+
+    }
+
+
+    if (
+      isSameInspectionDate(
+        inspectionCalendarYear,
+        inspectionCalendarMonth,
+        day,
+        todayYear,
+        todayMonth,
+        todayDay
+      )
+    ) {
+
+      dayButton.classList.add(
+        "today"
+      );
+
+    }
+
+
+    if (
+      selectedDate &&
+      isSameInspectionDate(
+        inspectionCalendarYear,
+        inspectionCalendarMonth,
+        day,
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day
+      )
+    ) {
+
+      dayButton.classList.add(
+        "selected"
+      );
+
+    }
+
+
+    dayButton.addEventListener(
+      "click",
+      function () {
+
+        selectInspectionDate(
+          inspectionCalendarYear,
+          inspectionCalendarMonth,
+          day
+        );
+
+      }
+    );
+
+
+    inspectionCalendarDays.appendChild(
+      dayButton
     );
 
   }
@@ -1632,19 +2345,284 @@ function updateInspectionExpiryDatePlaceholder() {
 }
 
 
-inspectionExpiryDateInput.addEventListener(
-  "change",
-  updateInspectionExpiryDatePlaceholder
+// ========================================
+// 日付を選択
+// ========================================
+
+function selectInspectionDate(
+  year,
+  month,
+  day
+) {
+
+  inspectionExpiryDateInput.value =
+    createInspectionDateValue(
+      year,
+      month,
+      day
+    );
+
+  inspectionExpiryDateInput.dispatchEvent(
+    new Event(
+      "change",
+      {
+        bubbles: true
+      }
+    )
+  );
+
+  updateInspectionDateButton();
+
+  renderInspectionCalendar();
+
+  closeInspectionCalendar();
+
+}
+
+
+// ========================================
+// カレンダーを開く
+// ========================================
+
+function openInspectionCalendar() {
+
+  const selectedDate =
+    getSelectedInspectionDate();
+
+  if (selectedDate) {
+
+    inspectionCalendarYear =
+      selectedDate.year;
+
+    inspectionCalendarMonth =
+      selectedDate.month;
+
+  } else {
+
+    const today =
+      new Date();
+
+    inspectionCalendarYear =
+      today.getFullYear();
+
+    inspectionCalendarMonth =
+      today.getMonth();
+
+  }
+
+  renderInspectionCalendar();
+
+  inspectionExpiryCalendar.classList.add(
+    "is-open"
+  );
+
+  inspectionExpiryDateButton.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+
+}
+
+
+// ========================================
+// カレンダーを閉じる
+// ========================================
+
+function closeInspectionCalendar() {
+
+  inspectionExpiryCalendar.classList.remove(
+    "is-open"
+  );
+
+  inspectionExpiryDateButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+}
+
+
+// ========================================
+// カレンダーを開閉
+// ========================================
+
+inspectionExpiryDateButton.addEventListener(
+  "click",
+  function () {
+
+    const isOpen =
+      inspectionExpiryCalendar.classList.contains(
+        "is-open"
+      );
+
+    if (isOpen) {
+
+      closeInspectionCalendar();
+
+    } else {
+
+      openInspectionCalendar();
+
+    }
+
+  }
 );
 
 
-inspectionExpiryDateInput.addEventListener(
-  "input",
-  updateInspectionExpiryDatePlaceholder
+// ========================================
+// 前月へ移動
+// ========================================
+
+inspectionPreviousMonthButton.addEventListener(
+  "click",
+  function () {
+
+    inspectionCalendarMonth -= 1;
+
+    if (inspectionCalendarMonth < 0) {
+
+      inspectionCalendarMonth = 11;
+
+      inspectionCalendarYear -= 1;
+
+    }
+
+    renderInspectionCalendar();
+
+  }
 );
 
 
-updateInspectionExpiryDatePlaceholder();
+// ========================================
+// 翌月へ移動
+// ========================================
+
+inspectionNextMonthButton.addEventListener(
+  "click",
+  function () {
+
+    inspectionCalendarMonth += 1;
+
+    if (inspectionCalendarMonth > 11) {
+
+      inspectionCalendarMonth = 0;
+
+      inspectionCalendarYear += 1;
+
+    }
+
+    renderInspectionCalendar();
+
+  }
+);
+
+
+// ========================================
+// 今日を選択
+// ========================================
+
+inspectionTodayButton.addEventListener(
+  "click",
+  function () {
+
+    const today =
+      new Date();
+
+    selectInspectionDate(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+  }
+);
+
+
+// ========================================
+// 選択を解除
+// ========================================
+
+inspectionClearButton.addEventListener(
+  "click",
+  function () {
+
+    inspectionExpiryDateInput.value = "";
+
+    inspectionExpiryDateInput.dispatchEvent(
+      new Event(
+        "change",
+        {
+          bubbles: true
+        }
+      )
+    );
+
+    updateInspectionDateButton();
+
+    closeInspectionCalendar();
+
+  }
+);
+
+
+// ========================================
+// カレンダー外を押したら閉じる
+// ========================================
+
+document.addEventListener(
+  "click",
+  function (event) {
+
+    const datePicker =
+      inspectionExpiryDateButton.closest(
+        ".custom-date-picker"
+      );
+
+    if (
+      datePicker &&
+      !datePicker.contains(event.target)
+    ) {
+
+      closeInspectionCalendar();
+
+    }
+
+  }
+);
+
+
+// ========================================
+// Escapeキーで閉じる
+// ========================================
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key === "Escape" &&
+      inspectionExpiryCalendar.classList.contains(
+        "is-open"
+      )
+    ) {
+
+      event.preventDefault();
+
+      closeInspectionCalendar();
+
+      inspectionExpiryDateButton.focus();
+
+    }
+
+  }
+);
+
+
+// ========================================
+// 初期表示
+// ========================================
+
+updateInspectionDateButton();
 
 
 // ========================================
