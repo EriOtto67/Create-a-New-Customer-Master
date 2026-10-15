@@ -867,6 +867,58 @@ input[type="date"] {
 </div>
         
         </div>
+
+      <!-- ====================================== -->
+<!-- 貴重品の管理について -->
+<!-- ====================================== -->
+
+<div class="privacy-consent">
+
+  <div class="privacy-consent-title">
+    貴重品の管理について
+  </div>
+
+  <div class="privacy-consent-text">
+
+    お車をお預けいただく際は、現金・カード類・貴金属・その他の貴重品は、
+    車内に残さずお手元で保管をお願いいたします。
+
+    <br><br>
+
+    お車をお預けする前に、
+    車内に貴重品が残っていないかご確認ください。
+
+    <br><br>
+
+    内容をご確認のうえ、チェックしてください。
+
+  </div>
+
+  <label
+    for="valuablesConfirmed"
+    class="privacy-consent-check"
+  >
+
+    <input
+      type="checkbox"
+      id="valuablesConfirmed"
+      name="valuablesConfirmed"
+      required
+    >
+
+    <span>
+      貴重品の管理について確認しました
+    </span>
+
+  </label>
+
+  <div
+    id="valuablesConfirmedMessage"
+    class="privacy-consent-message"
+    aria-live="polite"
+  ></div>
+
+</div>
       
             <!-- ====================================== -->
       <!-- 個人情報の取り扱いへの同意 -->
@@ -1379,6 +1431,12 @@ const carNameInput =
 
         const carNameOtherInput =
   document.getElementById("carNameOther");
+
+const valuablesConfirmedInput =
+  document.getElementById("valuablesConfirmed");
+
+const valuablesConfirmedMessage =
+  document.getElementById("valuablesConfirmedMessage");
 
 const privacyConsentInput =
   document.getElementById("privacyConsent");
@@ -2552,6 +2610,75 @@ carNameOtherInput.addEventListener("input", function () {
 });
 
         // ========================================
+// 貴重品の管理についての確認
+// ========================================
+
+valuablesConfirmedInput.addEventListener(
+  "invalid",
+  function () {
+
+    if (!this.checked) {
+
+      this.setCustomValidity(
+        "貴重品の管理についてご確認下さい。"
+      );
+
+      valuablesConfirmedMessage.textContent =
+        "貴重品の管理についての確認が必要です。";
+
+    }
+
+  }
+);
+
+
+valuablesConfirmedInput.addEventListener(
+  "change",
+  function () {
+
+    this.setCustomValidity("");
+
+    valuablesConfirmedMessage.textContent = "";
+
+  }
+);
+
+
+// ========================================
+// 個人情報の取り扱いへの同意
+// ========================================
+
+privacyConsentInput.addEventListener(
+  "invalid",
+  function () {
+
+    if (!this.checked) {
+
+      this.setCustomValidity(
+        "個人情報の取り扱いをご確認のうえ、同意して下さい。"
+      );
+
+      privacyConsentMessage.textContent =
+        "個人情報の取り扱いへの同意が必要です。";
+
+    }
+
+  }
+);
+
+
+privacyConsentInput.addEventListener(
+  "change",
+  function () {
+
+    this.setCustomValidity("");
+
+    privacyConsentMessage.textContent = "";
+
+  }
+);
+
+        // ========================================
 // 個人情報の取り扱いへの同意
 // ========================================
 
@@ -2875,21 +3002,39 @@ const carMaker =
 
 
         // ========================================
-        // 個人情報の取り扱いへの同意チェック
-        // ========================================
+// 貴重品の管理についての確認チェック
+// ========================================
 
-        if (!privacyConsentInput.checked) {
+if (!valuablesConfirmedInput.checked) {
 
-          privacyConsentMessage.textContent =
-            "個人情報の取り扱いへの同意が必要です。";
+  valuablesConfirmedMessage.textContent =
+    "貴重品の管理についての確認が必要です。";
 
-          privacyConsentInput.focus();
+  valuablesConfirmedInput.focus();
 
-          privacyConsentInput.reportValidity();
+  valuablesConfirmedInput.reportValidity();
 
-          return;
+  return;
 
-        }
+}
+
+
+// ========================================
+// 個人情報の取り扱いへの同意チェック
+// ========================================
+
+if (!privacyConsentInput.checked) {
+
+  privacyConsentMessage.textContent =
+    "個人情報の取り扱いへの同意が必要です。";
+
+  privacyConsentInput.focus();
+
+  privacyConsentInput.reportValidity();
+
+  return;
+
+}
 
 
         // ========================================
@@ -3153,16 +3298,22 @@ staffCompleteButton.addEventListener(
         carMakerInput.value.trim(),
 
       carName:
-        getCarName(),
+  getCarName(),
 
-      privacyConsent:
-        privacyConsentInput.checked,
+valuablesConfirmed:
+  valuablesConfirmedInput.checked,
 
-      privacyConsentDateTime:
-        new Date().toISOString(),
+valuablesConfirmedDateTime:
+  new Date().toISOString(),
 
-      telAppointmentMemo:
-        telAppointmentMemo,
+privacyConsent:
+  privacyConsentInput.checked,
+
+privacyConsentDateTime:
+  new Date().toISOString(),
+
+telAppointmentMemo:
+  telAppointmentMemo,
 
       customerMemo:
         customerMemo,
