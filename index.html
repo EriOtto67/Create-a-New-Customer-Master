@@ -3611,7 +3611,7 @@ carNameInput.addEventListener(
   function () {
 
     carNameMessage.textContent = "";
-    this.setCustomValidity("");
+    carNameInput.setCustomValidity("");
 
   }
 );
@@ -3622,21 +3622,62 @@ carNameOtherInput.addEventListener(
   function () {
 
     carNameMessage.textContent = "";
-    this.setCustomValidity("");
+    carNameOtherInput.setCustomValidity("");
 
   }
 );
 
 
 // ========================================
+// 入力欄まで画面を移動
+// ========================================
+
+function moveToCustomerInput(input) {
+
+  input.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  setTimeout(function () {
+
+    input.focus();
+
+  }, 300);
+
+}
+
+
+// ========================================
+// 標準の入力エラーを表示
+// ========================================
+
+function showCustomerInputValidity(input) {
+
+  moveToCustomerInput(input);
+
+  setTimeout(function () {
+
+    input.reportValidity();
+
+  }, 300);
+
+}
+
+
+// ========================================
 // 入力完了ボタン
+// 必須項目を画面上から順番に確認
 // ========================================
 
 customerSubmitButton.addEventListener(
   "click",
   function () {
 
-    // 前回のエラー表示を消す
+    // ========================================
+    // 前回のエラー表示を消去
+    // ========================================
+
     carMakerMessage.textContent = "";
     carNameMessage.textContent = "";
 
@@ -3646,20 +3687,14 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // メーカー
+    // 1. フリガナ
     // ========================================
 
-    if (carMakerInput.value === "") {
+    if (!furiganaInput.checkValidity()) {
 
-      carMakerMessage.textContent =
-        "メーカーを選択して下さい。";
-
-      carMakerInput.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-      carMakerInput.focus();
+      showCustomerInputValidity(
+        furiganaInput
+      );
 
       return;
 
@@ -3667,7 +3702,85 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // 通常メーカーの車名
+    // 2. 氏名
+    // ========================================
+
+    if (!nameInput.checkValidity()) {
+
+      showCustomerInputValidity(
+        nameInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 3. 郵便番号
+    // ========================================
+
+    if (!zipcodeInput.checkValidity()) {
+
+      showCustomerInputValidity(
+        zipcodeInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 4. 住所4
+    // ========================================
+
+    if (!address4Input.checkValidity()) {
+
+      showCustomerInputValidity(
+        address4Input
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 5. 登録番号
+    // ========================================
+
+    if (!registrationNumberInput.checkValidity()) {
+
+      showCustomerInputValidity(
+        registrationNumberInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 6. メーカー
+    // ========================================
+
+    if (carMakerInput.value === "") {
+
+      carMakerMessage.textContent =
+        "メーカーを選択して下さい。";
+
+      moveToCustomerInput(
+        carMakerInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 7. 通常メーカーの車名
     // ========================================
 
     if (
@@ -3678,12 +3791,9 @@ customerSubmitButton.addEventListener(
       carNameMessage.textContent =
         "車名を選択して下さい。";
 
-      carNameInput.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-      carNameInput.focus();
+      moveToCustomerInput(
+        carNameInput
+      );
 
       return;
 
@@ -3691,11 +3801,78 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // 「その他」の車名
+    // 8. 「その他」の車名
     // ========================================
 
     if (
-      carMakerInput
+      carMakerInput.value === "その他" &&
+      carNameOtherInput.value.trim() === ""
+    ) {
+
+      carNameMessage.textContent =
+        "車名を入力して下さい。";
+
+      moveToCustomerInput(
+        carNameOtherInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 9. 貴重品の管理
+    // ========================================
+
+    if (!valuablesConfirmedInput.checked) {
+
+      valuablesConfirmedMessage.textContent =
+        "貴重品の管理についての確認が必要です。";
+
+      valuablesConfirmedInput.setCustomValidity(
+        "貴重品の管理についてご確認下さい。"
+      );
+
+      showCustomerInputValidity(
+        valuablesConfirmedInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // 10. 個人情報の取り扱い
+    // ========================================
+
+    if (!privacyConsentInput.checked) {
+
+      privacyConsentMessage.textContent =
+        "個人情報の取り扱いへの同意が必要です。";
+
+      privacyConsentInput.setCustomValidity(
+        "個人情報の取り扱いをご確認のうえ、同意して下さい。"
+      );
+
+      showCustomerInputValidity(
+        privacyConsentInput
+      );
+
+      return;
+
+    }
+
+
+    // ========================================
+    // すべて正常
+    // ========================================
+
+    form.requestSubmit();
+
+  }
+);
         
         // ========================================
 // 貴重品の管理についての確認
