@@ -1038,21 +1038,25 @@ input[type="date"] {
           </label>
 
           <input
-            type="text"
-            id="zipcode"
-            name="zipcode"
-            inputmode="numeric"
-            maxlength="8"
-            placeholder="例：523-0892"
-            autocomplete="postal-code"
-            required
-          >
+  type="text"
+  id="zipcode"
+  name="zipcode"
+  inputmode="numeric"
+  maxlength="8"
+  placeholder="例：523-0892"
+  autocomplete="postal-code"
+  required
+>
 
-          <div
-            id="zipMessage"
-            class="zip-message"
-            aria-live="polite"
-          ></div>
+<div class="zip-message">
+  半角数字で入力してください（ハイフンは自動入力されます）。
+</div>
+
+<div
+  id="zipMessage"
+  class="zip-message"
+  aria-live="polite"
+></div>
 
         </div>
 
