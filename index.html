@@ -5470,11 +5470,18 @@ customerSubmitButton.addEventListener(
 
 
     // ========================================
-    // すべて正常
-    // ========================================
+// すべて正常
+// ========================================
 
-    form.requestSubmit();
-
+form.dispatchEvent(
+  new Event(
+    "submit",
+    {
+      bubbles: true,
+      cancelable: true
+    }
+  )
+);
   }
 );
         
