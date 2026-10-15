@@ -3750,24 +3750,31 @@ privacyConsentInput.addEventListener(
     }
 
 
-    // ========================================
+// ========================================
 // 郵便番号入力
 // 3桁入力後にハイフンを自動挿入
+// Backspaceで通常どおり削除可能
 // ========================================
 
 zipcodeInput.addEventListener("input", function () {
 
-  // 数字以外をいったん削除
+  const originalValue =
+    this.value;
+
+  // 数字だけ取り出す
   let numbers =
-    this.value.replace(/[^0-9]/g, "");
+    originalValue.replace(/[^0-9]/g, "");
 
   // 郵便番号は最大7桁
   numbers =
     numbers.slice(0, 7);
 
 
-  // 3桁を超えたら自動的にハイフンを入れる
-  if (numbers.length >= 3) {
+  // ========================================
+  // 郵便番号を整形
+  // ========================================
+
+  if (numbers.length > 3) {
 
     this.value =
       numbers.slice(0, 3) +
@@ -3786,7 +3793,10 @@ zipcodeInput.addEventListener("input", function () {
     this.value;
 
 
+  // ========================================
   // 未入力
+  // ========================================
+
   if (zipcode === "") {
 
     showZipMessage("", "");
@@ -3796,7 +3806,10 @@ zipcodeInput.addEventListener("input", function () {
   }
 
 
-  // 7桁すべて入力された
+  // ========================================
+  // 7桁入力完了
+  // ========================================
+
   if (numbers.length === 7) {
 
     searchAddress(zipcode);
@@ -3806,7 +3819,10 @@ zipcodeInput.addEventListener("input", function () {
   }
 
 
+  // ========================================
   // 入力途中
+  // ========================================
+
   showZipMessage(
     "郵便番号を入力して下さい。例：523-0892",
     ""
