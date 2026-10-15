@@ -1676,6 +1676,26 @@ input[type="date"] {
   const form =
   document.getElementById("surveyForm");
 
+
+// ========================================
+// お客さま入力画面
+// Enterキーによる送信だけを禁止
+// ========================================
+
+form.addEventListener("keydown", function (event) {
+
+  if (
+    event.key === "Enter" &&
+    event.target.tagName !== "BUTTON"
+  ) {
+
+    event.preventDefault();
+
+  }
+
+});
+
+
 const customerConfirmScreen =
   document.getElementById("customerConfirmScreen");
 
@@ -3931,10 +3951,8 @@ zipcodeInput.addEventListener("input", function () {
     }
 
 
-    // ========================================
+// ========================================
 // 入力完了
-// Enterキーによる送信は禁止
-// 入力完了ボタンを押した場合のみ処理
 // ========================================
 
 form.addEventListener(
@@ -3944,26 +3962,11 @@ form.addEventListener(
     event.preventDefault();
 
 
-    // ========================================
-    // Enterキーによる送信は無視
-    // ========================================
-
-    if (
-      event.submitter &&
-      event.submitter.type !== "submit"
-    ) {
-
-      return;
-
-    }
-
-
     const name =
-
-          document
-            .getElementById("name")
-            .value
-            .trim();
+      document
+        .getElementById("name")
+        .value
+        .trim();
 
         const staffSS =
   staffSSValue;
