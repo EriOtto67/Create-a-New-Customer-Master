@@ -1103,24 +1103,34 @@ input[type="date"] {
 
         <div class="form-group">
 
-          <label for="zipcode">
-            郵便番号
-            <span class="required">必須</span>
-          </label>
+          <label for="zipcode1">
+  郵便番号
+  <span class="required">必須</span>
+</label>
+          
+          <div class="phone-input-row">
 
-          <input
-  type="text"
-  id="zipcode"
-  name="zipcode"
-  inputmode="numeric"
-  maxlength="8"
-  placeholder="例：523-0892"
-  autocomplete="postal-code"
-  required
->
+  <input
+    type="text"
+    id="zipcode1"
+    inputmode="numeric"
+    maxlength="3"
+    placeholder="523"
+    autocomplete="postal-code"
+    required
+  >
 
-<div class="zip-message">
-  半角数字で入力してください（ハイフンは自動入力されます）。
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="zipcode2"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="0892"
+    required
+  >
+
 </div>
 
 <div
@@ -1128,7 +1138,7 @@ input[type="date"] {
   class="zip-message"
   aria-live="polite"
 ></div>
-
+          
         </div>
 
 
@@ -2003,20 +2013,34 @@ input[type="date"] {
 
       <div class="form-group">
 
-        <label for="staffEditZipcode">
-          郵便番号
-        </label>
+  <label for="staffEditZipcode1">
+    郵便番号
+  </label>
 
-        <input
-          type="text"
-          id="staffEditZipcode"
-          inputmode="numeric"
-          maxlength="8"
-          placeholder="例：523-0892"
-        >
+  <div class="phone-input-row">
 
-      </div>
+    <input
+      type="text"
+      id="staffEditZipcode1"
+      inputmode="numeric"
+      maxlength="3"
+      placeholder="523"
+    >
 
+    <span class="phone-separator">-</span>
+
+    <input
+      type="text"
+      id="staffEditZipcode2"
+      inputmode="numeric"
+      maxlength="4"
+      placeholder="0892"
+    >
+
+  </div>
+
+</div>
+      
       <div class="form-group">
 
         <label for="staffEditAddress1">
@@ -2700,10 +2724,14 @@ const mobileTel2Input =
 
 const mobileTel3Input =
   document.getElementById("mobileTel3");      
-      const zipcodeInput =
-        document.getElementById("zipcode");
+
+        const zipcode1Input =
+  document.getElementById("zipcode1");
+
+const zipcode2Input =
+  document.getElementById("zipcode2");
       
-      const address1Input =
+        const address1Input =
         document.getElementById("address1");
       
       const address2Input =
@@ -4433,9 +4461,12 @@ const staffEditMobileTel3Input =
 const staffEditMobileTelMessage =
   document.getElementById("staffEditMobileTelMessage");
         
-const staffEditZipcodeInput =
-  document.getElementById("staffEditZipcode");
+const staffEditZipcode1Input =
+  document.getElementById("staffEditZipcode1");
 
+const staffEditZipcode2Input =
+  document.getElementById("staffEditZipcode2");
+        
 const staffEditAddress1Input =
   document.getElementById("staffEditAddress1");
 
@@ -4524,10 +4555,13 @@ document.getElementById(
   ) || "未入力";
   
   document.getElementById(
-    "confirmZipcode"
-  ).textContent =
-    zipcodeInput.value.trim();
-
+  "confirmZipcode"
+).textContent =
+  getZipcode(
+    zipcode1Input,
+    zipcode2Input
+  );
+  
   document.getElementById(
     "confirmAddress"
   ).textContent =
@@ -4635,25 +4669,28 @@ if (editorId === "staffMobileTelEditor") {
   
   if (editorId === "staffAddressEditor") {
 
-    staffEditZipcodeInput.value =
-      zipcodeInput.value.trim();
+  staffEditZipcode1Input.value =
+    zipcode1Input.value.trim();
 
-    staffEditAddress1Input.value =
-      address1Input.value.trim();
+  staffEditZipcode2Input.value =
+    zipcode2Input.value.trim();
 
-    staffEditAddress2Input.value =
-      address2Input.value.trim();
+  staffEditAddress1Input.value =
+    address1Input.value.trim();
 
-    staffEditAddress3Input.value =
-      address3Input.value.trim();
+  staffEditAddress2Input.value =
+    address2Input.value.trim();
 
-    staffEditAddress4Input.value =
-      address4Input.value.trim();
+  staffEditAddress3Input.value =
+    address3Input.value.trim();
 
-    staffEditAddressMessage.textContent = "";
+  staffEditAddress4Input.value =
+    address4Input.value.trim();
 
-  }
+  staffEditAddressMessage.textContent = "";
 
+}
+  
   if (
     editorId ===
     "staffRegistrationNumberEditor"
@@ -4940,36 +4977,85 @@ document
         
 // ========================================
 // スタッフ編集用郵便番号
+// 左3桁・右4桁が揃ったら住所を自動検索
 // ========================================
 
-staffEditZipcodeInput.addEventListener(
+function handleStaffZipcodeInput() {
+
+  // 半角数字以外を削除
+  staffEditZipcode1Input.value =
+    staffEditZipcode1Input.value.replace(
+      /[^0-9]/g,
+      ""
+    );
+
+  staffEditZipcode2Input.value =
+    staffEditZipcode2Input.value.replace(
+      /[^0-9]/g,
+      ""
+    );
+
+  staffEditAddressMessage.textContent = "";
+
+
+  // ========================================
+  // 左3桁・右4桁が揃っていなければここで終了
+  // ========================================
+
+  if (
+    !checkZipcodeParts(
+      staffEditZipcode1Input,
+      staffEditZipcode2Input
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  // ========================================
+  // 郵便番号を結合
+  // ========================================
+
+  const zipcode =
+    getZipcode(
+      staffEditZipcode1Input,
+      staffEditZipcode2Input
+    );
+
+
+  // ========================================
+  // スタッフ編集欄の住所を検索
+  // ========================================
+
+  searchStaffAddress(zipcode);
+
+}
+
+
+staffEditZipcode1Input.addEventListener(
+  "input",
+  handleStaffZipcodeInput
+);
+
+
+staffEditZipcode2Input.addEventListener(
+  "input",
+  handleStaffZipcodeInput
+);
+
+staffEditZipcode2Input.addEventListener(
   "input",
   function () {
 
-    let numbers =
+    this.value =
       this.value.replace(/[^0-9]/g, "");
-
-    numbers =
-      numbers.slice(0, 7);
-
-    if (numbers.length > 3) {
-
-      this.value =
-        numbers.slice(0, 3) +
-        "-" +
-        numbers.slice(3);
-
-    } else {
-
-      this.value = numbers;
-
-    }
 
     staffEditAddressMessage.textContent = "";
 
   }
 );
-
 
 // ========================================
 // 住所を保存
@@ -4982,7 +5068,10 @@ document
     function () {
 
       const zipcode =
-        staffEditZipcodeInput.value.trim();
+        getZipcode(
+          staffEditZipcode1Input,
+          staffEditZipcode2Input
+        );
 
       const address1 =
         staffEditAddress1Input.value.trim();
@@ -4998,12 +5087,17 @@ document
 
       staffEditAddressMessage.textContent = "";
 
-      if (!checkZipcode(zipcode)) {
+      if (
+        !checkZipcodeParts(
+          staffEditZipcode1Input,
+          staffEditZipcode2Input
+        )
+      ) {
 
         staffEditAddressMessage.textContent =
-          "郵便番号を例の形式で入力して下さい。例：523-0892";
+          "郵便番号は左3桁、右4桁を半角数字で入力して下さい。";
 
-        staffEditZipcodeInput.focus();
+        staffEditZipcode1Input.focus();
 
         return;
 
@@ -5020,7 +5114,12 @@ document
 
       }
 
-      zipcodeInput.value = zipcode;
+      zipcode1Input.value =
+        staffEditZipcode1Input.value.trim();
+
+      zipcode2Input.value =
+        staffEditZipcode2Input.value.trim();
+
       address1Input.value = address1;
       address2Input.value = address2;
       address3Input.value = address3;
@@ -5034,7 +5133,6 @@ document
 
     }
   );
-
 
 // ========================================
 // 登録番号を保存
@@ -5340,15 +5438,31 @@ document
       });
       
       
-      // 郵便番号
-      zipcodeInput.addEventListener("invalid", function () {
-        this.setCustomValidity("郵便番号を入力して下さい。\n例：523-0892（ハイフンは自動で入力されます）");
-      });
-      
-      zipcodeInput.addEventListener("input", function () {
-        this.setCustomValidity("");
-      });
-      
+// ========================================
+// 郵便番号
+// 左3桁・右4桁
+// ========================================
+
+zipcode1Input.addEventListener(
+  "input",
+  function () {
+
+    this.value =
+      this.value.replace(/[^0-9]/g, "");
+
+  }
+);
+
+
+zipcode2Input.addEventListener(
+  "input",
+  function () {
+
+    this.value =
+      this.value.replace(/[^0-9]/g, "");
+
+  }
+);      
       
       // 登録番号
       registrationNumberInput.addEventListener("invalid", function () {
@@ -5497,20 +5611,28 @@ customerSubmitButton.addEventListener(
     }
 
 
-    // ========================================
-    // 3. 郵便番号
-    // ========================================
+// ========================================
+// 3. 郵便番号
+// ========================================
 
-    if (!zipcodeInput.checkValidity()) {
+if (
+  !checkZipcodeParts(
+    zipcode1Input,
+    zipcode2Input
+  )
+) {
 
-      showCustomerInputValidity(
-        zipcodeInput
-      );
+  alert(
+    "郵便番号は左3桁、右4桁を半角数字で入力して下さい。"
+  );
 
-      return;
+  moveToCustomerInput(
+    zipcode1Input
+  );
 
-    }
+  return;
 
+}
 
     // ========================================
     // 4. 住所4
@@ -5792,6 +5914,39 @@ function getPhoneNumber(
 
 
 // ========================================
+// 郵便番号を結合
+// 例：523 + 0892 → 523-0892
+// ========================================
+
+function getZipcode(
+  firstInput,
+  secondInput
+) {
+
+  const first =
+    firstInput.value.trim();
+
+  const second =
+    secondInput.value.trim();
+
+  if (
+    first === "" &&
+    second === ""
+  ) {
+
+    return "";
+
+  }
+
+  return (
+    first +
+    "-" +
+    second
+  );
+
+}
+
+// ========================================
 // 電話番号3枠の入力状態を確認
 // 任意項目なので、3枠とも空欄なら正常
 // 入力する場合は3枠すべて半角数字で入力し、
@@ -5977,52 +6132,27 @@ restrictPhonePartInput(
 
 // ========================================
 // 郵便番号入力
-// 3桁入力後にハイフンを自動挿入
-// Backspaceで通常どおり削除可能
+// 左3桁・右4桁の2枠入力
 // ========================================
 
-zipcodeInput.addEventListener("input", function () {
+function handleZipcodeInput() {
 
-  const originalValue =
-    this.value;
+  // 半角数字以外を削除
+  zipcode1Input.value =
+    zipcode1Input.value.replace(/[^0-9]/g, "");
 
-  // 数字だけ取り出す
-  let numbers =
-    originalValue.replace(/[^0-9]/g, "");
-
-  // 郵便番号は最大7桁
-  numbers =
-    numbers.slice(0, 7);
+  zipcode2Input.value =
+    zipcode2Input.value.replace(/[^0-9]/g, "");
 
 
   // ========================================
-  // 郵便番号を整形
+  // 両方未入力
   // ========================================
 
-  if (numbers.length > 3) {
-
-    this.value =
-      numbers.slice(0, 3) +
-      "-" +
-      numbers.slice(3);
-
-  } else {
-
-    this.value =
-      numbers;
-
-  }
-
-
-  const zipcode =
-    this.value;
-
-
-  // ========================================
-  // 未入力
-  // ========================================
-
-  if (zipcode === "") {
+  if (
+    zipcode1Input.value === "" &&
+    zipcode2Input.value === ""
+  ) {
 
     showZipMessage("", "");
 
@@ -6032,10 +6162,21 @@ zipcodeInput.addEventListener("input", function () {
 
 
   // ========================================
-  // 7桁入力完了
+  // 左3桁・右4桁が揃ったら住所検索
   // ========================================
 
-  if (numbers.length === 7) {
+  if (
+    checkZipcodeParts(
+      zipcode1Input,
+      zipcode2Input
+    )
+  ) {
+
+    const zipcode =
+      getZipcode(
+        zipcode1Input,
+        zipcode2Input
+      );
 
     searchAddress(zipcode);
 
@@ -6049,112 +6190,219 @@ zipcodeInput.addEventListener("input", function () {
   // ========================================
 
   showZipMessage(
-    "郵便番号を入力して下さい。例：523-0892",
+    "郵便番号は左3桁、右4桁を入力して下さい。",
     ""
   );
 
-});
+}
 
 
-    // ========================================
-    // 郵便番号から住所検索
-    // ========================================
+// 左側
+zipcode1Input.addEventListener(
+  "input",
+  handleZipcodeInput
+);
 
-    async function searchAddress(zipcode) {
 
-      showZipMessage(
-        "住所を検索しています。",
-        ""
+// 右側
+zipcode2Input.addEventListener(
+  "input",
+  handleZipcodeInput
+);
+
+// ========================================
+// 郵便番号から住所検索
+// お客さま入力画面用
+// ========================================
+
+async function searchAddress(zipcode) {
+
+  showZipMessage(
+    "住所を検索しています。",
+    ""
+  );
+
+
+  try {
+
+    const url =
+      "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" +
+      encodeURIComponent(zipcode);
+
+
+    const response =
+      await fetch(url);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "通信エラー：" + response.status
       );
 
-
-      try {
-
-        const url =
-          "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" +
-          encodeURIComponent(zipcode);
+    }
 
 
-        const response =
-          await fetch(url);
+    const result =
+      await response.json();
 
 
-        if (!response.ok) {
+    if (
+      result.status !== 200 ||
+      !result.results ||
+      result.results.length === 0
+    ) {
 
-          throw new Error(
-            "通信エラー：" + response.status
-          );
+      address1Input.value = "";
+      address2Input.value = "";
+      address3Input.value = "";
 
-        }
+      showZipMessage(
+        "該当する住所が見つかりませんでした。",
+        "error"
+      );
 
-
-        const result =
-          await response.json();
-
-
-        if (
-          result.status !== 200 ||
-          !result.results ||
-          result.results.length === 0
-        ) {
-
-          address1Input.value = "";
-          address2Input.value = "";
-          address3Input.value = "";
-
-          showZipMessage(
-            "該当する住所が見つかりませんでした。",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        const address =
-          result.results[0];
-
-
-        address1Input.value =
-          address.address1 || "";
-
-        address2Input.value =
-          address.address2 || "";
-
-        address3Input.value =
-          address.address3 || "";
-
-
-        showZipMessage(
-          "住所を自動入力しました。",
-          "success"
-        );
-
-      } catch (error) {
-
-        console.error(error);
-
-        showZipMessage(
-          "住所を取得できませんでした。通信状況を確認して下さい。",
-          "error"
-        );
-
-      }
+      return;
 
     }
 
 
-    // ========================================
-    // 郵便番号チェック
-    // ========================================
+    const address =
+      result.results[0];
 
-    function checkZipcode(value) {
 
-      return /^\d{3}-\d{4}$/.test(value);
+    address1Input.value =
+      address.address1 || "";
+
+    address2Input.value =
+      address.address2 || "";
+
+    address3Input.value =
+      address.address3 || "";
+
+
+    showZipMessage(
+      "住所を自動入力しました。",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    showZipMessage(
+      "住所を取得できませんでした。通信状況を確認して下さい。",
+      "error"
+    );
+
+  }
+
+}
+
+
+// ========================================
+// 郵便番号から住所検索
+// スタッフ修正画面用
+// ========================================
+
+async function searchStaffAddress(zipcode) {
+
+  staffEditAddressMessage.textContent =
+    "住所を検索しています。";
+
+
+  try {
+
+    const url =
+      "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" +
+      encodeURIComponent(zipcode);
+
+
+    const response =
+      await fetch(url);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "通信エラー：" + response.status
+      );
 
     }
 
+
+    const result =
+      await response.json();
+
+
+    if (
+      result.status !== 200 ||
+      !result.results ||
+      result.results.length === 0
+    ) {
+
+      staffEditAddress1Input.value = "";
+      staffEditAddress2Input.value = "";
+      staffEditAddress3Input.value = "";
+
+      staffEditAddressMessage.textContent =
+        "該当する住所が見つかりませんでした。";
+
+      return;
+
+    }
+
+
+    const address =
+      result.results[0];
+
+
+    staffEditAddress1Input.value =
+      address.address1 || "";
+
+    staffEditAddress2Input.value =
+      address.address2 || "";
+
+    staffEditAddress3Input.value =
+      address.address3 || "";
+
+
+    staffEditAddressMessage.textContent =
+      "住所を自動入力しました。";
+
+  } catch (error) {
+
+    console.error(error);
+
+    staffEditAddressMessage.textContent =
+      "住所を取得できませんでした。通信状況を確認して下さい。";
+
+  }
+
+}
+
+// ========================================
+// 郵便番号チェック
+// 左3桁・右4桁の半角数字
+// ========================================
+
+function checkZipcodeParts(
+  firstInput,
+  secondInput
+) {
+
+  const first =
+    firstInput.value.trim();
+
+  const second =
+    secondInput.value.trim();
+
+  return (
+    /^[0-9]{3}$/.test(first) &&
+    /^[0-9]{4}$/.test(second)
+  );
+
+}
 
 // ========================================
 // 入力完了
@@ -6197,10 +6445,10 @@ const mobileTel =
   );
 
         const zipcode =
-          zipcodeInput
-            .value
-            .trim();
-
+  getZipcode(
+    zipcode1Input,
+    zipcode2Input
+  );
 
         const address1 =
           address1Input
@@ -6319,23 +6567,26 @@ if (
 
 }
     
-        // ========================================
-        // 郵便番号チェック
-        // ========================================
+// ========================================
+// 郵便番号チェック
+// ========================================
 
-        if (!checkZipcode(zipcode)) {
+if (
+  !checkZipcodeParts(
+    zipcode1Input,
+    zipcode2Input
+  )
+) {
 
-          alert(
-            "郵便番号を以下の通り入力して下さい。\n\n" +
-            "例：523-0892"
-          );
+  alert(
+    "郵便番号は左3桁、右4桁を半角数字で入力して下さい。"
+  );
 
-          zipcodeInput.focus();
+  zipcode1Input.focus();
 
-          return;
+  return;
 
-        }
-
+}
 
         // ========================================
         // 入力完了用データ
@@ -6530,9 +6781,11 @@ mobileTel:
     mobileTel3Input
   ),
       
-      zipcode:
-        zipcodeInput.value.trim(),
-
+zipcode:
+  getZipcode(
+    zipcode1Input,
+    zipcode2Input
+  ),
       address1:
         address1Input.value.trim(),
 
