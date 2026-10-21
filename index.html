@@ -5731,8 +5731,9 @@ privacyConsentInput.addEventListener(
   }
 );
 
-    // ========================================
+// ========================================
 // 電話番号3分割入力
+// 半角数字のみ入力可能
 // ========================================
 
 function restrictPhonePartInput(
@@ -5747,23 +5748,10 @@ function restrictPhonePartInput(
       this.value =
         this.value.replace(/[^0-9]/g, "");
 
-      if (
-        nextInput &&
-        this.value.length >=
-          Number(this.maxLength)
-      ) {
-
-        nextInput.focus();
-
-        nextInput.select();
-
-      }
-
     }
   );
 
 }
-
 
 // ========================================
 // 電話番号を結合
