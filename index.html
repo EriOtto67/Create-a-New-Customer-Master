@@ -123,6 +123,38 @@
         0 0 0 2px rgba(0, 200, 83, 0.12);
     }
 
+    /* 電話番号3分割入力 */
+.phone-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.phone-input-row input {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.phone-separator {
+  color: #666666;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .phone-input-row {
+    gap: 6px;
+  }
+
+  .phone-input-row input {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
     /* 日付入力欄のスマホはみ出し防止 */
 input[type="date"] {
   display: block;
@@ -966,22 +998,41 @@ input[type="date"] {
 
         <div class="form-group">
 
-          <label for="homeTel">
-            自宅番号
-            <span class="optional">任意</span>
-          </label>
+          <label for="homeTel1">
+  自宅番号
+  <span class="optional">任意</span>
+</label>
+          
+          <div class="phone-input-row">
 
-          <input
-  type="tel"
-  id="homeTel"
-  name="homeTel"
-  inputmode="tel"
-  placeholder="例：0748-12-3456"
-  autocomplete="tel"
->
+  <input
+    type="text"
+    id="homeTel1"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="0748"
+  >
 
-<div class="zip-message">
-  半角数字で、ハイフン（-）を2か所入力して下さい。
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="homeTel2"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="12"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="homeTel3"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="3456"
+  >
+
 </div>
 
         </div>
@@ -991,21 +1042,41 @@ input[type="date"] {
 
         <div class="form-group">
 
-          <label for="mobileTel">
-            携帯番号
-            <span class="optional">任意</span>
-          </label>
+          <label for="mobileTel1">
+  携帯番号
+  <span class="optional">任意</span>
+</label>
+          
+          <div class="phone-input-row">
 
-          <input
-  type="tel"
-  id="mobileTel"
-  name="mobileTel"
-  inputmode="tel"
-  placeholder="例：090-1234-5678"
->
+  <input
+    type="text"
+    id="mobileTel1"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="090"
+  >
 
-<div class="zip-message">
-  半角数字で、ハイフン（-）を2か所入力して下さい。
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="mobileTel2"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="1234"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="mobileTel3"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="5678"
+  >
+
 </div>
       
         </div>
@@ -1737,17 +1808,42 @@ input[type="date"] {
       class="staff-confirm-editor"
     >
 
-      <label for="staffEditHomeTel">
-        自宅番号
-      </label>
+      <label for="staffEditHomeTel1">
+  自宅番号
+</label>
 
-      <input
-        type="tel"
-        id="staffEditHomeTel"
-        inputmode="tel"
-        placeholder="例：0748-12-3456"
-      >
+<div class="phone-input-row">
 
+  <input
+    type="text"
+    id="staffEditHomeTel1"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="0748"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="staffEditHomeTel2"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="12"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="staffEditHomeTel3"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="3456"
+  >
+
+</div>
+      
       <div
         id="staffEditHomeTelMessage"
         class="staff-confirm-message"
@@ -1807,17 +1903,42 @@ input[type="date"] {
       class="staff-confirm-editor"
     >
 
-      <label for="staffEditMobileTel">
-        携帯番号
-      </label>
+      <label for="staffEditMobileTel1">
+  携帯番号
+</label>
 
-      <input
-        type="tel"
-        id="staffEditMobileTel"
-        inputmode="tel"
-        placeholder="例：090-1234-5678"
-      >
+<div class="phone-input-row">
 
+  <input
+    type="text"
+    id="staffEditMobileTel1"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="090"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="staffEditMobileTel2"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="1234"
+  >
+
+  <span class="phone-separator">-</span>
+
+  <input
+    type="text"
+    id="staffEditMobileTel3"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="5678"
+  >
+
+</div>
+      
       <div
         id="staffEditMobileTelMessage"
         class="staff-confirm-message"
@@ -2562,12 +2683,23 @@ const furiganaInput =
 const nameInput =
   document.getElementById("name");
       
-      const homeTelInput =
-        document.getElementById("homeTel");
-      
-      const mobileTelInput =
-        document.getElementById("mobileTel");
-      
+const homeTel1Input =
+  document.getElementById("homeTel1");
+
+const homeTel2Input =
+  document.getElementById("homeTel2");
+
+const homeTel3Input =
+  document.getElementById("homeTel3");
+
+const mobileTel1Input =
+  document.getElementById("mobileTel1");
+
+const mobileTel2Input =
+  document.getElementById("mobileTel2");
+
+const mobileTel3Input =
+  document.getElementById("mobileTel3");      
       const zipcodeInput =
         document.getElementById("zipcode");
       
@@ -4277,18 +4409,30 @@ const staffEditNameInput =
 const staffEditNameMessage =
   document.getElementById("staffEditNameMessage");
 
-const staffEditHomeTelInput =
-  document.getElementById("staffEditHomeTel");
+const staffEditHomeTel1Input =
+  document.getElementById("staffEditHomeTel1");
+
+const staffEditHomeTel2Input =
+  document.getElementById("staffEditHomeTel2");
+
+const staffEditHomeTel3Input =
+  document.getElementById("staffEditHomeTel3");
 
 const staffEditHomeTelMessage =
   document.getElementById("staffEditHomeTelMessage");
 
-const staffEditMobileTelInput =
-  document.getElementById("staffEditMobileTel");
+const staffEditMobileTel1Input =
+  document.getElementById("staffEditMobileTel1");
+
+const staffEditMobileTel2Input =
+  document.getElementById("staffEditMobileTel2");
+
+const staffEditMobileTel3Input =
+  document.getElementById("staffEditMobileTel3");
 
 const staffEditMobileTelMessage =
   document.getElementById("staffEditMobileTelMessage");
-
+        
 const staffEditZipcodeInput =
   document.getElementById("staffEditZipcode");
 
@@ -4362,15 +4506,23 @@ function updateStaffConfirmDisplay() {
     nameInput.value.trim();
 
   document.getElementById(
-    "confirmHomeTel"
-  ).textContent =
-    homeTelInput.value.trim() || "未入力";
+  "confirmHomeTel"
+).textContent =
+  getPhoneNumber(
+    homeTel1Input,
+    homeTel2Input,
+    homeTel3Input
+  ) || "未入力";
 
-  document.getElementById(
-    "confirmMobileTel"
-  ).textContent =
-    mobileTelInput.value.trim() || "未入力";
-
+document.getElementById(
+  "confirmMobileTel"
+).textContent =
+  getPhoneNumber(
+    mobileTel1Input,
+    mobileTel2Input,
+    mobileTel3Input
+  ) || "未入力";
+  
   document.getElementById(
     "confirmZipcode"
   ).textContent =
@@ -4449,22 +4601,38 @@ function setStaffEditorCurrentValue(editorId) {
 
   if (editorId === "staffHomeTelEditor") {
 
-    staffEditHomeTelInput.value =
-      homeTelInput.value.trim();
+  setPhoneParts(
+    getPhoneNumber(
+      homeTel1Input,
+      homeTel2Input,
+      homeTel3Input
+    ),
+    staffEditHomeTel1Input,
+    staffEditHomeTel2Input,
+    staffEditHomeTel3Input
+  );
 
-    staffEditHomeTelMessage.textContent = "";
+  staffEditHomeTelMessage.textContent = "";
 
-  }
+}
 
-  if (editorId === "staffMobileTelEditor") {
+if (editorId === "staffMobileTelEditor") {
 
-    staffEditMobileTelInput.value =
-      mobileTelInput.value.trim();
+  setPhoneParts(
+    getPhoneNumber(
+      mobileTel1Input,
+      mobileTel2Input,
+      mobileTel3Input
+    ),
+    staffEditMobileTel1Input,
+    staffEditMobileTel2Input,
+    staffEditMobileTel3Input
+  );
 
-    staffEditMobileTelMessage.textContent = "";
+  staffEditMobileTelMessage.textContent = "";
 
-  }
-
+}
+  
   if (editorId === "staffAddressEditor") {
 
     staffEditZipcodeInput.value =
@@ -4686,23 +4854,33 @@ document
     "click",
     function () {
 
-      const value =
-        staffEditHomeTelInput.value.trim();
-
       staffEditHomeTelMessage.textContent = "";
 
-      if (!checkPhoneNumber(value)) {
+      if (
+        !checkPhoneParts(
+          staffEditHomeTel1Input,
+          staffEditHomeTel2Input,
+          staffEditHomeTel3Input
+        )
+      ) {
 
         staffEditHomeTelMessage.textContent =
-          "自宅番号は例の形式で入力して下さい。例：0748-12-3456";
+          "自宅番号は3つの枠すべてに半角数字で入力し、合計10桁または11桁にして下さい。";
 
-        staffEditHomeTelInput.focus();
+        staffEditHomeTel1Input.focus();
 
         return;
 
       }
 
-      homeTelInput.value = value;
+      homeTel1Input.value =
+        staffEditHomeTel1Input.value.trim();
+
+      homeTel2Input.value =
+        staffEditHomeTel2Input.value.trim();
+
+      homeTel3Input.value =
+        staffEditHomeTel3Input.value.trim();
 
       updateStaffConfirmDisplay();
 
@@ -4712,8 +4890,7 @@ document
 
     }
   );
-
-
+        
 // ========================================
 // 携帯番号を保存
 // ========================================
@@ -4724,23 +4901,33 @@ document
     "click",
     function () {
 
-      const value =
-        staffEditMobileTelInput.value.trim();
-
       staffEditMobileTelMessage.textContent = "";
 
-      if (!checkPhoneNumber(value)) {
+      if (
+        !checkPhoneParts(
+          staffEditMobileTel1Input,
+          staffEditMobileTel2Input,
+          staffEditMobileTel3Input
+        )
+      ) {
 
         staffEditMobileTelMessage.textContent =
-          "携帯番号は例の形式で入力して下さい。例：090-1234-5678";
+          "携帯番号は3つの枠すべてに半角数字で入力し、合計10桁または11桁にして下さい。";
 
-        staffEditMobileTelInput.focus();
+        staffEditMobileTel1Input.focus();
 
         return;
 
       }
 
-      mobileTelInput.value = value;
+      mobileTel1Input.value =
+        staffEditMobileTel1Input.value.trim();
+
+      mobileTel2Input.value =
+        staffEditMobileTel2Input.value.trim();
+
+      mobileTel3Input.value =
+        staffEditMobileTel3Input.value.trim();
 
       updateStaffConfirmDisplay();
 
@@ -4750,8 +4937,7 @@ document
 
     }
   );
-
-
+        
 // ========================================
 // スタッフ編集用郵便番号
 // ========================================
@@ -5107,15 +5293,6 @@ document
 
     }
   );
-
-
-// ========================================
-// スタッフ編集用電話番号
-// ========================================
-
-restrictPhoneInput(staffEditHomeTelInput);
-
-restrictPhoneInput(staffEditMobileTelInput);
         
       // ========================================
       // 必須項目のメッセージ
@@ -5555,47 +5732,243 @@ privacyConsentInput.addEventListener(
 );
 
     // ========================================
-    // 電話番号入力制限
-    // 半角数字と半角ハイフンのみ
-    // ========================================
+// 電話番号3分割入力
+// ========================================
 
-    function restrictPhoneInput(input) {
+function restrictPhonePartInput(
+  input,
+  nextInput = null
+) {
 
-      input.addEventListener("input", function () {
+  input.addEventListener(
+    "input",
+    function () {
 
-        this.value =
-          this.value.replace(/[^0-9-]/g, "");
+      this.value =
+        this.value.replace(/[^0-9]/g, "");
 
-      });
+      if (
+        nextInput &&
+        this.value.length >=
+          Number(this.maxLength)
+      ) {
 
-    }
+        nextInput.focus();
 
+        nextInput.select();
 
-    restrictPhoneInput(homeTelInput);
-    restrictPhoneInput(mobileTelInput);
-
-
-    // ========================================
-    // 電話番号チェック
-    // ========================================
-
-    function checkPhoneNumber(value) {
-
-      if (value === "") {
-        return true;
       }
 
-      if (!/^[0-9-]+$/.test(value)) {
-        return false;
-      }
-
-      const hyphenCount =
-        (value.match(/-/g) || []).length;
-
-      return hyphenCount === 2;
-
     }
+  );
 
+}
+
+
+// ========================================
+// 電話番号を結合
+// ========================================
+
+function getPhoneNumber(
+  firstInput,
+  secondInput,
+  thirdInput
+) {
+
+  const first =
+    firstInput.value.trim();
+
+  const second =
+    secondInput.value.trim();
+
+  const third =
+    thirdInput.value.trim();
+
+  if (
+    first === "" &&
+    second === "" &&
+    third === ""
+  ) {
+
+    return "";
+
+  }
+
+  return [
+    first,
+    second,
+    third
+  ].join("-");
+
+}
+
+
+// ========================================
+// 電話番号3枠の入力状態を確認
+// 任意項目なので、3枠とも空欄なら正常
+// 入力する場合は3枠すべて半角数字で入力し、
+// 数字の合計を10桁または11桁とする
+// ========================================
+
+function checkPhoneParts(
+  firstInput,
+  secondInput,
+  thirdInput
+) {
+
+  const first =
+    firstInput.value.trim();
+
+  const second =
+    secondInput.value.trim();
+
+  const third =
+    thirdInput.value.trim();
+
+
+  // 3枠とも空欄なら正常
+  if (
+    first === "" &&
+    second === "" &&
+    third === ""
+  ) {
+
+    return true;
+
+  }
+
+
+  // 1枠でも空欄がある場合はエラー
+  if (
+    first === "" ||
+    second === "" ||
+    third === ""
+  ) {
+
+    return false;
+
+  }
+
+
+  // 半角数字以外が含まれている場合はエラー
+  if (
+    !/^[0-9]+$/.test(first) ||
+    !/^[0-9]+$/.test(second) ||
+    !/^[0-9]+$/.test(third)
+  ) {
+
+    return false;
+
+  }
+
+
+  // ハイフンを除いた電話番号の桁数
+  const totalLength =
+    first.length +
+    second.length +
+    third.length;
+
+
+  // 国内電話番号として10桁または11桁のみ許可
+  return (
+    totalLength === 10 ||
+    totalLength === 11
+  );
+
+}
+
+// ========================================
+// ハイフン付き電話番号を3枠へ設定
+// ========================================
+
+function setPhoneParts(
+  phoneNumber,
+  firstInput,
+  secondInput,
+  thirdInput
+) {
+
+  const parts =
+    phoneNumber
+      ? phoneNumber.split("-")
+      : [];
+
+  firstInput.value =
+    parts[0] || "";
+
+  secondInput.value =
+    parts[1] || "";
+
+  thirdInput.value =
+    parts[2] || "";
+
+}
+
+
+// ========================================
+// お客さま側の電話番号入力制限
+// ========================================
+
+restrictPhonePartInput(
+  homeTel1Input,
+  homeTel2Input
+);
+
+restrictPhonePartInput(
+  homeTel2Input,
+  homeTel3Input
+);
+
+restrictPhonePartInput(
+  homeTel3Input
+);
+
+restrictPhonePartInput(
+  mobileTel1Input,
+  mobileTel2Input
+);
+
+restrictPhonePartInput(
+  mobileTel2Input,
+  mobileTel3Input
+);
+
+restrictPhonePartInput(
+  mobileTel3Input
+);
+
+
+// ========================================
+// スタッフ側の電話番号入力制限
+// ========================================
+
+restrictPhonePartInput(
+  staffEditHomeTel1Input,
+  staffEditHomeTel2Input
+);
+
+restrictPhonePartInput(
+  staffEditHomeTel2Input,
+  staffEditHomeTel3Input
+);
+
+restrictPhonePartInput(
+  staffEditHomeTel3Input
+);
+
+restrictPhonePartInput(
+  staffEditMobileTel1Input,
+  staffEditMobileTel2Input
+);
+
+restrictPhonePartInput(
+  staffEditMobileTel2Input,
+  staffEditMobileTel3Input
+);
+
+restrictPhonePartInput(
+  staffEditMobileTel3Input
+);
 
     // ========================================
     // 郵便番号メッセージ表示
@@ -5821,16 +6194,19 @@ form.addEventListener(
             .trim();
 
         const homeTel =
-          homeTelInput
-            .value
-            .trim();
+  getPhoneNumber(
+    homeTel1Input,
+    homeTel2Input,
+    homeTel3Input
+  );
 
 
-        const mobileTel =
-          mobileTelInput
-            .value
-            .trim();
-
+const mobileTel =
+  getPhoneNumber(
+    mobileTel1Input,
+    mobileTel2Input,
+    mobileTel3Input
+  );
 
         const zipcode =
           zipcodeInput
@@ -5911,42 +6287,50 @@ if (!privacyConsentInput.checked) {
 }
 
 
-        // ========================================
-        // 自宅番号チェック
-        // ========================================
+// ========================================
+// 自宅番号チェック
+// ========================================
 
-        if (!checkPhoneNumber(homeTel)) {
+if (
+  !checkPhoneParts(
+    homeTel1Input,
+    homeTel2Input,
+    homeTel3Input
+  )
+) {
 
-          alert(
-            "自宅番号を以下の通り入力して下さい。\n\n" +
-            "例：0748-12-3456"
-          );
+  alert(
+    "自宅番号は3つの枠すべてに半角数字で入力し、合計10桁または11桁にして下さい。"
+  );
 
-          homeTelInput.focus();
+  homeTel1Input.focus();
 
-          return;
+  return;
 
-        }
+}
 
+// ========================================
+// 携帯番号チェック
+// ========================================
 
-        // ========================================
-        // 携帯番号チェック
-        // ========================================
+if (
+  !checkPhoneParts(
+    mobileTel1Input,
+    mobileTel2Input,
+    mobileTel3Input
+  )
+) {
 
-        if (!checkPhoneNumber(mobileTel)) {
+  alert(
+    "携帯番号は3つの枠すべてに半角数字で入力し、合計10桁または11桁にして下さい。"
+  );
 
-          alert(
-            "携帯番号を以下の通り入力して下さい。\n\n" +
-            "例：090-1234-5678"
-          );
+  mobileTel1Input.focus();
 
-          mobileTelInput.focus();
+  return;
 
-          return;
-
-        }
-
-
+}
+    
         // ========================================
         // 郵便番号チェック
         // ========================================
@@ -6145,11 +6529,19 @@ staffCompleteButton.addEventListener(
         nameInput.value.trim(),
 
       homeTel:
-        homeTelInput.value.trim(),
+  getPhoneNumber(
+    homeTel1Input,
+    homeTel2Input,
+    homeTel3Input
+  ),
 
-      mobileTel:
-        mobileTelInput.value.trim(),
-
+mobileTel:
+  getPhoneNumber(
+    mobileTel1Input,
+    mobileTel2Input,
+    mobileTel3Input
+  ),
+      
       zipcode:
         zipcodeInput.value.trim(),
 
